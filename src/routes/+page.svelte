@@ -16,6 +16,53 @@
 ╚═════╝░╚═╝░░╚═╝╚═════╝░
 
 Dungeons, AI & Dragons.`;
+
+	let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned.
+	Respond in the following format:
+	----CHARACTER SHEET----
+	Name:
+	Class:
+	Race:
+
+	Strength: 
+	Agility: 
+	Weakness: 
+	Intelligence: 
+	Charisma:
+
+	[{A paragraph about the character's backstory}]
+
+	Keep the details funny, but accurate to the character.
+
+	<EXAMPLE>
+		Spiderman
+
+
+----CHARACTER SHEET----
+Name: Spiderman
+Class: Agile Arachnid
+Race: Human (with a little bit of spider)
+
+Strength: 16 (+3)
+[Can lift twice his own weight, and has a knack for handy web-slinging.]
+
+Agility: 20 (+5)
+[Seriously, have you seen him parkour through New York City?]
+
+Weakness: 8 (-1)
+[Susceptible to emotional manipulation, and a well-known fear of spiders.]
+
+Intelligence: 14 (+2)
+[Above average, but he's no Tony Stark. He's got pretty great science skills, though.]
+
+Charisma: 12 (+1)
+[Quippy, charming, and a bit of a dork. But hey, that's why we love him!]
+
+
+Bitten by a radioactive spider at a science exhibit, young Peter Parker gained extraordinary powers and the great responsibility of fighting crime. Juggling school, a social life, and his superhero duties, Spiderman is always on the move, whether it's chasing down bad guys or taking cheeky selfies. Navigating the complexities of love and friendship while maintaining his secret identity, Spidey has a heart of gold and a deep-seated desire for justice. Just don't forget to remind him that "with great power comes great responsibility!"
+	</EXAMPLE>
+
+	`;
 	let displayText = '';
 	let characterContent = "";
 	let currentText = text1;
@@ -74,14 +121,14 @@ Dungeons, AI & Dragons.`;
 		return showCharacterSheet ? characterContent : prompt;
 	}
 
-	async function sendMessage() {
+	async function sendMessage(systemPrompt) {
 		if (prompt.trim()) {
 			showCharacterSheet = true;
 			messages = [...messages, { role: "user", content: prompt }];
 			prompt = "";
 
 			const aiResponse = await llm.invoke([
-				{ role: "system", content: "" },
+				{ role: "system", content: systemPrompt },
 				{ role: "user", content: messages[messages.length - 1].content },
 			]);
 
@@ -101,7 +148,8 @@ Dungeons, AI & Dragons.`;
 		<textarea
 			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"
 			type="text"
-			on:keydown={(e) => e.key === "Enter" && sendMessage()}
+			on:keydown={(e) => e.key === "Enter" && sendMessage(characterSheetPrompt)}
+			placeholder="Name or Describe your character..."
 			bind:value={prompt}
 			readonly={showCharacterSheet}
 		>
@@ -140,16 +188,17 @@ Dungeons, AI & Dragons.`;
 		opacity: 0;
 		transform: scale(0.8);
 		animation: fadeInPop 0.5s ease forwards;
-		transition: transform 0.5s ease, width 0.5s ease, left 0.5s ease;
-		position: relative;
+		transition: all 0.5s ease; /* Smooth transition for repositioning */
 	}
 
 	.textarea-wrapper.character-sheet {
-		position: absolute;
-		top: 50%;
-		left: 10%;
-		transform: translateY(-50%);
-		width: 80%;
+		position: fixed;
+		bottom: 20px; /* Distance from the bottom of the screen */
+		left: 20px; /* Distance from the left of the screen */
+		margin-top: 0; /* Remove default margin */
+		width: 300px; /* Adjust width if needed */
+		transform: scale(1); /* Reset scaling */
+		opacity: 1; /* Ensure it's visible */
 	}
 
 	.character-input {
@@ -168,14 +217,21 @@ Dungeons, AI & Dragons.`;
 	}
 
 	.character-input.character-sheet {
-		width: 100%;
-		height: 300px;
+		width: 100%; /* Adjust width to match wrapper */
+		height: 550px; /* Make it taller as a character sheet */
+		resize: none; /* Prevent resizing */
 		background-color: black;
 		color: white;
-		border: none;
-		box-shadow: none;
-		resize: none;
-		pointer-events: none; /* Make it non-editable */
+		border: 2px solid white;
+		border-radius: 8px;
+		padding: 10px;
+		font-family: monospace;
+		font-size: 14px;
+		box-shadow: 0 0 10px white;
+	}
+
+	.character-input.character-sheet:focus {
+		box-shadow: none; /* Prevent focus effects for the sheet */
 	}
 
 	.character-input::placeholder {
