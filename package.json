@@ -21,5 +21,9 @@
 		"prettier-plugin-svelte": "^3.2.6",
 		"svelte": "^5.0.0",
 		"vite": "^5.0.3"
+	},
+	"dependencies": {
+		"@langchain/core": "^0.3.19",
+		"@langchain/groq": "^0.1.2"
 	}
 }
