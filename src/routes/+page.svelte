@@ -119,6 +119,7 @@
 
 <div class="image-container">
 	{#if base64Image}
+		<!-- svelte-ignore a11y_img_redundant_alt -->
 		<img src="data:image/png;base64,{base64Image}" alt="Generated Image" />
 	{:else if showCharacterSheet}
 		<img src="/src/lib/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
