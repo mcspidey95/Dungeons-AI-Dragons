@@ -1,77 +1,19 @@
 <script>
 	import { onMount } from 'svelte';
-	import { ChatGroq } from '@langchain/groq';
+	import { initialText, gameLogo, characterSheetPrompt, loadingText } from '$lib';
 
 	let prompt = '';
 	let generatedImage = null;
 	let messages = [];
-
-	let text1 = 'Press any key to continue... ';
-	let text2 = `
-██████╗░░█████╗░██████╗░
-██╔══██╗██╔══██╗██╔══██╗
-██║░░██║███████║██║░░██║
-██║░░██║██╔══██║██║░░██║
-██████╔╝██║░░██║██████╔╝
-╚═════╝░╚═╝░░╚═╝╚═════╝░
-
-Dungeons, AI & Dragons.`;
-
-let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned.
-Respond in the following format:
-----CHARACTER SHEET----
-Name:
-Class:
-Race:
-
-Strength: 
-Agility: 
-Weakness: 
-Intelligence: 
-Charisma:
-
-[{A paragraph about the character's backstory}]
-
-Keep the details funny, but accurate to the character.
-
-<EXAMPLE>
-Spiderman
-
-
-----CHARACTER SHEET----
-Name: Spiderman
-Class: Agile Arachnid
-Race: Human (with a little bit of spider)
-
-Strength: 16 (+3)
-[Can lift twice his own weight, and has a knack for handy web-slinging.]
-
-Agility: 20 (+5)
-[Seriously, have you seen him parkour through New York City?]
-
-Weakness: 8 (-1)
-[Susceptible to emotional manipulation, and a well-known fear of spiders.]
-
-Intelligence: 14 (+2)
-[Above average, but he's no Tony Stark. He's got pretty great science skills, though.]
-
-Charisma: 12 (+1)
-[Quippy, charming, and a bit of a dork. But hey, that's why we love him!]
-
-
-Bitten by a radioactive spider at a science exhibit, young Peter Parker gained extraordinary powers and the great responsibility of fighting crime. Juggling school, a social life, and his superhero duties, Spiderman is always on the move, whether it's chasing down bad guys or taking cheeky selfies. Navigating the complexities of love and friendship while maintaining his secret identity, Spidey has a heart of gold and a deep-seated desire for justice. Just don't forget to remind him that "with great power comes great responsibility!"
-</EXAMPLE>
-
-`;
-
 	let displayText = '';
-	let characterContent = '';
-	let currentText = text1;
+	let characterContent = loadingText;
+	let currentText = initialText;
 	let index = 0;
 	let typingSpeed = 30;
 	let showTextarea = false;
 	let showCharacterSheet = false;
 	let base64Image = '';
+	let isImageReady = false;
 
 	onMount(() => {
 		typeText();
@@ -92,7 +34,7 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 
 	function startText2() {
 		window.removeEventListener('keydown', startText2);
-		currentText = text2;
+		currentText = gameLogo;
 		index = 0;
 		displayText = '';
 		typeText(() =>
@@ -154,6 +96,10 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 			});
 
 			if (response.ok) {
+				setTimeout(() => {
+					isImageReady = true;
+				}, 1000);
+
 				const data = await response.json();
 				return data.image;
 			} else {
@@ -174,6 +120,8 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 <div class="image-container">
 	{#if base64Image}
 		<img src="data:image/png;base64,{base64Image}" alt="Generated Image" />
+	{:else if showCharacterSheet}
+		<img src="/src/lib/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
 	{/if}
 </div>
 
@@ -183,7 +131,7 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"
 			type="text"
 			on:keydown={(e) => e.key === 'Enter' && sendMessage(characterSheetPrompt)}
-			placeholder="Name or Describe your character..."
+			placeholder={showCharacterSheet ? loadingText : 'Name or Describe your character...'}
 			bind:value={prompt}
 			readonly={showCharacterSheet}
 		>
@@ -223,6 +171,18 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 		width: 256px;
 		height: auto;
 		z-index: 1000;
+	}
+
+	.placeholder-image{
+		opacity: 0; /* Start hidden */
+		transform: scale(0.8); /* Start smaller */
+		transition: all 0.5s ease; /* Smooth transition for properties */
+		animation: fadeInPop 0.5s ease forwards;
+	}
+
+	.placeholder-image.pop-up{
+		opacity: 1;
+		transform: scale(1);
 	}
 
 	.image-container img {
