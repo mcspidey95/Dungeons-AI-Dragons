@@ -1,10 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
-	import { ChatGroq } from "@langchain/groq";
-    let prompt = "";
-	let api_key = "";
-	let llm;
-    let messages = [];
+	import { ChatGroq } from '@langchain/groq';
+
+	let prompt = '';
+	let generatedImage = null;
+	let messages = [];
 
 	let text1 = 'Press any key to continue... ';
 	let text2 = `
@@ -17,25 +17,25 @@
 
 Dungeons, AI & Dragons.`;
 
-	let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned.
-	Respond in the following format:
-	----CHARACTER SHEET----
-	Name:
-	Class:
-	Race:
+let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned.
+Respond in the following format:
+----CHARACTER SHEET----
+Name:
+Class:
+Race:
 
-	Strength: 
-	Agility: 
-	Weakness: 
-	Intelligence: 
-	Charisma:
+Strength: 
+Agility: 
+Weakness: 
+Intelligence: 
+Charisma:
 
-	[{A paragraph about the character's backstory}]
+[{A paragraph about the character's backstory}]
 
-	Keep the details funny, but accurate to the character.
+Keep the details funny, but accurate to the character.
 
-	<EXAMPLE>
-		Spiderman
+<EXAMPLE>
+Spiderman
 
 
 ----CHARACTER SHEET----
@@ -60,38 +60,23 @@ Charisma: 12 (+1)
 
 
 Bitten by a radioactive spider at a science exhibit, young Peter Parker gained extraordinary powers and the great responsibility of fighting crime. Juggling school, a social life, and his superhero duties, Spiderman is always on the move, whether it's chasing down bad guys or taking cheeky selfies. Navigating the complexities of love and friendship while maintaining his secret identity, Spidey has a heart of gold and a deep-seated desire for justice. Just don't forget to remind him that "with great power comes great responsibility!"
-	</EXAMPLE>
+</EXAMPLE>
 
-	`;
+`;
+
 	let displayText = '';
-	let characterContent = "";
+	let characterContent = '';
 	let currentText = text1;
 	let index = 0;
-	let typingSpeed = 30; // Adjust speed (ms)
+	let typingSpeed = 30;
 	let showTextarea = false;
 	let showCharacterSheet = false;
+	let base64Image = '';
 
 	onMount(() => {
 		typeText();
-		load_api_key();
-		window.addEventListener('keydown', startText2); // Listen for any key press
+		window.addEventListener('keydown', startText2);
 	});
-
-	async function load_api_key() {
-		const response = await fetch('src/lib/api_key.txt');
-		api_key = await response.text();
-		initializeLLM();
-	}
-
-	function initializeLLM() {
-		llm = new ChatGroq({
-			apiKey: api_key,
-			model: "mixtral-8x7b-32768",
-			temperature: 1,
-			maxTokens: undefined,
-			maxRetries: 2,
-		});
-	}
 
 	function typeText(callback) {
 		if (index < currentText.length) {
@@ -106,15 +91,15 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 	}
 
 	function startText2() {
-		window.removeEventListener('keydown', startText2); // Remove the key press listener
+		window.removeEventListener('keydown', startText2);
 		currentText = text2;
 		index = 0;
-		displayText = ''; // Clear the previous text
-		//wait 1 second
-		typeText(() => (
+		displayText = '';
+		typeText(() =>
 			setTimeout(() => {
-				showTextarea = true
-			}, 1000))); // Show textarea after typing is complete
+				showTextarea = true;
+			}, 1000)
+		);
 	}
 
 	function getBoundValue() {
@@ -124,23 +109,72 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 	async function sendMessage(systemPrompt) {
 		if (prompt.trim()) {
 			showCharacterSheet = true;
-			messages = [...messages, { role: "user", content: prompt }];
-			prompt = "";
 
-			const aiResponse = await llm.invoke([
-				{ role: "system", content: systemPrompt },
-				{ role: "user", content: messages[messages.length - 1].content },
-			]);
+			messages = [...messages, { role: 'user', content: prompt }];
 
-			messages = [...messages, { role: "AI", content: aiResponse.content }];
-			characterContent = aiResponse.content; // Set the AI response as the character sheet content
+			try {
+				const response = await fetch('/api/generate-text', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ systemPrompt, messages })
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+
+					messages = [...messages, { role: 'assistant', content: data.content }];
+					characterContent = data.content;
+
+					await handleGenerateImage('a pixel art potrait of ' + prompt);
+				} else {
+					console.error('Error in response:', response.statusText);
+				}
+			} catch (error) {
+				console.error('Error:', error);
+			}
 		}
 	}
-	
+
+	async function handleGenerateImage(imagePrompt) {
+		if (imagePrompt.trim()) {
+			const image = await generateImage(imagePrompt);
+			if (image) {
+				base64Image = image;
+			}
+		}
+	}
+
+	async function generateImage(imagePrompt) {
+		if (imagePrompt.trim() === '') return null;
+		try {
+			const response = await fetch('/api/generate-image', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ prompt: imagePrompt })
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				return data.image;
+			} else {
+				console.error('Error generating image');
+				return null;
+			}
+		} catch (error) {
+			console.error('Error:', error);
+			return null;
+		}
+	}
 </script>
 
 <div class="typing-container">
 	{displayText}<span class="cursor"></span>
+</div>
+
+<div class="image-container">
+	{#if base64Image}
+		<img src="data:image/png;base64,{base64Image}" alt="Generated Image" />
+	{/if}
 </div>
 
 {#if showTextarea}
@@ -148,7 +182,7 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 		<textarea
 			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"
 			type="text"
-			on:keydown={(e) => e.key === "Enter" && sendMessage(characterSheetPrompt)}
+			on:keydown={(e) => e.key === 'Enter' && sendMessage(characterSheetPrompt)}
 			placeholder="Name or Describe your character..."
 			bind:value={prompt}
 			readonly={showCharacterSheet}
@@ -182,6 +216,22 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 		cursor: default;
 	}
 
+	.image-container {
+		position: fixed;
+		top: 25px;
+		left: 50px;
+		width: 256px;
+		height: auto;
+		z-index: 1000;
+	}
+
+	.image-container img {
+		width: 100%;
+		height: auto;
+		border: 2px solid white;
+		border-radius: 8px;
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+	}
 
 	.textarea-wrapper {
 		margin-top: 50px;
@@ -213,7 +263,9 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 		font-size: 12px;
 		outline: none;
 		box-shadow: 0 0 10px white;
-		transition: width 0.5s ease, height 0.5s ease;
+		transition:
+			width 0.5s ease,
+			height 0.5s ease;
 	}
 
 	.character-input.character-sheet {
@@ -252,7 +304,8 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 	}
 
 	@keyframes blink {
-		0%, 100% {
+		0%,
+		100% {
 			opacity: 1;
 		}
 		50% {
