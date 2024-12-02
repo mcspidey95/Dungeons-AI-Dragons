@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { ChatGroq } from '@langchain/groq';
-import { GROQ_API_KEY } from '$env/static/public';
+import { GROQ_API_KEY } from '$env/static/private';
 
 const llm = new ChatGroq({
     apiKey: GROQ_API_KEY,
