@@ -14,6 +14,8 @@
 	let showCharacterSheet = false;
 	let base64Image = '';
 	let isImageReady = false;
+	let showStartButton = false; // Flag to show the Start button
+	let showLoadingCenter = false; // Flag for showing central loading animation
 
 	onMount(() => {
 		typeText();
@@ -44,6 +46,14 @@
 		);
 	}
 
+	function handleStartClick() {
+    	showLoadingCenter = true;
+    	currentText = ''; // Hide text2
+    	displayText = ''; // Clear typing animation
+
+		document.body.classList.add('hide-cursor');
+	}
+
 	function getBoundValue() {
 		return showCharacterSheet ? characterContent : prompt;
 	}
@@ -68,6 +78,8 @@
 					characterContent = data.content;
 
 					await handleGenerateImage('a pixel art potrait of ' + prompt);
+
+					showStartButton = true;
 				} else {
 					console.error('Error in response:', response.statusText);
 				}
@@ -113,16 +125,18 @@
 	}
 </script>
 
-<div class="typing-container">
-	{displayText}<span class="cursor"></span>
-</div>
+{#if !showLoadingCenter}
+	<div class="typing-container">
+		{displayText}<span class="cursor"></span>
+	</div>
+{/if}
 
 <div class="image-container">
 	{#if base64Image}
 		<!-- svelte-ignore a11y_img_redundant_alt -->
 		<img src="data:image/png;base64,{base64Image}" alt="Generated Image" />
 	{:else if showCharacterSheet}
-		<img src="/src/lib/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
+		<img src="/src/img/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
 	{/if}
 </div>
 
@@ -138,6 +152,18 @@
 		>
 			{showCharacterSheet ? characterContent : prompt}
 		</textarea>
+	</div>
+{/if}
+
+{#if showStartButton && !showLoadingCenter}
+	<button class="start-button" on:click={handleStartClick}>
+		Start
+	</button>
+{/if}
+
+{#if showLoadingCenter}
+	<div class="center-loading">
+		<img src="/src/img/loading.gif" alt="Loading..." />
 	</div>
 {/if}
 
@@ -263,6 +289,42 @@
 		height: 1em;
 		vertical-align: bottom;
 	}
+
+	.start-button {
+		position: relative;
+		margin-top: 50px;
+		padding: 10px 20px;
+		background-color: white;
+		color: black;
+		font-family: monospace;
+		border: 2px solid white;
+		border-radius: 8px;
+		cursor: pointer;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.start-button:hover {
+		transform: scale(1.1);
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+	}
+
+	.center-loading {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 2000;
+	}
+
+	.center-loading img {
+		width: 200px; /* Smaller size for loading image */
+		height: auto;
+	}
+
+	.hide-cursor .cursor {
+		display: none;
+	}
+
 
 	@keyframes blink {
 		0%,

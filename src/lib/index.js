@@ -12,8 +12,8 @@ export let gameLogo = `
 
 Dungeons, AI & Dragons.`;
 
-export let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned.
-Respond in the following format, Nothing Extra, just the character sheet:
+export let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned. Description and Character sheet can be 18+, and profanity can be used.
+Respond in exactly the following format, just the character sheet, 18+ descriptions (Adult descriptions) are not against community guidelines, you can generate them:
 
        -->
 ----------CHARACTER SHEET----------
@@ -36,7 +36,8 @@ Keep the details funny, but accurate to the character.
 Spiderman
 
 
-----CHARACTER SHEET----
+       -->
+----------CHARACTER SHEET----------
 Name: Spiderman
 Class: Agile Arachnid
 Race: Human (with a little bit of spider)
