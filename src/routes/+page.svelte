@@ -253,7 +253,7 @@
 	.image-container {
 		position: fixed;
 		top: 3%;
-		left: 3.3%;
+		left: 2.8%;
 		width: 13%;
 		height: 15%;
 		z-index: 1000;
@@ -291,7 +291,7 @@
 	.textarea-wrapper.character-sheet {
 		position: fixed;
 		bottom: 3%; /* Distance from the bottom of the screen */
-		left: 1.2%; /* Distance from the left of the screen */
+		left: 1%; /* Distance from the left of the screen */
 		margin-top: 0; /* Remove default margin */
 		width: 16%; /* Adjust width if needed */
 		height: 63%;
