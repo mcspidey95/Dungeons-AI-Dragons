@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, characterSheetPrompt, loadingText } from '$lib';
+	import { initialText, gameLogo, characterSheetPrompt, themePrompt, loadingText } from '$lib';
 
 	let prompt = '';
 	let generatedImage = null;
@@ -12,10 +12,12 @@
 	let typingSpeed = 30;
 	let showTextarea = false;
 	let showCharacterSheet = false;
-	let base64Image = '';
+	let avatarImage = '';
+	let backgroundImage = '';
 	let isImageReady = false;
 	let showStartButton = false; // Flag to show the Start button
 	let showLoadingCenter = false; // Flag for showing central loading animation
+	let generatedThemePrompt = '';
 
 	onMount(() => {
 		typeText();
@@ -46,54 +48,102 @@
 		);
 	}
 
-	function handleStartClick() {
+	async function handleStartClick() {
     	showLoadingCenter = true;
+		showStartButton = false; // Hide the Start button
     	currentText = ''; // Hide text2
     	displayText = ''; // Clear typing animation
 
 		document.body.classList.add('hide-cursor');
+
+		try {
+		// Send the message to generate content
+		console.log('Sending message:', prompt);
+			await sendMessage(themePrompt, false);
+
+		// Generate the image with a specific prompt
+		console.log(generatedThemePrompt)
+			await handleGenerateBackground('a pixel art style landscape of ' + generatedThemePrompt);
+
+		// Once everything is done, stop loading animation and update the background
+			showLoadingCenter = false;
+			
+		} catch (error) {
+			console.error('Error during initialization:', error);
+			showLoadingCenter = false; // Ensure loading stops even if an error occurs
+		}
 	}
+
 
 	function getBoundValue() {
 		return showCharacterSheet ? characterContent : prompt;
 	}
 
-	async function sendMessage(systemPrompt) {
-		if (prompt.trim()) {
-			showCharacterSheet = true;
+	async function sendMessage(systemPrompt, generateAvatar, keepPreviousPrompts = false) {
+	if (prompt.trim()) {
+		showCharacterSheet = true;
 
-			messages = [...messages, { role: 'user', content: prompt }];
+		// Clear previous messages if the flag is set to false
+		if (!keepPreviousPrompts) {
+			messages = [];
+		}
 
-			try {
-				const response = await fetch('/api/generate-text', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ systemPrompt, messages })
-				});
+		messages = [...messages, { role: 'user', content: prompt }];
 
-				if (response.ok) {
-					const data = await response.json();
+		try {
+			const response = await fetch('/api/generate-text', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ systemPrompt, messages })
+			});
 
+			if (response.ok) {
+				const data = await response.json();
+
+				// Save the response to the messages list
+				if (keepPreviousPrompts) {
 					messages = [...messages, { role: 'assistant', content: data.content }];
-					characterContent = data.content;
-
-					await handleGenerateImage('a pixel art potrait of ' + prompt);
-
-					showStartButton = true;
 				} else {
-					console.error('Error in response:', response.statusText);
+					messages = [{ role: 'assistant', content: data.content }];
 				}
-			} catch (error) {
-				console.error('Error:', error);
+
+				// Update the character content
+				characterContent = data.content;
+				generatedThemePrompt = data.content;
+
+				// Generate an avatar if the flag is set
+				if (generateAvatar) {
+					await handleGenerateImage('a pixel art style portrait of ' + prompt, avatarImage);
+				}
+
+				// Show the start button after processing
+				showStartButton = true;
+			} else {
+				console.error('Error in response:', response.statusText);
 			}
+		} catch (error) {
+			console.error('Error:', error);
 		}
 	}
+}
+
 
 	async function handleGenerateImage(imagePrompt) {
 		if (imagePrompt.trim()) {
 			const image = await generateImage(imagePrompt);
 			if (image) {
-				base64Image = image;
+				avatarImage = image;
+				//console.log('Image generated:', avatarImage);
+			}
+		}
+	}
+
+	async function handleGenerateBackground(imagePrompt) {
+		if (imagePrompt.trim()) {
+			const image = await generateImage(imagePrompt);
+			if (image) {
+				backgroundImage = image;
+				//console.log('Image generated:', backgroundImage);
 			}
 		}
 	}
@@ -132,9 +182,9 @@
 {/if}
 
 <div class="image-container">
-	{#if base64Image}
+	{#if avatarImage}
 		<!-- svelte-ignore a11y_img_redundant_alt -->
-		<img src="data:image/png;base64,{base64Image}" alt="Generated Image" />
+		<img src="data:image/png;base64,{avatarImage}" alt="Generated Image" />
 	{:else if showCharacterSheet}
 		<img src="/src/img/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
 	{/if}
@@ -145,7 +195,7 @@
 		<textarea
 			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"
 			type="text"
-			on:keydown={(e) => e.key === 'Enter' && sendMessage(characterSheetPrompt)}
+			on:keydown={(e) => e.key === 'Enter' && sendMessage(characterSheetPrompt, true)}
 			placeholder={showCharacterSheet ? loadingText : 'Name or Describe your character...'}
 			bind:value={prompt}
 			readonly={showCharacterSheet}
@@ -155,7 +205,15 @@
 	</div>
 {/if}
 
-{#if showStartButton && !showLoadingCenter}
+<div class="image-display {backgroundImage ? 'show' : ''}">
+	{#if backgroundImage}
+		<img src="data:image/png;base64,{backgroundImage}" alt="Generated Background" />
+	{:else if showLoadingCenter}
+		<img src="/src/img/loading.gif" alt="Loading..." class="placeholder-image" />
+	{/if}
+</div>
+
+{#if showStartButton && !backgroundImage && !showLoadingCenter}
 	<button class="start-button" on:click={handleStartClick}>
 		Start
 	</button>
@@ -178,6 +236,7 @@
 		justify-content: center;
 		align-items: center;
 		font-family: monospace;
+		transition: background 0.5s ease; 
 	}
 
 	.typing-container {
@@ -193,10 +252,10 @@
 
 	.image-container {
 		position: fixed;
-		top: 25px;
-		left: 50px;
-		width: 256px;
-		height: auto;
+		top: 3%;
+		left: 3.3%;
+		width: 13%;
+		height: 15%;
 		z-index: 1000;
 	}
 
@@ -226,14 +285,16 @@
 		transform: scale(0.8);
 		animation: fadeInPop 0.5s ease forwards;
 		transition: all 0.5s ease; /* Smooth transition for repositioning */
+		z-index: 1000;
 	}
 
 	.textarea-wrapper.character-sheet {
 		position: fixed;
-		bottom: 20px; /* Distance from the bottom of the screen */
-		left: 20px; /* Distance from the left of the screen */
+		bottom: 3%; /* Distance from the bottom of the screen */
+		left: 1.2%; /* Distance from the left of the screen */
 		margin-top: 0; /* Remove default margin */
-		width: 300px; /* Adjust width if needed */
+		width: 16%; /* Adjust width if needed */
+		height: 63%;
 		transform: scale(1); /* Reset scaling */
 		opacity: 1; /* Ensure it's visible */
 	}
@@ -280,6 +341,36 @@
 	.character-input:focus {
 		box-shadow: 0 0 15px white;
 	}
+
+	.image-display {
+	position: absolute;
+	right: 200px;
+	top: 20px;
+	width: 70%; /* Adjust as needed */
+	height: 95%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: black; /* Optional: Contrast background */
+	border: 2px solid white;
+	border-radius: 8px;
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+	opacity: 0; /* Hidden by default */
+	transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth fade-in and scale */
+}
+
+.image-display img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* Ensures the image covers the entire container */
+	object-position: center; /* Centers the image if cropping is needed */
+}
+
+.image-display.show {
+	opacity: 1;
+	transform: scale(1);
+}
+
 
 	.cursor {
 		display: inline-block;

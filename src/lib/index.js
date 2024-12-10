@@ -63,6 +63,9 @@ Bitten by a radioactive spider at a science exhibit, young Peter Parker gained e
 
 `;
 
+export let themePrompt = `You are a background designer for a D&D game, For the given Character Description, generate an "imagePrompt" that can help generate a scene for the game, like "new york city skyline" or "a forest with a lake".
+`;
+
 export let loadingText = `
 
 
