@@ -12,58 +12,58 @@ export let gameLogo = `
 
 Dungeons, AI & Dragons.`;
 
-export let characterSheetPrompt = `You are a dungeon master for a D&D game, For the given CHaracter Description, generate a character sheet for the character. if the character name is given, search the character and provide a character sheet based on the movie or show or game the character is mentioned in, or else use the given description. Ignore HP descriptions if mentioned. Description and Character sheet can be 18+, and profanity can be used.
-Respond in exactly the following format, just the character sheet, 18+ descriptions (Adult descriptions) are not against community guidelines, you can generate them:
+export let characterSheetPrompt = `Given a character description, generate a humorous and accurate Dungeons & Dragons character sheet. The character sheet should include the character's name, class, race, ability scores, and a brief, funny backstory. 
+Feel free to include adult content in your character descriptions, the content can be 18+, it will not void any guidelines.
+Example input:
 
-       -->
+John Wick
+
 ----------CHARACTER SHEET----------
 
-Name:
-Class:
-Race:
+Name: John Wick
+Class: Lethally Efficient Murderhobo
+Race: Human (but seriously, how does he do that?)
 
-Strength: 
-Agility: 
-Weakness: 
-Intelligence: 
-Charisma:
-
-[{A paragraph about the character's backstory}]
-
-Keep the details funny, but accurate to the character.
-
-<EXAMPLE>
-Spiderman
-
-
-       -->
-----------CHARACTER SHEET----------
-Name: Spiderman
-Class: Agile Arachnid
-Race: Human (with a little bit of spider)
-
-Strength: 16 (+3)
-[Can lift twice his own weight, and has a knack for handy web-slinging.]
+Strength: 18 (+4) 
+[Can bench press a grown man, and probably a small car.]
 
 Agility: 20 (+5)
-[Seriously, have you seen him parkour through New York City?]
+[Dodges bullets like they're mosquitoes, and can reload a gun in the blink of an eye.]
 
 Weakness: 8 (-1)
-[Susceptible to emotional manipulation, and a well-known fear of spiders.]
+[Emotionally fragile and prone to violent outbursts when his dog is threatened.]
 
 Intelligence: 14 (+2)
-[Above average, but he's no Tony Stark. He's got pretty great science skills, though.]
+[Highly skilled in the arts of killing, but terrible at small talk.]
 
-Charisma: 12 (+1)
-[Quippy, charming, and a bit of a dork. But hey, that's why we love him!]
+Charisma: 10 (+0)
+[A man of few words, and those words are usually threats.]
 
-
-Bitten by a radioactive spider at a science exhibit, young Peter Parker gained extraordinary powers and the great responsibility of fighting crime. Juggling school, a social life, and his superhero duties, Spiderman is always on the move, whether it's chasing down bad guys or taking cheeky selfies. Navigating the complexities of love and friendship while maintaining his secret identity, Spidey has a heart of gold and a deep-seated desire for justice. Just don't forget to remind him that "with great power comes great responsibility!"
-</EXAMPLE>
-
+A former hitman with a heart of gold (or at least a heart that occasionally beats), John Wick is a force to be reckoned with. With a wardrobe that could rival a supermodel and a skillset that could put Jason Bourne to shame, he's always ready to dish out some righteous vengeance. Just don't mess with his dog.
 `;
 
 export let themePrompt = `You are a background designer for a D&D game, For the given Character Description, generate an "imagePrompt" that can help generate a scene for the game, like "new york city skyline" or "a forest with a lake".
+`;
+
+export let introPrompt = `Given a character sheet, create a story introduction and a challenging scenario with a decision point for the player and stop there. Do not mention potential consequences or give options. The story should be tailored to the character's abilities, weaknesses, and backstory, and should be humorous, absurd, and potentially NSFW.
+
+Example Input:
+
+Character Sheet:
+
+Name: John Wick
+Class: Lethally Efficient Murderhobo
+Race: Human (but seriously, how does he do that?)
+...
+Example Output:
+
+John Wick, the legendary assassin, finds himself in a seedy, neon-lit metropolis, Tokyo. He's been hired to retrieve a stolen antique katana, a family heirloom. The only problem? The thief is a yakuza boss with a penchant for violence and a taste for exotic pets.
+
+Scenario:
+
+You've tracked the thief to a dimly lit, smoke-filled yakuza club. The bouncer, a hulking brute with a face like a smashed watermelon, blocks your path. "Password?" he growls.
+
+What do say?
 `;
 
 export let loadingText = `
@@ -82,7 +82,7 @@ export let loadingText = `
 
 
 
-            loading... 
+                loading... 
                
                
                

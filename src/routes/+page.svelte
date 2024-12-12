@@ -1,8 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, characterSheetPrompt, themePrompt, loadingText } from '$lib';
+	import { initialText, gameLogo, characterSheetPrompt, themePrompt, loadingText, introPrompt } from '$lib';
 
-	let prompt = '';
+	let userPrompt = '';
 	let generatedImage = null;
 	let messages = [];
 	let displayText = '';
@@ -17,19 +17,40 @@
 	let isImageReady = false;
 	let showStartButton = false; // Flag to show the Start button
 	let showLoadingCenter = false; // Flag for showing central loading animation
-	let generatedThemePrompt = '';
+	let backgroundTheme = '';
+	let story = '';
+	let showPopup = false; // Flag to show the popup
+    let countdown = 60; // 60-second timer
+    let timer; // Holds the timer interval
+	let userResponse = '';
+	let isSubmitted = false;
+	let typingSound;
+	let backgroundMusic;
+	let isMusicPlaying = false;
+	let storyContainer;
 
 	onMount(() => {
+		typingSound = new Audio('/src/audio/boop.mp3');
+		typingSound.volume = 0.8;
+
 		typeText();
 		window.addEventListener('keydown', startText2);
+		
+		backgroundMusic = new Audio('/src/audio/bgm.mp3'); // Path to your MP3 file
+        backgroundMusic.loop = true; // Ensure the music loops
+        backgroundMusic.volume = 0.1; // Adjust volume (optional)
 	});
 
-	function typeText(callback) {
+	async function typeText(callback) {
 		if (index < currentText.length) {
-			setTimeout(() => {
+			setTimeout(async () => {
 				displayText += currentText[index];
 				index++;
 				typeText(callback);
+
+				typingSound.currentTime = 0;
+				await typingSound.play();
+
 			}, typingSpeed);
 		} else if (callback) {
 			callback();
@@ -44,9 +65,41 @@
 		typeText(() =>
 			setTimeout(() => {
 				showTextarea = true;
+				
+				setTimeout(() => {
+					backgroundMusic.play();
+				}, 1000)
 			}, 1000)
 		);
 	}
+
+	async function typeCharacterSheetText(content, speed) {
+    	let index = 0;
+    	characterContent = ''; // Reset the characterContent
+
+    	while (index < content.length) {
+        	characterContent += content[index];
+        	index++;
+        	await new Promise((resolve) => setTimeout(resolve, speed)); // Typing speed delay
+    	}
+	}
+
+	async function typeStoryText(content, speed) {
+    	let index = 0;
+    	story = ''; // Reset the story text
+
+    	while (index < content.length) {
+        	story += content[index];
+        	index++;
+
+			if (storyContainer) {
+                storyContainer.scrollTop = storyContainer.scrollHeight;
+            }
+
+        	await new Promise((resolve) => setTimeout(resolve, speed)); // Typing speed delay
+    	}
+	}
+
 
 	async function handleStartClick() {
     	showLoadingCenter = true;
@@ -57,16 +110,28 @@
 		document.body.classList.add('hide-cursor');
 
 		try {
-		// Send the message to generate content
-		console.log('Sending message:', prompt);
-			await sendMessage(themePrompt, false);
 
-		// Generate the image with a specific prompt
-		console.log(generatedThemePrompt)
-			await handleGenerateBackground('a pixel art style landscape of ' + generatedThemePrompt);
+			story = await llm(introPrompt, characterContent);
+			await generateBackground(story);
 
-		// Once everything is done, stop loading animation and update the background
 			showLoadingCenter = false;
+			backgroundMusic.pause();
+			backgroundMusic.currentTime = 0;
+
+			await typeStoryText(story, 20);
+			await openPopup();
+			await waitForFlag();
+			
+			for (let i = 0; i < 2; i++) {
+				story = await llm(introPrompt, userPrompt);
+				await generateBackground(story);
+
+				await typeStoryText(story, 20);
+				await openPopup();
+				await waitForFlag();
+			}
+
+
 			
 		} catch (error) {
 			console.error('Error during initialization:', error);
@@ -76,19 +141,26 @@
 
 
 	function getBoundValue() {
-		return showCharacterSheet ? characterContent : prompt;
+		return showCharacterSheet ? characterContent : userPrompt;
 	}
 
-	async function sendMessage(systemPrompt, generateAvatar, keepPreviousPrompts = false) {
-	if (prompt.trim()) {
+	async function generateAvatar(){
 		showCharacterSheet = true;
+		characterContent = await llm(characterSheetPrompt, userPrompt);
+		typeCharacterSheetText(characterContent, 10);
 
-		// Clear previous messages if the flag is set to false
-		if (!keepPreviousPrompts) {
-			messages = [];
-		}
+		avatarImage = await generateImage('a pixel art style portrait of ' + userPrompt);
+		showStartButton = true;
+	}
 
-		messages = [...messages, { role: 'user', content: prompt }];
+	async function generateBackground(story) {
+		backgroundTheme = await llm(themePrompt, story);
+		backgroundImage = await generateImage(backgroundTheme);
+	}
+
+	async function llm(systemPrompt, userPrompt) {
+
+		messages = [...messages, { role: 'user', content: userPrompt }];
 
 		try {
 			const response = await fetch('/api/generate-text', {
@@ -101,50 +173,18 @@
 				const data = await response.json();
 
 				// Save the response to the messages list
-				if (keepPreviousPrompts) {
-					messages = [...messages, { role: 'assistant', content: data.content }];
-				} else {
-					messages = [{ role: 'assistant', content: data.content }];
-				}
+				messages = [...messages, { role: 'assistant', content: data.content }];
 
-				// Update the character content
-				characterContent = data.content;
-				generatedThemePrompt = data.content;
+				console.log('Input:', userPrompt);
+				console.log('Response:', data.content);
 
-				// Generate an avatar if the flag is set
-				if (generateAvatar) {
-					await handleGenerateImage('a pixel art style portrait of ' + prompt, avatarImage);
-				}
-
-				// Show the start button after processing
-				showStartButton = true;
+				return data.content;
+				
 			} else {
 				console.error('Error in response:', response.statusText);
 			}
 		} catch (error) {
 			console.error('Error:', error);
-		}
-	}
-}
-
-
-	async function handleGenerateImage(imagePrompt) {
-		if (imagePrompt.trim()) {
-			const image = await generateImage(imagePrompt);
-			if (image) {
-				avatarImage = image;
-				//console.log('Image generated:', avatarImage);
-			}
-		}
-	}
-
-	async function handleGenerateBackground(imagePrompt) {
-		if (imagePrompt.trim()) {
-			const image = await generateImage(imagePrompt);
-			if (image) {
-				backgroundImage = image;
-				//console.log('Image generated:', backgroundImage);
-			}
 		}
 	}
 
@@ -173,6 +213,52 @@
 			return null;
 		}
 	}
+
+	async function handleResponseSubmit() {
+        // Handle the response submission logic
+        closePopup();
+		await llm(introPrompt, userResponse);
+		isSubmitted = true;
+    }
+
+    function startCountdown() {
+        countdown = 60;
+        timer = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                clearInterval(timer);
+                closePopup();
+            }
+        }, 1000);
+    }
+
+    async function openPopup() {
+		userPrompt = '';
+        showPopup = true;
+        await startCountdown();
+    }
+
+    function closePopup() {
+        showPopup = false;
+        clearInterval(timer);
+    }
+
+	function waitForFlag() {
+	return new Promise((resolve) => {
+		const interval = setInterval(() => {
+			if (isSubmitted) {
+				clearInterval(interval); // Stop checking once the flag is true
+				resolve(); // Resolve the promise to continue execution
+			}
+		}, 100); // Check every 100ms
+	});
+}
+
+	function generateRandomNumber() {
+    return Math.floor(Math.random() * 20) + 1;
+}
+
+
 </script>
 
 {#if !showLoadingCenter}
@@ -195,12 +281,12 @@
 		<textarea
 			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"
 			type="text"
-			on:keydown={(e) => e.key === 'Enter' && sendMessage(characterSheetPrompt, true)}
+			on:keydown={(e) => e.key === 'Enter' && generateAvatar()}
 			placeholder={showCharacterSheet ? loadingText : 'Name or Describe your character...'}
-			bind:value={prompt}
+			bind:value={userPrompt}
 			readonly={showCharacterSheet}
 		>
-			{showCharacterSheet ? characterContent : prompt}
+			{showCharacterSheet ? characterContent : userPrompt}
 		</textarea>
 	</div>
 {/if}
@@ -208,8 +294,7 @@
 <div class="image-display {backgroundImage ? 'show' : ''}">
 	{#if backgroundImage}
 		<img src="data:image/png;base64,{backgroundImage}" alt="Generated Background" />
-	{:else if showLoadingCenter}
-		<img src="/src/img/loading.gif" alt="Loading..." class="placeholder-image" />
+		<textarea bind:this={storyContainer} class="story-display" readonly>{story}</textarea>
 	{/if}
 </div>
 
@@ -225,7 +310,34 @@
 	</div>
 {/if}
 
+{#if showPopup}
+    <div class="popup-overlay">
+        <div class="popup-content">
+            <div class="countdown">
+                {countdown}
+            </div>
+            <textarea
+                class="response-input"
+				bind:value={userResponse}
+                placeholder="Enter your response here..."
+            ></textarea>
+            <button class="submit-button" on:click={handleResponseSubmit}>
+                Submit
+            </button>
+        </div>
+    </div>
+{/if}
+
+
+
 <style>
+	@font-face {
+    	font-family: 'VT323';
+    	src: url('/src/fonts/game.ttf') format('truetype');
+    	font-weight:400;
+    	font-style: normal;
+	}
+
 	:global(body) {
 		margin: 0;
 		background-color: black;
@@ -235,14 +347,14 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		font-family: monospace;
+		font-family: 'VT323', monospace;
 		transition: background 0.5s ease; 
 	}
 
 	.typing-container {
 		display: inline-block;
 		white-space: pre;
-		font-family: monospace;
+		font-family: 'VT323', monospace;
 	}
 
 	.typing-container:hover {
@@ -307,8 +419,8 @@
 		border: 2px solid white;
 		border-radius: 8px;
 		padding: 10px;
-		font-family: monospace;
-		font-size: 12px;
+		font-family: 'VT323', monospace;
+		font-size: 16px;
 		outline: none;
 		box-shadow: 0 0 10px white;
 		transition:
@@ -325,7 +437,7 @@
 		border: 2px solid white;
 		border-radius: 8px;
 		padding: 10px;
-		font-family: monospace;
+		font-family: 'VT323', monospace;
 		font-size: 14px;
 		box-shadow: 0 0 10px white;
 	}
@@ -343,32 +455,114 @@
 	}
 
 	.image-display {
-	position: absolute;
-	right: 200px;
-	top: 20px;
-	width: 70%; /* Adjust as needed */
-	height: 95%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: black; /* Optional: Contrast background */
-	border: 2px solid white;
-	border-radius: 8px;
-	box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-	opacity: 0; /* Hidden by default */
-	transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth fade-in and scale */
+		position: absolute;
+		right: 200px;
+		top: 20px;
+		width: 70%; /* Adjust as needed */
+		height: 95%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: black; /* Optional: Contrast background */
+		border: 2px solid white;
+		border-radius: 8px;
+		box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+		opacity: 0; /* Hidden by default */
+		transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth fade-in and scale */
+	}
+
+	.image-display img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover; /* Ensures the image covers the entire container */
+		object-position: center; /* Centers the image if cropping is needed */
+	}
+
+	.image-display.show {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.story-display {
+    	position: absolute;
+    	bottom: 10px; /* Adjust to position at the bottom */
+    	left: 20px; /* Adjust to position at the left */
+    	width: 95%; /* Adjust width as needed */
+    	background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+    	color: white;
+    	border: 1px solid white;
+    	border-radius: 8px;
+    	padding: 10px;
+    	font-family: 'VT323', monospace;
+    	font-size: 20px;
+    	resize: none; /* Prevent resizing */
+    	overflow: auto; /* Allow scrolling for overflow */
+    	height: 20%; /* Adjust as needed */
+    	z-index: 1000; /* Ensure it appears above other elements */
+	}
+
+	.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    font-family: 'VT323', monospace;
 }
 
-.image-display img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover; /* Ensures the image covers the entire container */
-	object-position: center; /* Centers the image if cropping is needed */
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    text-align: center;
 }
 
-.image-display.show {
-	opacity: 1;
-	transform: scale(1);
+.countdown {
+    font-size: 150px;
+	padding-bottom: 50px;
+    font-weight: bold;
+	font-family: 'VT323';
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.response-input {
+    width: 100%;
+    height: 100px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    resize: none;
+    margin-bottom: 20px;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    font-family: 'VT323', monospace;
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 
@@ -387,7 +581,7 @@
 		padding: 10px 20px;
 		background-color: white;
 		color: black;
-		font-family: monospace;
+		font-family: 'VT323', monospace;
 		border: 2px solid white;
 		border-radius: 8px;
 		cursor: pointer;
