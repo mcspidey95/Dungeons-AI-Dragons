@@ -30,13 +30,13 @@
 	let storyContainer;
 
 	onMount(() => {
-		typingSound = new Audio('/src/audio/boop.mp3');
+		typingSound = new Audio('/audio/boop.mp3');
 		typingSound.volume = 0.8;
 
 		typeText();
 		window.addEventListener('keydown', startText2);
 		
-		backgroundMusic = new Audio('/src/audio/bgm.mp3'); // Path to your MP3 file
+		backgroundMusic = new Audio('/audio/bgm.mp3'); // Path to your MP3 file
         backgroundMusic.loop = true; // Ensure the music loops
         backgroundMusic.volume = 0.1; // Adjust volume (optional)
 	});
@@ -272,7 +272,7 @@
 		<!-- svelte-ignore a11y_img_redundant_alt -->
 		<img src="data:image/png;base64,{avatarImage}" alt="Generated Image" />
 	{:else if showCharacterSheet}
-		<img src="/src/img/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
+		<img src="/img/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
 	{/if}
 </div>
 
@@ -306,7 +306,7 @@
 
 {#if showLoadingCenter}
 	<div class="center-loading">
-		<img src="/src/img/loading.gif" alt="Loading..." />
+		<img src="/img/loading.gif" alt="Loading..." />
 	</div>
 {/if}
 
@@ -333,7 +333,7 @@
 <style>
 	@font-face {
     	font-family: 'VT323';
-    	src: url('/src/fonts/game.ttf') format('truetype');
+    	src: url('/fonts/game.ttf') format('truetype');
     	font-weight:400;
     	font-style: normal;
 	}
