@@ -24,6 +24,7 @@
 	},
 	"dependencies": {
 		"@langchain/core": "^0.3.19",
-		"@langchain/groq": "^0.1.2"
+		"@langchain/groq": "^0.1.2",
+		"html-to-image": "^1.11.11"
 	}
 }

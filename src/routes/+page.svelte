@@ -152,13 +152,13 @@
 		characterContent = await llm(characterSheetPrompt, userPrompt);
 		typeCharacterSheetText(characterContent, 10);
 
-		avatarImage = await generateImage('a pixel art style portrait of ' + userPrompt);
+		avatarImage = await generateImage('a pixel art style portrait of a ' + userPrompt);
 		showStartButton = true;
 	}
 
 	async function generateBackground(story) {
 		backgroundTheme = await llm2(themePrompt, story);
-		backgroundImage = await generateImage(backgroundTheme);
+		backgroundImage = await generateImage('a pixel art style scene of' + backgroundTheme);
 	}
 
 	async function llm(systemPrompt, userPrompt) {
