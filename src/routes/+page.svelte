@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, characterSheetPrompt, themePrompt, loadingText, introPrompt } from '$lib';
+	import { initialText, gameLogo, BGM, TypingSFX, Font, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt } from '$lib';
 
 	let userPrompt = '';
 	let generatedImage = null;
@@ -30,13 +30,13 @@
 	let storyContainer;
 
 	onMount(() => {
-		typingSound = new Audio('/audio/boop.mp3');
+		typingSound = new Audio(TypingSFX);
 		typingSound.volume = 0.8;
 
 		typeText();
 		window.addEventListener('keydown', startText2);
 		
-		backgroundMusic = new Audio('/audio/bgm.mp3'); // Path to your MP3 file
+		backgroundMusic = new Audio(BGM); // Path to your MP3 file
         backgroundMusic.loop = true; // Ensure the music loops
         backgroundMusic.volume = 0.1; // Adjust volume (optional)
 	});
@@ -123,8 +123,11 @@
 			await waitForFlag();
 			
 			for (let i = 0; i < 2; i++) {
-				story = await llm(introPrompt, userPrompt);
+				isSubmitted = false;
+
 				await generateBackground(story);
+
+				showLoadingCenter = false;
 
 				await typeStoryText(story, 20);
 				await openPopup();
@@ -154,7 +157,7 @@
 	}
 
 	async function generateBackground(story) {
-		backgroundTheme = await llm(themePrompt, story);
+		backgroundTheme = await llm2(themePrompt, story);
 		backgroundImage = await generateImage(backgroundTheme);
 	}
 
@@ -180,6 +183,36 @@
 
 				return data.content;
 				
+			} else {
+				console.error('Error in response:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+
+	async function llm2(systemPrompt, userPrompt) {
+
+		messages = [...messages, { role: 'user', content: userPrompt }];
+
+		try {
+			const response = await fetch('/api/generate-prompt', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ systemPrompt, messages })
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+
+				// Save the response to the messages list
+				messages = [...messages, { role: 'assistant', content: data.content }];
+
+				console.log('Input:', userPrompt);
+				console.log('Response:', data.content);
+
+				return data.content;
+		
 			} else {
 				console.error('Error in response:', response.statusText);
 			}
@@ -217,7 +250,11 @@
 	async function handleResponseSubmit() {
         // Handle the response submission logic
         closePopup();
-		await llm(introPrompt, userResponse);
+
+		showLoadingCenter = true;
+		backgroundImage = '';
+		
+		story = await llm(choicePrompt, userResponse+' {'+generateRandomNumber()+'}');
 		isSubmitted = true;
     }
 
@@ -233,7 +270,7 @@
     }
 
     async function openPopup() {
-		userPrompt = '';
+		userResponse = '';
         showPopup = true;
         await startCountdown();
     }
@@ -255,8 +292,8 @@
 }
 
 	function generateRandomNumber() {
-    return Math.floor(Math.random() * 20) + 1;
-}
+    	return Math.floor(Math.random() * 20) + 1;
+	}
 
 
 </script>
@@ -272,7 +309,7 @@
 		<!-- svelte-ignore a11y_img_redundant_alt -->
 		<img src="data:image/png;base64,{avatarImage}" alt="Generated Image" />
 	{:else if showCharacterSheet}
-		<img src="/img/loading.gif" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
+		<img src="{Loading}" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
 	{/if}
 </div>
 
@@ -306,7 +343,7 @@
 
 {#if showLoadingCenter}
 	<div class="center-loading">
-		<img src="/img/loading.gif" alt="Loading..." />
+		<img src="{Loading}" alt="Loading..." />
 	</div>
 {/if}
 
@@ -331,12 +368,12 @@
 
 
 <style>
-	@font-face {
-    	font-family: 'VT323';
-    	src: url('/fonts/game.ttf') format('truetype');
-    	font-weight:400;
-    	font-style: normal;
-	}
+    @font-face {
+        font-family: 'VT323';
+        src: url('$lib/fonts/game.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+    }
 
 	:global(body) {
 		margin: 0;
