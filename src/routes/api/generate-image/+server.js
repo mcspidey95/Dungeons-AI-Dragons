@@ -5,7 +5,8 @@ export async function POST({ request }) {
 
     const params = {
         prompt: prompt,
-        steps: 30,
+        steps: 28,
+        guidance_scale: 6,
         sampler_index: 'DPM++ 2M',
     };
 
