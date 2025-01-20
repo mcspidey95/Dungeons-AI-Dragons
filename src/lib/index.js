@@ -1,4 +1,3 @@
-export {default as Font} from './fonts/game.ttf';
 export {default as Loading} from './img/loading.gif';
 export {default as BGM} from './audio/bgm.mp3';
 export {default as TypingSFX} from './audio/boop.mp3';
