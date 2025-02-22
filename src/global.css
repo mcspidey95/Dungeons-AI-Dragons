@@ -32,7 +32,7 @@ body {
 .image-container {
     position: fixed;
     top: 3%;
-    left: 2.8%;
+    left: 3%;
     width: 13%;
     height: 15%;
     z-index: 1000;
@@ -80,7 +80,7 @@ body {
 
 .character-input {
     width: 400px;
-    height: 100px;
+    height: 150px;
     background-color: black;
     color: white;
     border: 2px solid white;
@@ -89,6 +89,7 @@ body {
     font-family: 'VT323', monospace;
     font-size: 16px;
     outline: none;
+    background-color: #1a1a1a;
     box-shadow: 0 0 10px white;
     transition:
         width 0.5s ease,
@@ -297,4 +298,155 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         opacity: 1;
         transform: scale(1);
     }
+}
+
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+/* Character Card Styling */
+.character-card {
+    width: 150px;
+    height: 200px;
+    background-color: #1a1a1a;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+}
+
+.character-card:hover {
+    transform: scale(1.01) translateY(-5px);
+    box-shadow: 0 0 10px #ffffff;
+}
+
+.character-card:hover .card-image {
+    filter: grayscale(0%); /* Revert to original image */
+}
+
+
+.character-card:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 5px #cccccc;
+}
+
+/* Card Image */
+.card-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    filter: grayscale(100%); /* Monochrome effect on images */
+    transition: filter 0.1s ease;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 18px;
+    margin-top: 10px;
+    text-align: center;
+    color: #ffffff; /* White text */
+    text-transform: uppercase; /* Optional: for a sharper look */
+}
+
+/* Custom Card */
+.custom-card {
+    background-color: #333333; /* Slightly lighter gray for distinction */
+    border: 2px solid #ffffff;
+}
+
+/* Plus Symbol */
+.plus-symbol {
+    font-size: 50px;
+    font-weight: bold;
+    color: #ffffff; /* White plus sign */
+}
+
+.image-display img {
+    filter: grayscale(50%); /* Monochrome effect on generated images */
+}
+
+.popup-overlay {
+    background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent overlay */
+}
+
+.popup-content {
+    background-color: #1a1a1a; /* Dark gray popup */
+    color: #ffffff; /* White text */
+    border: 1px solid #ffffff;
+}
+
+.response-input {
+    background-color: #333333;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.submit-button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #cccccc; /* Light gray on hover */
+}
+
+.back-button {
+    position: absolute; /* Position relative to the centered content */
+    left: calc(50% - 280px); /* 50% of screen width minus half the textarea width (300px) + some offset */
+    top: 61%; /* Vertically center relative to the textarea */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 5px; /* Adjust for visual alignment */
+    padding: 5px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it appears above other elements */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-button-hidden {
+    display: none; /* Hide the back button by default */
+}
+
+/* Hover Animation */
+.back-button:hover {
+    background-color: #333333;
+    transform: translateY(-50%) scale(1.05); /* Maintain vertical centering */
+    box-shadow: 0 0 10px #ffffff;
+}
+
+.back-button1 {
+    position: fixed; /* Position relative to the centered content */
+    top: 50px;
+    left: 10px; /* 50% of screen width minus half the textarea width (300px) + some offset */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    color: #ffffff;
+    border-radius: 5px; /* Adjust for visual alignment */
+    padding: 5px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it appears above other elements */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-button1:hover {
+    transform: translateY(-50%) scale(1.3); /* Maintain vertical centering */
 }

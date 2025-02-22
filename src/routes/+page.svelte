@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, BGM, TypingSFX, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt } from '$lib';
+	import { initialText, gameLogo, BGM, TypingSFX, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, char1, char2, getDefaultCharacters, back, back1 } from '$lib';
 	import { llm, llm2, generateImage } from './api/models';
 
 	let timer;
@@ -8,6 +8,7 @@
 	let storyContainer;
 	let typingSound;
 	let backgroundMusic;
+	let defaultCharacters;
 
 	let userPrompt = '';
 	let avatarImage = '';
@@ -31,6 +32,9 @@
 	let showPopup = false; // Flag to show the popup
 	let isSubmitted = false;
 	let isMusicPlaying = false;
+	let showCharacterSelection = false;
+	let isBack = true;
+	let isBack1 = false;
 
 
 	onMount(() => {
@@ -70,7 +74,7 @@
 		displayText = '';
 		typeText(() =>
 			setTimeout(() => {
-				showTextarea = true;
+				showCharacterSelection = true;
 				
 				setTimeout(() => {
 					backgroundMusic.play();
@@ -79,14 +83,50 @@
 		);
 	}
 
+	async function selectCharacter(characterIndex) {
+		
+		isBack1 = true;
+		showCharacterSelection = false;
+		showTextarea = true;
+		isBack = false;
+		showCharacterSheet = true;
+
+		defaultCharacters = await getDefaultCharacters();
+
+		characterContent = defaultCharacters[characterIndex].desc;
+		avatarImage = defaultCharacters[characterIndex].pfp;
+		console.log(avatarImage);
+
+		typeCharacterSheetText(characterContent, 10);
+
+		showStartButton = true;
+	}
+
+	function handleBackClick() {
+    	showTextarea = false; // Hide the card selection screen
+    	showCharacterSelection = true; // Reset custom textarea visibility
+	}
+
+	function handleBackClick1() {
+		isBackback = true;
+    	showTextarea = false; // Hide the card selection screen
+    	showCharacterSelection = true; // Reset custom textarea visibility
+		showStartButton = false;
+		showCharacterSheet = false;
+		avatarImage = '';
+	}
+
 	// <-------------------------------------- Character Sheet -------------------------------------->
 
 	async function createAvatar(){
+		isBack = false;
+		isBack1 = true;
     	showCharacterSheet = true;
 		characterContent = await llm(characterSheetPrompt, userPrompt);
     	typeCharacterSheetText(characterContent, 10);
 
-    	avatarImage = await generateImage('a pixel art style portrait of a ' + userPrompt);
+    	avatarImage = await generateImage(userPrompt);
+		console.log(avatarImage);
     	showStartButton = true;
 	}
 
@@ -216,6 +256,10 @@
 	// <-------------------------------------- HTML CODE -------------------------------------->
 </script>
 
+{#if back1}
+	<img id="back-button1" class="{isBack1 ? 'back-button1' : 'back-button-hidden'}" src={back1} on:click={handleBackClick1} />
+{/if}
+
 {#if !showLoadingCenter}
 	<div class="typing-container">
 		{displayText}<span class="cursor"></span>
@@ -231,7 +275,39 @@
 	{/if}
 </div>
 
+{#if showCharacterSelection}
+    <div class="card-container">
+        <!-- Card 1 -->
+        <div class="character-card" on:click={() => selectCharacter(0)}>
+            <img src="{char1}" alt="Warrior" class="card-image" />
+            <div class="card-title">Warrior</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="character-card" on:click={() => selectCharacter(1)}>
+            <img src="{char2}" alt="Mage" class="card-image" />
+            <div class="card-title">Mage</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="character-card" on:click={() => selectCharacter(2)}>
+            <img src="{char1}" alt="Rogue" class="card-image" />
+            <div class="card-title">Rogue</div>
+        </div>
+
+        <!-- Card 4 (Custom) -->
+        <div class="character-card custom-card" on:click={() => {showTextarea = true; showCharacterSelection = false;}}>
+            <div class="plus-symbol">+</div>
+            <div class="card-title">Custom</div>
+        </div>
+    </div>
+{/if}
+
+
 {#if showTextarea}
+
+	<img class="{isBack ? 'back-button' : 'back-button-hidden'}" src={back} on:click={handleBackClick} />
+
 	<div class="textarea-wrapper {showCharacterSheet ? 'character-sheet' : ''}">
 		<textarea
 			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"

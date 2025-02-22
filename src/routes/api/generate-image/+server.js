@@ -8,6 +8,8 @@ export async function POST({ request }) {
         steps: 28,
         guidance_scale: 6,
         sampler_index: 'DPM++ 2M',
+        width: 1024,  // Set your desired width
+        height: 1024, // Set your desired height
     };
 
     try {
