@@ -1,7 +1,7 @@
 // src/routes/api/generate-image/+server.js
 export async function POST({ request }) {
     const { prompt } = await request.json();
-    const url = 'https://sd.ifsvivek.tech/sdapi/v1/txt2img';
+    const url = 'https://sd.ifsvivek.in/sdapi/v1/txt2img';
 
     const params = {
         prompt: prompt,

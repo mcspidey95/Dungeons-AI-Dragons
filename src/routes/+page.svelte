@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { initialText, gameLogo, TypingSFX, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, char1, char2, getDefaultCharacters, back, back1 } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
+	import { blip1, blip2 } from '$lib';
 	import { llm, llm2, generateImage } from './api/models';
 
 	let timer;
@@ -10,6 +11,10 @@
 	let typingSound;
 	let backgroundMusic;
 	let defaultCharacters;
+	let boop1;
+	let boop2;
+	let boop3;
+	let boop4;
 
 	let userPrompt = '';
 	let avatarImage = '';
@@ -41,6 +46,12 @@
 	onMount(() => {
 		typingSound = new Audio(TypingSFX);
 		typingSound.volume = 0.8;
+
+		boop1 = new Audio(blip1);
+		boop1.volume = 0.4;
+
+		boop2 = new Audio(blip2);
+		boop2.volume = 0.1;
 
 		typeText();
 		window.addEventListener('keydown', startText2);
@@ -112,12 +123,24 @@
 	}
 
 	function handleBackClick1() {
-		isBackback = true;
+		isBack = true;
     	showTextarea = false; // Hide the card selection screen
     	showCharacterSelection = true; // Reset custom textarea visibility
 		showStartButton = false;
 		showCharacterSheet = false;
 		avatarImage = '';
+	}
+
+	async function boopSFX(index){
+		if(index === 0){
+			boop1.currentTime = 0;
+			await boop1.play();
+		}
+		
+		if(index === 1){
+			boop2.currentTime = 0;
+			await boop2.play();
+		}
 	}
 
 	// <-------------------------------------- Character Sheet -------------------------------------->
@@ -282,25 +305,25 @@
 {#if showCharacterSelection}
     <div class="card-container">
         <!-- Card 1 -->
-        <div class="character-card" on:click={() => selectCharacter(0)}>
+        <div class="character-card" on:click={() => selectCharacter(0)} on:mouseenter={() => boopSFX(0)}>
             <img src="{char1}" alt="Warrior" class="card-image" />
             <div class="card-title">Warrior</div>
         </div>
 
         <!-- Card 2 -->
-        <div class="character-card" on:click={() => selectCharacter(1)}>
+        <div class="character-card" on:click={() => selectCharacter(1)} on:mouseenter={() => boopSFX(1)}>
             <img src="{char2}" alt="Mage" class="card-image" />
             <div class="card-title">Mage</div>
         </div>
 
         <!-- Card 3 -->
-        <div class="character-card" on:click={() => selectCharacter(2)}>
+        <div class="character-card" on:click={() => selectCharacter(2)} on:mouseenter={() => boopSFX(1)}>
             <img src="{char1}" alt="Rogue" class="card-image" />
             <div class="card-title">Rogue</div>
         </div>
 
         <!-- Card 4 (Custom) -->
-        <div class="character-card custom-card" on:click={() => {showTextarea = true; showCharacterSelection = false;}}>
+        <div class="character-card custom-card" on:click={() => {showTextarea = true; showCharacterSelection = false;}} on:mouseenter={() => boopSFX(0)}>
             <div class="plus-symbol">+</div>
             <div class="card-title">Custom</div>
         </div>
