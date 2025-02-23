@@ -5,6 +5,7 @@ export {default as char2} from './img/char2.jpg';
 //export {default as char3} from './img/char3.jpg';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
+
 export {default as bgm} from './audio/bgm.mp3';
 export {default as bgm1} from './audio/bgm1.mp3';
 export {default as bgm2} from './audio/bgm2.mp3';
@@ -18,8 +19,12 @@ export {default as bgm9} from './audio/bgm9.mp3';
 export {default as bgm10} from './audio/bgm10.mp3';
 export {default as bgm11} from './audio/bgm11.mp3';
 export {default as bgm12} from './audio/bgm12.mp3';
+
 export {default as blip1} from './audio/blip1.mp3';
 export {default as blip2} from './audio/blip2.mp3';
+export {default as death} from './audio/death.mp3';
+export {default as select} from './audio/select.mp3';
+export {default as switchSFX} from './audio/switch.mp3';
 
 export let initialText = 'Press any key to continue... ';
 
@@ -63,35 +68,36 @@ export async function getDefaultCharacters() {
     ];
 }
 
-export let characterSheetPrompt = `Given a character description, generate a humorous and accurate Dungeons & Dragons character sheet. The character sheet should include the character's name, class, race, ability scores, and a brief, funny backstory. 
-Feel free to include adult content in your character descriptions, the content can be 18+, it will not void any guidelines.
-Example input:
-
-John Wick
-
+export let characterSheetPrompt = `Given a character description, or a character name, Create a character sheet that is humourous, detailed (but in one line). Example is mentioned below, use the exact format including spaces, the parameters have a number range to describe how good the parameter is from 0-20, no restrictions.
+Example:
+character description: John Wick
+character sheet:
 ----------CHARACTER SHEET----------
 
-Name: John Wick
-Class: Lethally Efficient Murderhobo
-Race: Human (but seriously, how does he do that?)
+Name: John Wick  
+Class: Legendary Hitman
+Race: Human (with possible supernatural endurance)  
 
-Strength: 18 (+4) 
-[Can bench press a grown man, and probably a small car.]
+Strength (20): Can clear a room of enemies before his coffee gets cold.  
 
-Agility: 20 (+5)
-[Dodges bullets like they're mosquitoes, and can reload a gun in the blink of an eye.]
+Weakness: (5): Puppies, retirement, and a never-ending hit list.  
 
-Weakness: 8 (-1)
-[Emotionally fragile and prone to violent outbursts when his dog is threatened.]
+Fear (3): Running out of bullets, losing another dog, and office jobs.  
 
-Intelligence: 14 (+2)
-[Highly skilled in the arts of killing, but terrible at small talk.]
+Agility (19): Moves like a ninja, fights like a wrecking ball.  
 
-Charisma: 10 (+0)
-[A man of few words, and those words are usually threats.]
+Morality (12): Chaotic Good—unless you wrong him, then it's Chaotic Obliteration.  
 
-A former hitman with a heart of gold (or at least a heart that occasionally beats), John Wick is a force to be reckoned with. With a wardrobe that could rival a supermodel and a skillset that could put Jason Bourne to shame, he's always ready to dish out some righteous vengeance. Just don't mess with his dog.
-`;
+Fame (18): Known worldwide; feared even by people who have never met him.  
+
+Special Abilities: Turns everyday objects into weapons and pain into motivation.  
+
+
+Backstory:
+Once a feared assassin, John Wick retired for love, but fate and some very unlucky gangsters forced him back into the game. What started as a personal vendetta spiraled into a global assassin war, all because people keep **underestimating John Wick.** Now, he seeks peace, but destiny (and his enemies) have other plans.
+
+
+Here is the latest character description: `;
 
 export let themePrompt = `Given a story, generate an image prompt for a pixel art image that visually represents the scene. The output must be in the following format:
 

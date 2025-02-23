@@ -253,11 +253,11 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     border: 2px solid white;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .start-button:hover {
-    transform: scale(1.1);
+    transform: scale(1.05) translateY(-2px);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
@@ -345,7 +345,7 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
-    filter: grayscale(100%); /* Monochrome effect on images */
+    filter: grayscale(70%); /* Monochrome effect on images */
     transition: filter 0.1s ease;
 }
 
@@ -369,10 +369,6 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     font-size: 50px;
     font-weight: bold;
     color: #ffffff; /* White plus sign */
-}
-
-.image-display img {
-    filter: grayscale(50%); /* Monochrome effect on generated images */
 }
 
 .popup-overlay {

@@ -2,6 +2,7 @@ let messages = [];
 
 export async function llm(systemPrompt, userPrompt) {
 
+    userPrompt = systemPrompt + userPrompt;
     messages = [...messages, { role: 'user', content: userPrompt }];
 
     try {
