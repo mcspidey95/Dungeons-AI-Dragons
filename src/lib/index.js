@@ -16,6 +16,8 @@ export {default as bgm7} from './audio/bgm7.mp3';
 export {default as bgm8} from './audio/bgm8.mp3';
 export {default as bgm9} from './audio/bgm9.mp3';
 export {default as bgm10} from './audio/bgm10.mp3';
+export {default as bgm11} from './audio/bgm11.mp3';
+export {default as bgm12} from './audio/bgm12.mp3';
 
 export let initialText = 'Press any key to continue... ';
 

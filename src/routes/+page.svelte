@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { initialText, gameLogo, TypingSFX, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, char1, char2, getDefaultCharacters, back, back1 } from '$lib';
-	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10 } from '$lib';
+	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { llm, llm2, generateImage } from './api/models';
 
 	let timer;
@@ -45,8 +45,8 @@
 		typeText();
 		window.addEventListener('keydown', startText2);
 		
-		let bgmList = [bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10];
-		let num = Math.floor(Math.random() * 11);
+		let bgmList = [bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12];
+		let num = Math.floor(Math.random() * 13);
 		
 		backgroundMusic = new Audio(bgmList[num]);
         backgroundMusic.loop = true;
