@@ -1,11 +1,21 @@
 export {default as Loading} from './img/loading.gif';
-export {default as BGM} from './audio/bgm.mp3';
 export {default as TypingSFX} from './audio/boop.mp3';
 export {default as char1} from './img/char1.jpg';
 export {default as char2} from './img/char2.jpg';
 //export {default as char3} from './img/char3.jpg';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
+export {default as bgm} from './audio/bgm.mp3';
+export {default as bgm1} from './audio/bgm1.mp3';
+export {default as bgm2} from './audio/bgm2.mp3';
+export {default as bgm3} from './audio/bgm3.mp3';
+export {default as bgm4} from './audio/bgm4.mp3';
+export {default as bgm5} from './audio/bgm5.mp3';
+export {default as bgm6} from './audio/bgm6.mp3';
+export {default as bgm7} from './audio/bgm7.mp3';
+export {default as bgm8} from './audio/bgm8.mp3';
+export {default as bgm9} from './audio/bgm9.mp3';
+export {default as bgm10} from './audio/bgm10.mp3';
 
 export let initialText = 'Press any key to continue... ';
 
