@@ -1,8 +1,8 @@
 export {default as Loading} from './img/loading.gif';
 export {default as TypingSFX} from './audio/boop.mp3';
-export {default as char1} from './img/char1.jpg';
-export {default as char2} from './img/char2.jpg';
-//export {default as char3} from './img/char3.jpg';
+export {default as char1} from './characters/char1.png';
+export {default as char2} from './characters/char2.png';
+export {default as char3} from './characters/char3.png';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
 
@@ -38,31 +38,27 @@ export let gameLogo = `
 
 Dungeons, AI & Dragons.`;
 
-async function convertToBase64(url) {
+async function getBase64FromTxt(url) {
     const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]); // Extract base64 part
-        reader.readAsDataURL(blob);
-    });
+    return await response.text();
 }
 
 export async function getDefaultCharacters() {
-    const char1 = await convertToBase64('./img/char1.jpg');
-    const char2 = await convertToBase64('./img/char2.jpg');
+    let charPfp1 = await getBase64FromTxt('/src/lib/characters/char1.txt');
+    let charPfp2 = await getBase64FromTxt('/src/lib/characters/char1.txt');
+    let charPfp3 = await getBase64FromTxt('/src/lib/characters/char1.txt');
 
     return [
         {
-            pfp: char1,
+            pfp: charPfp1,
             desc: 'Hi Prends',
         },
         {
-            pfp: char2,
+            pfp: charPfp2,
             desc: 'Hi Nigga',
         },
         {
-            pfp: char1,
+            pfp: charPfp3,
             desc: 'Hi Devara',
         }
     ];

@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, char1, char2, getDefaultCharacters, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, char1, char2, char3, getDefaultCharacters, back, back1 } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
 	import { llm, llm2, generateImage } from './api/models';
@@ -325,19 +325,19 @@
         <!-- Card 1 -->
         <div class="character-card" on:click={() => selectCharacter(0)} on:mouseenter={() => SFX(0)} on:click={() => SFX(2)}>
             <img src="{char1}" alt="Warrior" class="card-image" />
-            <div class="card-title">Warrior</div>
+            <div class="card-title">Suraj</div>
         </div>
 
         <!-- Card 2 -->
         <div class="character-card" on:click={() => selectCharacter(1)} on:mouseenter={() => SFX(1)} on:click={() => SFX(2)}>
             <img src="{char2}" alt="Mage" class="card-image" />
-            <div class="card-title">Mage</div>
+            <div class="card-title">Spooder-Mon</div>
         </div>
 
         <!-- Card 3 -->
         <div class="character-card" on:click={() => selectCharacter(2)} on:mouseenter={() => SFX(1)} on:click={() => SFX(2)}>
-            <img src="{char1}" alt="Rogue" class="card-image" />
-            <div class="card-title">Rogue</div>
+            <img src="{char3}" alt="Rogue" class="card-image" />
+            <div class="card-title">Selmon Bhai</div>
         </div>
 
         <!-- Card 4 (Custom) -->
