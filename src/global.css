@@ -16,7 +16,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #1a1a1a;
+    background-color: rgb(10, 10, 10);
     border-radius: 5px; /* Rounded corners for a modern look */
     border: 2px solid rgba(0, 0, 0, 0); /* Padding effect around the thumb */
     background-clip: content-box; /* Ensures proper padding appearance */
@@ -73,6 +73,7 @@ body {
     opacity: 0; /* Start hidden */
     transform: scale(0.8); /* Start smaller */
     transition: all 0.5s ease; /* Smooth transition for properties */
+    background-color: rgb(10, 10, 10);
     animation: fadeInPop 0.5s ease forwards;
 }
 
@@ -124,7 +125,7 @@ body {
     font-family: 'VT323', monospace;
     font-size: 16px;
     outline: none;
-    background-color: #1a1a1a;
+    background-color: rgb(10, 10, 10);
     border: 2px solid #ffffff;
     border-radius: 10px;
     transition:
@@ -138,14 +139,17 @@ body {
     resize: none; /* Prevent resizing */
     background-color: black;
     color: white;
-    background-color: #1a1a1a;
+    background-color:rgb(10, 10, 10);
     border: 2px solid #ffffff;
     border-radius: 10px;
     padding: 10px;
     font-family: 'VT323', monospace;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto; /* Allow vertical scrolling */
 }
-
 .character-input.character-sheet:focus {
     box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
 }
@@ -453,4 +457,74 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 
 .back-button1:hover {
     transform: translateY(-50%) scale(1.3); /* Maintain vertical centering */
+}
+
+/* Center align the title */
+#sheet-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Style for feature spans */
+.sheet-feature {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color:white;
+    gap: 6px;
+    padding: 6px;
+    padding-left: 10px;
+    background: rgba(235, 223, 223, 0.1);
+    border-radius: 5px;
+}
+
+.sheet-num {
+    display: block; /* Ensures it appears on a new line */
+    margin-top: 2px;
+    font-size: 14px; /* Adjust size as needed */
+}
+
+.sheet-description {
+    text-align: left;
+    flex: 1; /* Ensures it takes the remaining space */
+    color: grey;
+}
+
+/* Style feature text */
+.sheet-feature p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Color-coded numbers */
+#red {
+    color:rgba(224, 20, 20, 0.76);
+    font-weight: bold;
+}
+
+#green {
+    color: limegreen;
+    font-weight: bold;
+    text-allign: center;
+}
+
+#grey {
+    color: grey;
+}
+
+#white{
+    color: white;
+    font-weight: bold;
+    width: 100px; /* Adjust as needed for consistent width */
+    flex-shrink: 0; /* Prevents it from shrinking */
+}
+
+#sheet-name{
+    color: white;
+}
+
+#sheet-name1{
+    color:rgba(253, 251, 251, 0.76);
 }

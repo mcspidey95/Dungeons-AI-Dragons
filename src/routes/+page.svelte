@@ -4,6 +4,7 @@
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
 	import { llm, llm2, charllm, generateImage } from './api/models';
+	import { text } from '@sveltejs/kit';
 
 	let timer;
 	let countdown;
@@ -23,6 +24,24 @@
 	let charName1;
 	let charName2;
 	let charName3;
+
+	let sheetName;
+	let sheetClass;
+	let sheetRace;
+	let sheetStr;
+	let sheetStrNum;
+	let sheetWeak;
+	let sheetWeakNum;
+	let SheetFear;
+	let sheetFearNum;
+	let sheetAgility;
+	let sheetAgilityNum;
+	let sheetMorality;
+	let sheetMoralityNum;
+	let sheetFame;
+	let sheetFameNum;
+	let sheetAbility;
+	let sheetStory;
 
 	let userPrompt = '';
 	let avatarImage = '';
@@ -164,14 +183,13 @@
 		if(isSelmon){
 			characterContent = defaultCharacters[10+characterIndex].desc;
 			avatarImage = defaultCharacters[10+characterIndex].pfp;
+			formatCharacterSheet(characterContent);
 		}
 		else{
 			characterContent = defaultCharacters[numArray[characterIndex]].desc;
 			avatarImage = defaultCharacters[numArray[characterIndex]].pfp;
+			formatCharacterSheet(characterContent);
 		}
-		//console.log(avatarImage);
-
-		typeCharacterSheetText(characterContent, 10);
 
 		showStartButton = true;
 	}
@@ -214,24 +232,163 @@
 		isBack = false;
 		isBack1 = true;
     	showCharacterSheet = true;
+		characterContent = '';
 		characterContent = await charllm(characterSheetPrompt, userPrompt);
-    	typeCharacterSheetText(characterContent, 10);
+		await formatCharacterSheet(characterContent);
+
+    	typeCharacterSheetText(20);
 
     	avatarImage = await generateImage('pixel art, 32bit, masterpiece, best quality, ' + userPrompt);
 		console.log(avatarImage);
     	showStartButton = true;
 	}
 
-	async function typeCharacterSheetText(content, speed) {
-    	let index = 0;
-    	characterContent = ''; // Reset the characterContent
+	async function typeCharacterSheetText(speed) {
+		// Store original values in temporary variables
+		let tempSheetName = sheetName;
+		let tempSheetClass = sheetClass;
+		let tempSheetRace = sheetRace;
+		let tempSheetStr = sheetStr;
+		let tempSheetWeak = sheetWeak;
+		let tempSheetFear = SheetFear;
+		let tempSheetAgility = sheetAgility;
+		let tempSheetMorality = sheetMorality;
+		let tempSheetFame = sheetFame;
+		let tempSheetAbility = sheetAbility;
+		let tempSheetStory = sheetStory;
 
-    	while (index < content.length) {
-        	characterContent += content[index];
-        	index++;
-        	await new Promise((resolve) => setTimeout(resolve, speed)); // Typing speed delay
-    	}
-	}	
+		// Clear all variables
+		sheetName = '';
+		sheetClass = '';
+		sheetRace = '';
+		sheetStr = '';
+		sheetWeak = '';
+		SheetFear = '';
+		sheetAgility = '';
+		sheetMorality = '';
+		sheetFame = '';
+		sheetAbility = '';
+		sheetStory = '';
+
+		let index = 0;
+		while (index < tempSheetName.length) {
+			sheetName += tempSheetName[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetClass.length) {
+			sheetClass += tempSheetClass[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetRace.length) {
+			sheetRace += tempSheetRace[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetStr.length) {
+			sheetStr += tempSheetStr[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetWeak.length) {
+			sheetWeak += tempSheetWeak[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetFear.length) {
+			SheetFear += tempSheetFear[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetAgility.length) {
+			sheetAgility += tempSheetAgility[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetMorality.length) {
+			sheetMorality += tempSheetMorality[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetFame.length) {
+			sheetFame += tempSheetFame[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetAbility.length) {
+			sheetAbility += tempSheetAbility[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+
+		index = 0;
+		while (index < tempSheetStory.length) {
+			sheetStory += tempSheetStory[index];
+			index++;
+			await new Promise(resolve => setTimeout(resolve, speed));
+		}
+	}
+
+	
+	async function formatCharacterSheet(sheet) {
+		const regex = {
+			name: /Name:\s*(.+)/,
+			class: /Class:\s*(.+)/,
+			race: /Race:\s*(.+)/,
+			strength: /Strength\s*\((\d+)\):\s*(.+)/,
+			weakness: /Weakness\s*\((\d+)\):\s*(.+)/,
+			fear: /Fear\s*\((\d+)\):\s*(.+)/,
+			agility: /Agility\s*\((\d+)\):\s*(.+)/,
+			morality: /Morality\s*\((\d+)\):\s*(.+)/,
+			fame: /Fame\s*\((\d+)\):\s*(.+)/,
+			ability: /Special Abilities:\s*(.+)/,
+			story: /Backstory:\s*(.+)/
+		};
+
+		sheetName = sheet.match(regex.name)?.[1] || "";
+		sheetClass = sheet.match(regex.class)?.[1] || "";
+		sheetRace = sheet.match(regex.race)?.[1] || "";
+
+		sheetStrNum = parseInt(sheet.match(regex.strength)?.[1]) || 0;
+		sheetStr = sheet.match(regex.strength)?.[2] || "";
+
+		sheetWeakNum = parseInt(sheet.match(regex.weakness)?.[1]) || 0;
+		sheetWeak = sheet.match(regex.weakness)?.[2] || "";
+
+		sheetFearNum = parseInt(sheet.match(regex.fear)?.[1]) || 0;
+		SheetFear = sheet.match(regex.fear)?.[2] || "";
+
+		sheetAgilityNum = parseInt(sheet.match(regex.agility)?.[1]) || 0;
+		sheetAgility = sheet.match(regex.agility)?.[2] || "";
+
+		sheetMoralityNum = parseInt(sheet.match(regex.morality)?.[1]) || 0;
+		sheetMorality = sheet.match(regex.morality)?.[2] || "";
+
+		sheetFameNum = parseInt(sheet.match(regex.fame)?.[1]) || 0;
+		sheetFame = sheet.match(regex.fame)?.[2] || "";
+
+		sheetAbility = sheet.match(regex.ability)?.[1] || "";
+		sheetStory = sheet.match(regex.story)?.[1] || "";
+	}
 
 	// <-------------------------------------- Story Generation -------------------------------------->
 
@@ -402,17 +559,36 @@
 	<img class="{isBack ? 'back-button' : 'back-button-hidden'}" src={back} on:click={() => handleBackClick()} />
 
 	<div class="textarea-wrapper {showCharacterSheet ? 'character-sheet' : ''}">
-		<textarea
-			class="character-input {showCharacterSheet ? 'character-sheet' : ''}"
-			type="text"
-			on:keydown={(e) => e.key === 'Enter' && createAvatar()}
-			placeholder={showCharacterSheet ? loadingText : 'Name or Describe your character...'}
-			bind:value={userPrompt}
-			readonly={showCharacterSheet}
-		>
-			{showCharacterSheet ? characterContent : userPrompt}
-		</textarea>
+		{#if showCharacterSheet}
+			<div class="character-input character-sheet">
+				<p id="sheet-title">Character Sheet</p>
+				<br/>
+				<span class="sheet-feature" id="grey"><p id="white">Name</p><span class="sheet-description" id="sheet-name">{sheetName}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Class</p><span class="sheet-description" id="sheet-name1">{sheetClass}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Race</p><span class="sheet-description" id="sheet-name1">{sheetRace}</span></span>
+				<br/>
+				<span class="sheet-feature" id="grey"><p id="white">Strength<span class="sheet-num" id={sheetStrNum > 10 ? "green" : "red"}>({sheetStrNum})</span></p><span class="sheet-description">{sheetStr}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Weakness<span class="sheet-num" id={sheetWeakNum > 10 ? "green" : "red"}>({sheetWeakNum})</span></p><span class="sheet-description">{sheetWeak}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Fear<span class="sheet-num" id={sheetFearNum> 10 ? "green" : "red"}>({sheetFearNum})</span></p><span class="sheet-description">{SheetFear}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Agility<span class="sheet-num" id={sheetAgilityNum> 10 ? "green" : "red"}>({sheetAgilityNum})</span></p><span class="sheet-description">{sheetAgility}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Morality<span class="sheet-num" id={sheetMoralityNum > 10 ? "green" : "red"}>({sheetMoralityNum})</span></p><span class="sheet-description">{sheetMorality}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Fame<span class="sheet-num" id={sheetFameNum > 10 ? "green" : "red"}>({sheetFameNum})</span></p><span class="sheet-description">{sheetFame}</span></span>
+				<br/>
+				<span class="sheet-feature" id="grey"><p id="white">Special Abilities</p><span class="sheet-description">{sheetAbility}</span></span>
+				<br/>
+				<span class="sheet-feature" id="grey"><span class="sheet-description">{sheetStory}</span></span>
+			</div>
+		{:else}
+			<textarea
+				class="character-input"
+				type="text"
+				on:keydown={(e) => e.key === 'Enter' && createAvatar()}
+				placeholder="Name or Describe your character..."
+				bind:value={userPrompt}
+			></textarea>
+		{/if}
 	</div>
+	
 {/if}
 
 <div class="image-display {backgroundImage ? 'show' : ''}">

@@ -147,7 +147,7 @@ Race: Human (with possible supernatural endurance)
 
 Strength (20): Can clear a room of enemies before his coffee gets cold.  
 
-Weakness: (5): Puppies, retirement, and a never-ending hit list.  
+Weakness (5): Puppies, retirement, and a never-ending hit list.  
 
 Fear (3): Running out of bullets, losing another dog, and office jobs.  
 
