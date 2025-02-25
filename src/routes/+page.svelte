@@ -1,9 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, char1, char2, char3, getDefaultCharacters, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, getDefaultCharacters, back, back1 } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
-	import { llm, llm2, generateImage } from './api/models';
+	import { llm, llm2, charllm, generateImage } from './api/models';
 
 	let timer;
 	let countdown;
@@ -16,6 +16,13 @@
 	let boop3;
 	let boop4;
 	let selectSFX;
+	let numArray;
+	let char1;
+	let char2;
+	let char3;
+	let charName1;
+	let charName2;
+	let charName3;
 
 	let userPrompt = '';
 	let avatarImage = '';
@@ -42,6 +49,7 @@
 	let showCharacterSelection = false;
 	let isBack = true;
 	let isBack1 = false;
+	let isSelmon = false;
 
 
 	onMount(() => {
@@ -57,6 +65,8 @@
 		selectSFX = new Audio(select);
 		selectSFX.volume = 0.2;
 
+		random3Char();
+
 		typeText();
 		window.addEventListener('keydown', startText2);
 		window.addEventListener('click', startText2);
@@ -68,6 +78,8 @@
 		
 		let bgmList = [bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12];
 		let num = Math.floor(Math.random() * 13);
+
+		if(num === 2) isSelmon = true;
 		
 		backgroundMusic = new Audio(bgmList[num]);
         backgroundMusic.loop = true;
@@ -109,19 +121,55 @@
 		);
 	}
 
-	async function selectCharacter(characterIndex) {
-		
+	async function random3Char() {
+		let num = Math.floor(Math.random() * 10);
+		let num1 = Math.floor(Math.random() * 10);
+		let num2 = Math.floor(Math.random() * 10);
+
+		while(num === num1 || num === num2 || num1 === num2){
+			num = Math.floor(Math.random() * 10);
+			num1 = Math.floor(Math.random() * 10);
+			num2 = Math.floor(Math.random() * 10);
+		}
+
+		numArray = [num, num1, num2];
+
+		defaultCharacters = await getDefaultCharacters();
+
+		if(isSelmon){
+			char1 = defaultCharacters[10].pfp;
+			charName1 = defaultCharacters[10].name;
+			char2 = defaultCharacters[11].pfp;
+			charName2 = defaultCharacters[11].name;
+			char3 = defaultCharacters[12].pfp;
+			charName3 = defaultCharacters[12].name;
+		}
+		else{
+			char1 = defaultCharacters[numArray[0]].pfp;
+			charName1 = defaultCharacters[numArray[0]].name;
+			char2 = defaultCharacters[numArray[1]].pfp;
+			charName2 = defaultCharacters[numArray[1]].name;
+			char3 = defaultCharacters[numArray[2]].pfp;
+			charName3 = defaultCharacters[numArray[2]].name;
+		}
+	}
+
+	function selectCharacter(characterIndex) {
 		isBack1 = true;
 		showCharacterSelection = false;
 		showTextarea = true;
 		isBack = false;
 		showCharacterSheet = true;
 
-		defaultCharacters = await getDefaultCharacters();
-
-		characterContent = defaultCharacters[characterIndex].desc;
-		avatarImage = defaultCharacters[characterIndex].pfp;
-		console.log(avatarImage);
+		if(isSelmon){
+			characterContent = defaultCharacters[10+characterIndex].desc;
+			avatarImage = defaultCharacters[10+characterIndex].pfp;
+		}
+		else{
+			characterContent = defaultCharacters[numArray[characterIndex]].desc;
+			avatarImage = defaultCharacters[numArray[characterIndex]].pfp;
+		}
+		//console.log(avatarImage);
 
 		typeCharacterSheetText(characterContent, 10);
 
@@ -166,7 +214,7 @@
 		isBack = false;
 		isBack1 = true;
     	showCharacterSheet = true;
-		characterContent = await llm(characterSheetPrompt, userPrompt);
+		characterContent = await charllm(characterSheetPrompt, userPrompt);
     	typeCharacterSheetText(characterContent, 10);
 
     	avatarImage = await generateImage('pixel art, 32bit, masterpiece, best quality, ' + userPrompt);
@@ -324,20 +372,20 @@
     <div class="card-container">
         <!-- Card 1 -->
         <div class="character-card" on:click={() => selectCharacter(0)} on:mouseenter={() => SFX(0)} on:click={() => SFX(2)}>
-            <img src="{char1}" alt="Warrior" class="card-image" />
-            <div class="card-title">Suraj</div>
+            <img src="data:image/png;base64,{char1}" alt="char1" class="card-image" />
+            <div class="card-title">{charName1}</div>
         </div>
 
         <!-- Card 2 -->
         <div class="character-card" on:click={() => selectCharacter(1)} on:mouseenter={() => SFX(1)} on:click={() => SFX(2)}>
-            <img src="{char2}" alt="Mage" class="card-image" />
-            <div class="card-title">Spooder-Mon</div>
+            <img src="data:image/png;base64,{char2}" alt="char2" class="card-image" />
+            <div class="card-title">{charName2}</div>
         </div>
 
         <!-- Card 3 -->
         <div class="character-card" on:click={() => selectCharacter(2)} on:mouseenter={() => SFX(1)} on:click={() => SFX(2)}>
-            <img src="{char3}" alt="Rogue" class="card-image" />
-            <div class="card-title">Selmon Bhai</div>
+            <img src="data:image/png;base64,{char3}" alt="char3" class="card-image" />
+            <div class="card-title">{charName3}</div>
         </div>
 
         <!-- Card 4 (Custom) -->

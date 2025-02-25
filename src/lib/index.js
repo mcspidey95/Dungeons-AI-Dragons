@@ -1,11 +1,7 @@
 export {default as Loading} from './img/loading.gif';
 export {default as TypingSFX} from './audio/boop.mp3';
-export {default as char1} from './characters/char1.png';
-export {default as char2} from './characters/char2.png';
-export {default as char3} from './characters/char3.png';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
-
 export {default as bgm} from './audio/bgm.mp3';
 export {default as bgm1} from './audio/bgm1.mp3';
 export {default as bgm2} from './audio/bgm2.mp3';
@@ -44,23 +40,98 @@ async function getBase64FromTxt(url) {
 }
 
 export async function getDefaultCharacters() {
-    let charPfp1 = await getBase64FromTxt('/src/lib/characters/char1.txt');
-    let charPfp2 = await getBase64FromTxt('/src/lib/characters/char1.txt');
-    let charPfp3 = await getBase64FromTxt('/src/lib/characters/char1.txt');
+    let char1 = await getBase64FromTxt('/src/lib/characters/char1.txt');
+    let char2 = await getBase64FromTxt('/src/lib/characters/char2.txt');
+    let char3 = await getBase64FromTxt('/src/lib/characters/char3.txt');
+    let char4 = await getBase64FromTxt('/src/lib/characters/char4.txt');
+    let char5 = await getBase64FromTxt('/src/lib/characters/char5.txt');
+    let char6 = await getBase64FromTxt('/src/lib/characters/char6.txt');
+    let char7 = await getBase64FromTxt('/src/lib/characters/char7.txt');
+    let char8 = await getBase64FromTxt('/src/lib/characters/char8.txt');
+    let char9 = await getBase64FromTxt('/src/lib/characters/char9.txt');
+    let char10 = await getBase64FromTxt('/src/lib/characters/char10.txt');
+    let charSelmon1 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
+    let charSelmon2 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
+    let charSelmon3 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
+
+    let sheet1 = await getBase64FromTxt('/src/lib/characters/sheet1.txt');
+    let sheet2 = await getBase64FromTxt('/src/lib/characters/sheet2.txt');
+    let sheet3 = await getBase64FromTxt('/src/lib/characters/sheet3.txt');
+    let sheet4 = await getBase64FromTxt('/src/lib/characters/sheet4.txt');
+    let sheet5 = await getBase64FromTxt('/src/lib/characters/sheet5.txt');
+    let sheet6 = await getBase64FromTxt('/src/lib/characters/sheet6.txt');
+    let sheet7 = await getBase64FromTxt('/src/lib/characters/sheet7.txt');
+    let sheet8 = await getBase64FromTxt('/src/lib/characters/sheet8.txt');
+    let sheet9 = await getBase64FromTxt('/src/lib/characters/sheet9.txt');
+    let sheet10 = await getBase64FromTxt('/src/lib/characters/sheet10.txt');
+    let sheetSelmon = await getBase64FromTxt('/src/lib/characters/sheetSelmon.txt');
 
     return [
         {
-            pfp: charPfp1,
-            desc: 'Hi Prends',
+            name: 'Deeps',
+            pfp: char1,
+            desc: sheet1,
         },
         {
-            pfp: charPfp2,
-            desc: 'Hi Nigga',
+            name: 'Deeps',
+            pfp: char2,
+            desc: sheet2,
         },
         {
-            pfp: charPfp3,
-            desc: 'Hi Devara',
-        }
+            name: 'Deeps',
+            pfp: char3,
+            desc: sheet3,
+        },
+        {
+            name: 'Deeps',
+            pfp: char4,
+            desc: sheet4,
+        },
+        {
+            name: 'Deeps',
+            pfp: char5,
+            desc: sheet5,
+        },
+        {
+            name: 'Deeps',
+            pfp: char6,
+            desc: sheet6,
+        },
+        {
+            name: 'Deeps',
+            pfp: char7,
+            desc: sheet7,
+        },
+        {
+            name: 'Deeps',
+            pfp: char8,
+            desc: sheet8,
+        },
+        {
+            name: 'Deeps',
+            pfp: char9,
+            desc: sheet9,
+        },
+        {
+            name: 'Deeps',
+            pfp: char10,
+            desc: sheet10,
+        },
+        {
+            name: 'Deer Killer',
+            pfp: charSelmon1,
+            desc: sheetSelmon,
+        },
+        {
+            name: 'Heavy Driver',
+            pfp: charSelmon2,
+            desc: sheetSelmon,
+        },
+        {
+            name: 'Selmon Bhai',
+            pfp: charSelmon3,
+            desc: sheetSelmon,
+        },
     ];
 }
 

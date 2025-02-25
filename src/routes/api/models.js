@@ -1,3 +1,4 @@
+let num = 2;
 let messages = [];
 
 export async function llm(systemPrompt, userPrompt) {
@@ -7,6 +8,41 @@ export async function llm(systemPrompt, userPrompt) {
 
     try {
         const response = await fetch('/api/generate-text', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ systemPrompt, messages })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            // Save the response to the messages list
+            messages = [...messages, { role: 'assistant', content: data.content }];
+
+            console.log('Input:', userPrompt);
+            console.log('Response:', data.content);
+
+            return data.content;
+            
+        } else {
+            console.error('Error in response:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+export async function charllm(systemPrompt, userPrompt) {
+
+    userPrompt = systemPrompt + userPrompt;
+    messages = [...messages, { role: 'user', content: userPrompt }];
+
+    if(num === 1) num = 2;
+    else num = 1;
+
+    try {
+        const response = await fetch('/api/generate-charModel' + num, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ systemPrompt, messages })
