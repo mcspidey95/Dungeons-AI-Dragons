@@ -1,17 +1,24 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+----------CHARACTER SHEET----------
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Name: Drawf  
+Class: Perpetually Unimpressed Slacker
+Race: Human (Indian, with a permanent scowl)  
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Strength (6): Can lift a controller for hours, but struggles with getting out of bed.  
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Weakness (12): His own apathy, annoyingly cheerful people, and running out of snacks.  
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Fear (8): Being forced to participate in small talk, losing his headphones, and unexpected loud noises.  
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Agility (14): Can quickly move his thumbs to escape a conversation, but trips over his own feet.  
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Morality (10): Apathetic Neutral—doesn't really care about anything, unless it affects his gaming sessions.  
+
+Fame (2): Known only to his online gaming friends; unknown to his family and neighbors.  
+
+Special Abilities: Can fall asleep anywhere, tune out annoying conversations, and eat an entire pizza by himself.  
+
+
+Backstory:
+Drawf, a young Indian man with a permanent scowl, navigates life with a mix of apathy and annoyance, finding solace in his gaming sessions and headphones, but his nonchalant demeanor hides a deep-seated frustration with the world, which he expresses through his music and occasional outbursts, all while trying to find his place in a world that seems too loud and overwhelming.

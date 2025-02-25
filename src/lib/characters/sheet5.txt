@@ -1,17 +1,23 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
+----------CHARACTER SHEET----------
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+Name: Edamame  
+Class: Bizarre Hamburger Hero
+Race: Human (with possible culinary magical abilities)  
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Strength (8): Can summon an endless supply of hamburger patties, but not much else.  
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Weakness (4): Bears without an appetite, awkward social situations, and a tendency to joke at inappropriate times.  
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Fear (6): Being attacked by a bear that's not hungry, running out of hamburger buns, and silent discos.  
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Agility (14): Can dodge bear attacks with moderate success, but trips over own feet on the dance floor.  
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Morality (10): Generally Good—unless you're a bear trying to eat him, then it's Hamburger-Fueled Chaos.  
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Fame (2): Known only to a select few; mostly feared by bears with dietary restrictions.  
+
+Special Abilities: Summons infinite hamburgers without bacon or unions when being attacked by a bear, and makes poorly timed jokes to distract enemies.  
+
+
+Backstory:
+Edamame's life was forever changed when he discovered his bizarre ability to summon hamburgers during a bear attack, now he travels the world, armed with an endless supply of patties, a love for house music, and a questionable sense of humor, all while trying to find purpose and avoid bears on diets.

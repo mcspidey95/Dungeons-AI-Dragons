@@ -1,17 +1,25 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+----------CHARACTER SHEET----------
 
-Weakness (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Name: Deeps
+Class: Speedy Dentist
+Race: Indian (Brown), Deaf
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Strength (6): Can carry a tweezer, but not much else.
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Weakness (3): Wisdom, patience, and anyone who trolls him.
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Fear (7): Dental tools malfunctioning, losing patients' trust, and slow internet.
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Agility (18): Fast like a cheetah, precise like a surgeon.
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Morality (15): Good person, unless provoked.
+
+Fame (2): Only known to his patients and manish, who hates him.
+
+Special Abilities: Deafening drills, and can pluck teeth in record time.
+
+Backstory:
+Deeps was once a respected dentist, but his fast pace and lack of wisdom made him a target for trolls. Despite his limitations, he remains a good person, unless someone starts messing with him. Manish, his arch-nemesis, despises him for unknown reasons. Deeps continues to pluck teeth and live his life, one cavity at a time, while remaining blissfully unaware of the chaos around him.
+
+

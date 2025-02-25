@@ -1,17 +1,23 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
+----------CHARACTER SHEET----------
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+Name: Cobra Bhai  
+Class: Unstoppable Schoolkid
+Race: Human (with a aura of intimidation)  
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Strength (16): Can take down a teacher with a single stare, but still gets detention for it.  
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Weakness (0): None, because who needs fear when you have an aura of intimidation?  
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Fear (0): None, because Cobra Bhai is the one who makes others fear.  
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Agility (14): Runs like the wind, but still manages to get tardy slips for being late.  
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Morality (8): Chaotic Neutral—does whatever it takes to get out of homework, unless it's a math problem, then it's Chaotic Rebellion.  
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Fame (20): Feared by every teacher, student, and parent in the school; Cobra Bhai is the one they whisper about in hushed tones.  
+
+Special Abilities: Can hypnotize anyone with a single stare, turn anyone into a toad with a single word, and make anyone do his homework for him.  
+
+
+Backstory:
+Cobra Bhai's aura of intimidation is so strong that even the principal is afraid to scold him. But despite his fearsome reputation, he's still just a schoolkid who wants to play video games and eat pizza, and will do whatever it takes to avoid doing his homework.

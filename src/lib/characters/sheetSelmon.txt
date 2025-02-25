@@ -1,17 +1,22 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
+----------CHARACTER SHEET----------
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+Name: Salman Khan
+Class: Bollywood Superstar
+Race: Human (with charming good looks)
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Strength (15): Can dance, fight, and romance his way through any situation.
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Weakness (8): Romantic entanglements, self-righteousness, and a love for animals.
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Fear (2): Disappointing his fans, losing his stardom, and being upstaged.
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Agility (14): Moves with swagger, dances like a dream, and charms like a snake.
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Morality (10): Neutral Good—he's a hero on-screen, but his real-life actions are questionable.
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Fame (20): A living legend in Bollywood, adored by millions.
+
+Special Abilities: Turns every role into a sensation, and controversy into publicity.
+
+Backstory:
+A superstar born into a family of actors, Salman Khan has faced many ups and downs in his career and personal life. Despite his flaws, he remains a beloved figure in Bollywood, with a legion of fans who will always stand by him.

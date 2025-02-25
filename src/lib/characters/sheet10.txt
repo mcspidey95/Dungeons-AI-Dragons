@@ -1,17 +1,23 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
+----------CHARACTER SHEET----------
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+Name: Ruby  
+Class: Elite Hacker
+Race: Human (with a talent for coding and a love for the thrill of the steal)  
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Strength (14): Can bypass even the most secure systems, but struggles with carrying her own laptop.  
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Weakness (4): Running out of coffee, being unpaid for her work, and being forced to use Internet Explorer.  
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Fear (2): Getting caught by the authorities, losing her coding skills, and being stuck with a Windows update.  
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Agility (18): Moves quickly through the dark web, but trips over her own feet when walking in the real world.  
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Morality (6): Chaotic Neutral—steals from the government and supermarkets, but only because she can and it's fun, not because she's inherently evil.  
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Fame (15): Known only by her handle "ZeroCoolChick" in the hacking community; her exploits are legendary, but her true identity remains a mystery.  
+
+Special Abilities: Can hack into any system, write code in her sleep, and make a profit from even the most mundane online exploits.  
+
+
+Backstory:
+Ruby's life is a never-ending game of cat and mouse with the authorities, as she uses her exceptional hacking skills to steal from the government and local supermarkets, always staying one step ahead of the law and earning her reputation as the most elusive hacker in the game.

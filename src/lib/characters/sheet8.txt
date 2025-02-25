@@ -1,17 +1,23 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
+----------CHARACTER SHEET----------
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+Name: Clara  
+Class: In-Flight Enigma
+Race: Human (with possible aeromantic abilities)  
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Strength (13): Can fly through the cabin of an airplane with ease, but struggles to lift a suitcase into the overhead bin.  
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Weakness (11): Turbulence, running out of in-flight snacks, and people who don't understand her unique language.  
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Fear (8): Crashing, losing her in-flight magazine, and being seated next to a chatty passenger.  
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Agility (15): Can dodge drink carts and leap over seatbacks with ease, but trips over her own feet when trying to exit the plane.  
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Morality (9): Generally Neutral—unless you're a fan of John Cena, then it's Unwavering Devotion.  
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Fame (19): Known by almost everyone in the world, with a reputation that's both revered and reviled, like a flying Marmite.  
+
+Special Abilities: Can fly inside an airplane, see John Cena even when he's not there, and speak a language that's incomprehensible to everyone, including herself, but somehow still manages to order a decent in-flight meal.  
+
+
+Backstory:
+Clara's life is a mystery, even to herself, as she soars through the skies, speaking a language that only she can't understand, and seeing visions of John Cena everywhere she goes, all while trying to navigate the complexities of in-flight etiquette and avoiding the dreaded middle seat.

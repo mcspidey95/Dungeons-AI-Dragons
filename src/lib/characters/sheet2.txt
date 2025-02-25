@@ -1,17 +1,23 @@
-Name: Safia  
-Class: Vibrant Vigilante
-Race: Human (with a flair for dramatic entrances)  
+----------CHARACTER SHEET----------
 
-Strength (14): Can intimidate with a single glance, but struggles with actual physical labor.  
+Name: Aphrodite  
+Class: Medieval Goddess Wannabe  
+Race: Indian (with a dash of delusional royalty)  
 
-Weakness: (8): Overthinking, an addiction to rom-coms, and a tendency to trip over air molecules.  
+Strength (8): Can recall entire scripts of her favorite shows and ace any academic test, but don't ask her to change a tire.  
 
-Fear (6): Spiders, being late for prayers, and running out of pink clothing options.  
+Weakness (12): Sand, traffic, and anything that requires actual physical strength or street smarts.  
 
-Agility (10): Moves with the stealth of a giraffe on roller skates, but makes up for it with enthusiasm.  
+Fear (10): Failing an exam, running out of her favorite shows to binge, and being forced to wear a sari.  
 
-Morality (16): Lawful Good—unless you mess with her friends or her hijab collection, then it's Game On.  
+Agility (6): Can move quickly from bed to couch, but that's about it.  
 
-Fame (4): Known in local circles for her bright fashion sense and ability to eat an entire pizza by herself.  
+Morality (14): Lawful Good—unless you disagree with her opinions on the best TV shows, then it's a fierce debate.  
 
-Special Abilities: Can talk her way out of (or into) most situations and has a hidden talent for freestyle rapping.
+Fame (4): Known only in her small social circle; often misunderstood by everyone else.  
+
+Special Abilities: Can fall asleep anywhere, anytime, and has a PhD in procrastination.  
+
+
+Backstory:
+Aphrodite is a self-proclaimed goddess who rules over her own little world of TV shows and academic excellence, but her lack of street smarts and physical strength often lands her in trouble, and her ego usually gets the best of her, making her come across as arrogant and clueless about the real world.
