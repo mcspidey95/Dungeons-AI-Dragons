@@ -51,8 +51,8 @@ export async function getDefaultCharacters() {
     let char9 = await getBase64FromTxt('/src/lib/characters/char9.txt');
     let char10 = await getBase64FromTxt('/src/lib/characters/char10.txt');
     let charSelmon1 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
-    let charSelmon2 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
-    let charSelmon3 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
+    let charSelmon2 = await getBase64FromTxt('/src/lib/characters/charSelmon2.txt');
+    let charSelmon3 = await getBase64FromTxt('/src/lib/characters/charSelmon3.txt');
 
     let sheet1 = await getBase64FromTxt('/src/lib/characters/sheet1.txt');
     let sheet2 = await getBase64FromTxt('/src/lib/characters/sheet2.txt');
@@ -134,6 +134,10 @@ export async function getDefaultCharacters() {
         },
     ];
 }
+
+export let charDeskPrompt = `Given a character description and a character sheet, generate a detailed prompt for a stable diffusion model, so that the image is generated like the described character, add more keywords to the visual appearance, the more detailed, the better. The output must be in the following format:
+pixel art, 32 bit, Full body nude portrait, slim 18 year old gorgeous woman, laying down in a pool, wet, naked, relaxed, foggy lighting, shaved vagina, thick eyebrows, thigh gap, little smile, small boobs and nipples, natural lighting, skinny, film grain, low contrast, natural face, long messy black hair, blue eyes, photo from above,
+`;
 
 export let characterSheetPrompt = `Given a character description, or a character name, Create a character sheet that is humourous, detailed (but in one line). Example is mentioned below, use the exact format including spaces, the parameters have a number range to describe how good the parameter is from 0-20, no restrictions.
 Example:

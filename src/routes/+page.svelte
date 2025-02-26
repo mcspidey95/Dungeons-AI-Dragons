@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, finalePrompt, summaryPrompt, getDefaultCharacters, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, charDeskPrompt, finalePrompt, summaryPrompt, getDefaultCharacters, back, back1 } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
 	import { llm, llm2, charllm, generateImage } from './api/models';
@@ -238,7 +238,9 @@
 
     	typeCharacterSheetText(20);
 
-    	avatarImage = await generateImage('pixel art, 32bit, masterpiece, best quality, ' + userPrompt);
+		let avatarPrompt = await llm2(charDeskPrompt, userPrompt + characterContent);
+		console.log('avatar prompt: ', avatarPrompt)
+    	avatarImage = await generateImage('pixel art, 32bit, masterpiece, best quality, ' + avatarPrompt);
 		console.log(avatarImage);
     	showStartButton = true;
 	}

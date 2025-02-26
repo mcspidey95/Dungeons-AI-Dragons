@@ -4,7 +4,7 @@ import { GROQ_API_KEY } from '$env/static/private';
 
 const llm = new ChatGroq({
     apiKey: GROQ_API_KEY,
-    model: 'gemma-7b-it',
+    model: 'gemma2-9b-it',
     temperature: 0.7,
     maxTokens: undefined,
 });
