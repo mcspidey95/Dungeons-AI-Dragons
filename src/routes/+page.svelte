@@ -1,10 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, Loading,characterSheetPrompt, themePrompt, loadingText, introPrompt, choicePrompt, charDeskPrompt, finalePrompt, summaryPrompt, getDefaultCharacters, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading, getDefaultCharacters, back, back1 } from '$lib';
+	import { characterSheetPrompt, themePrompt, introPrompt, choicePrompt, avatarGenerationPrompt, finalePrompt, summaryPrompt } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
-	import { llm, llm2, charllm, generateImage } from './api/models';
-	import { text } from '@sveltejs/kit';
+	import { storyLLM, charLLM, imgLLM} from './api/models';
+	//import { text } from '@sveltejs/kit';
 
 	let timer;
 	let countdown;
@@ -12,6 +13,7 @@
 	let typingSound;
 	let backgroundMusic;
 	let defaultCharacters;
+	let characterContent;
 	let boop1;
 	let boop2;
 	let boop3;
@@ -47,12 +49,9 @@
 	let avatarImage = '';
 	let backgroundImage = '';
 	let displayText = '';
-	let backgroundTheme = '';
 	let story = '';
 	let userResponse = '';
 
-	let generatedImage = null;
-	let characterContent = loadingText;
 	let currentText = initialText;
 	let index = 0;
 	let typingSpeed = 30;
@@ -69,6 +68,7 @@
 	let isBack = true;
 	let isBack1 = false;
 	let isSelmon = false;
+	let isLoading = false;
 
 
 	onMount(() => {
@@ -233,16 +233,18 @@
 		isBack1 = true;
     	showCharacterSheet = true;
 		characterContent = '';
-		characterContent = await charllm(characterSheetPrompt, userPrompt);
+		isLoading = true;
+		characterContent = await charLLM(characterSheetPrompt + userPrompt);
+
 		await formatCharacterSheet(characterContent);
 
+		isLoading = false;
     	typeCharacterSheetText(20);
 
-		let avatarPrompt = await llm2(charDeskPrompt, userPrompt + characterContent);
-		console.log('avatar prompt: ', avatarPrompt)
-    	avatarImage = await generateImage('pixel art, 32bit, masterpiece, best quality, ' + avatarPrompt);
+    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt + characterContent);
 		console.log(avatarImage);
-    	showStartButton = true;
+    	
+		showStartButton = true;
 	}
 
 	async function typeCharacterSheetText(speed) {
@@ -411,8 +413,7 @@
 	}
 
 	async function generateBackground(story) {
-    	backgroundTheme = await llm2(themePrompt, story);
-    	backgroundImage = await generateImage('a pixel art style scene of' + backgroundTheme);
+    	backgroundImage = await imgLLM(themePrompt + story);
 	}
 
 	// <-------------------------------------- UI Elements -------------------------------------->
@@ -456,7 +457,7 @@
     	showLoadingCenter = true;
     	backgroundImage = '';
     
-    	story = await llm(choicePrompt, userResponse+' {'+generateRandomNumber()+'}');
+    	story = await storyLLM(choicePrompt + userResponse+' {'+generateRandomNumber()+'}');
     	isSubmitted = true;
 	}
 
@@ -477,7 +478,7 @@
 
     	try {
 
-        	story = await llm(introPrompt, characterContent);
+        	story = await storyLLM(introPrompt + characterContent);
         	await generateBackground(story);
 
         	showLoadingCenter = false;
@@ -558,12 +559,13 @@
 
 {#if showTextarea}
 
-	<img class="{isBack ? 'back-button' : 'back-button-hidden'}" src={back} on:click={() => handleBackClick()} />
+	<img class="{isBack ? 'back-button' : 'back-button-hidden'}" src={back} on:click={() => handleBackClick()} alt='back'/>
 
 	<div class="textarea-wrapper {showCharacterSheet ? 'character-sheet' : ''}">
 		{#if showCharacterSheet}
 			<div class="character-input character-sheet">
 				<p id="sheet-title">Character Sheet</p>
+				<p id="loading" class={isLoading ? '' : 'hidden'}>Generating...</p>
 				<br/>
 				<span class="sheet-feature" id="grey"><p id="white">Name</p><span class="sheet-description" id="sheet-name">{sheetName}</span></span>
 				<span class="sheet-feature" id="grey"><p id="white">Class</p><span class="sheet-description" id="sheet-name1">{sheetClass}</span></span>

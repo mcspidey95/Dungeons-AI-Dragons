@@ -1,16 +1,15 @@
 let num = 2;
 let messages = [];
 
-export async function llm(systemPrompt, userPrompt) {
+export async function storyLLM(userPrompt) {
 
-    userPrompt = systemPrompt + userPrompt;
     messages = [...messages, { role: 'user', content: userPrompt }];
 
     try {
-        const response = await fetch('/api/generate-text', {
+        const response = await fetch('/api/storyModel', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ systemPrompt, messages })
+            body: JSON.stringify({ messages })
         });
 
         if (response.ok) {
@@ -33,18 +32,16 @@ export async function llm(systemPrompt, userPrompt) {
 }
 
 
-export async function charllm(systemPrompt, userPrompt) {
-
-    userPrompt = systemPrompt + userPrompt;
+export async function charLLM(userPrompt) {
 
     if(num === 1) num = 2;
     else num = 1;
 
     try {
-        const response = await fetch('/api/generate-charModel' + num, {
+        const response = await fetch('/api/charModel' + num, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ systemPrompt, messages: [{ role: 'user', content: userPrompt }] })
+            body: JSON.stringify({ messages: [{ role: 'user', content: userPrompt }] })
         });
 
         if (response.ok) {
@@ -63,22 +60,23 @@ export async function charllm(systemPrompt, userPrompt) {
     }
 }
 
-export async function llm2(systemPrompt, userPrompt) {
+export async function imgLLM(userPrompt) {
 
     try {
-        const response = await fetch('/api/generate-prompt', {
+        const response = await fetch('/api/feederModel', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ systemPrompt, messages: [{ role: 'user', content: userPrompt }] })
+            body: JSON.stringify({ messages: [{ role: 'user', content: userPrompt }] })
         });
 
         if (response.ok) {
-            const data = await response.json();
+            let feeder = await response.json();
+            let imagePrompt = feeder.content.trim();
+            
+            console.log('Prompt:', imagePrompt);
+            const data = await stableDiffusion('pixel art, 32bit, masterpiece, best quality, ' + imagePrompt);
 
-            console.log('Input:', userPrompt);
-            console.log('Response:', data.content);
-
-            return data.content;
+            return data;
     
         } else {
             console.error('Error in response:', response.statusText);
@@ -88,10 +86,22 @@ export async function llm2(systemPrompt, userPrompt) {
     }
 }
 
-export async function generateImage(imagePrompt) {
+
+
+
+
+
+
+
+
+
+
+
+
+async function stableDiffusion(imagePrompt) {
     if (imagePrompt.trim() === '') return null;
     try {
-        const response = await fetch('/api/generate-image', {
+        const response = await fetch('/api/imgModel', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt: imagePrompt })

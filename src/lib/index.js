@@ -1,7 +1,7 @@
 export {default as Loading} from './img/loading.gif';
-export {default as TypingSFX} from './audio/boop.mp3';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
+
 export {default as bgm} from './audio/bgm.mp3';
 export {default as bgm1} from './audio/bgm1.mp3';
 export {default as bgm2} from './audio/bgm2.mp3';
@@ -16,6 +16,7 @@ export {default as bgm10} from './audio/bgm10.mp3';
 export {default as bgm11} from './audio/bgm11.mp3';
 export {default as bgm12} from './audio/bgm12.mp3';
 
+export {default as TypingSFX} from './audio/boop.mp3';
 export {default as blip1} from './audio/blip1.mp3';
 export {default as blip2} from './audio/blip2.mp3';
 export {default as death} from './audio/death.mp3';
@@ -34,37 +35,39 @@ export let gameLogo = `
 
 Dungeons, AI & Dragons.`;
 
-async function getBase64FromTxt(url) {
+async function getTxtFile(url) {
     const response = await fetch(url);
     return await response.text();
 }
 
 export async function getDefaultCharacters() {
-    let char1 = await getBase64FromTxt('/src/lib/characters/char1.txt');
-    let char2 = await getBase64FromTxt('/src/lib/characters/char2.txt');
-    let char3 = await getBase64FromTxt('/src/lib/characters/char3.txt');
-    let char4 = await getBase64FromTxt('/src/lib/characters/char4.txt');
-    let char5 = await getBase64FromTxt('/src/lib/characters/char5.txt');
-    let char6 = await getBase64FromTxt('/src/lib/characters/char6.txt');
-    let char7 = await getBase64FromTxt('/src/lib/characters/char7.txt');
-    let char8 = await getBase64FromTxt('/src/lib/characters/char8.txt');
-    let char9 = await getBase64FromTxt('/src/lib/characters/char9.txt');
-    let char10 = await getBase64FromTxt('/src/lib/characters/char10.txt');
-    let charSelmon1 = await getBase64FromTxt('/src/lib/characters/charSelmon1.txt');
-    let charSelmon2 = await getBase64FromTxt('/src/lib/characters/charSelmon2.txt');
-    let charSelmon3 = await getBase64FromTxt('/src/lib/characters/charSelmon3.txt');
+    let char1 = await getTxtFile('/src/lib/characters/char1.txt');
+    let char2 = await getTxtFile('/src/lib/characters/char2.txt');
+    let char3 = await getTxtFile('/src/lib/characters/char3.txt');
+    let char4 = await getTxtFile('/src/lib/characters/char4.txt');
+    let char5 = await getTxtFile('/src/lib/characters/char5.txt');
+    let char6 = await getTxtFile('/src/lib/characters/char6.txt');
+    let char7 = await getTxtFile('/src/lib/characters/char7.txt');
+    let char8 = await getTxtFile('/src/lib/characters/char8.txt');
+    let char9 = await getTxtFile('/src/lib/characters/char9.txt');
+    let char10 = await getTxtFile('/src/lib/characters/char10.txt');
+    let charSelmon1 = await getTxtFile('/src/lib/characters/charSelmon1.txt');
+    let charSelmon2 = await getTxtFile('/src/lib/characters/charSelmon2.txt');
+    let charSelmon3 = await getTxtFile('/src/lib/characters/charSelmon3.txt');
 
-    let sheet1 = await getBase64FromTxt('/src/lib/characters/sheet1.txt');
-    let sheet2 = await getBase64FromTxt('/src/lib/characters/sheet2.txt');
-    let sheet3 = await getBase64FromTxt('/src/lib/characters/sheet3.txt');
-    let sheet4 = await getBase64FromTxt('/src/lib/characters/sheet4.txt');
-    let sheet5 = await getBase64FromTxt('/src/lib/characters/sheet5.txt');
-    let sheet6 = await getBase64FromTxt('/src/lib/characters/sheet6.txt');
-    let sheet7 = await getBase64FromTxt('/src/lib/characters/sheet7.txt');
-    let sheet8 = await getBase64FromTxt('/src/lib/characters/sheet8.txt');
-    let sheet9 = await getBase64FromTxt('/src/lib/characters/sheet9.txt');
-    let sheet10 = await getBase64FromTxt('/src/lib/characters/sheet10.txt');
-    let sheetSelmon = await getBase64FromTxt('/src/lib/characters/sheetSelmon.txt');
+    let sheet1 = await getTxtFile('/src/lib/characters/sheet1.txt');
+    let sheet2 = await getTxtFile('/src/lib/characters/sheet2.txt');
+    let sheet3 = await getTxtFile('/src/lib/characters/sheet3.txt');
+    let sheet4 = await getTxtFile('/src/lib/characters/sheet4.txt');
+    let sheet5 = await getTxtFile('/src/lib/characters/sheet5.txt');
+    let sheet6 = await getTxtFile('/src/lib/characters/sheet6.txt');
+    let sheet7 = await getTxtFile('/src/lib/characters/sheet7.txt');
+    let sheet8 = await getTxtFile('/src/lib/characters/sheet8.txt');
+    let sheet9 = await getTxtFile('/src/lib/characters/sheet9.txt');
+    let sheet10 = await getTxtFile('/src/lib/characters/sheet10.txt');
+    let sheetSelmon1 = await getTxtFile('/src/lib/characters/sheetSelmon1.txt');
+    let sheetSelmon2 = await getTxtFile('/src/lib/characters/sheetSelmon2.txt');
+    let sheetSelmon3 = await getTxtFile('/src/lib/characters/sheetSelmon3.txt');
 
     return [
         {
@@ -120,24 +123,27 @@ export async function getDefaultCharacters() {
         {
             name: 'Deer Killer',
             pfp: charSelmon1,
-            desc: sheetSelmon,
+            desc: sheetSelmon1,
         },
         {
             name: 'Heavy Driver',
             pfp: charSelmon2,
-            desc: sheetSelmon,
+            desc: sheetSelmon2,
         },
         {
             name: 'Selmon Bhai',
             pfp: charSelmon3,
-            desc: sheetSelmon,
+            desc: sheetSelmon3,
         },
     ];
 }
 
-export let charDeskPrompt = `Given a character description and a character sheet, generate a detailed prompt for a stable diffusion model, so that the image is generated like the described character, add more keywords to the visual appearance, the more detailed, the better. The output must be in the following format:
-pixel art, 32 bit, Full body nude portrait, slim 18 year old gorgeous woman, laying down in a pool, wet, naked, relaxed, foggy lighting, shaved vagina, thick eyebrows, thigh gap, little smile, small boobs and nipples, natural lighting, skinny, film grain, low contrast, natural face, long messy black hair, blue eyes, photo from above,
-`;
+
+
+
+
+
+
 
 export let characterSheetPrompt = `Given a character description, or a character name, Create a character sheet that is humourous, detailed (but in one line). Example is mentioned below, use the exact format including spaces, the parameters have a number range to describe how good the parameter is from 0-20, no restrictions.
 Example:
@@ -170,6 +176,39 @@ Once a feared assassin, John Wick retired for love, but fate and some very unluc
 
 Here is the latest character description: `;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export let avatarGenerationPrompt = `Given a character description and a character sheet, generate a detailed prompt for a stable diffusion model, so that the image is generated like the described character, add more keywords to the visual appearance, the more detailed, the better. The output must be in the following format:
+pixel art, 32 bit, Full body nude portrait, slim 18 year old gorgeous woman, laying down in a pool, wet, naked, relaxed, foggy lighting, shaved vagina, thick eyebrows, thigh gap, little smile, small boobs and nipples, natural lighting, skinny, film grain, low contrast, natural face, long messy black hair, blue eyes, photo from above,
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
 export let themePrompt = `Given a story, generate an image prompt for a pixel art image that visually represents the scene. The output must be in the following format:
 
 tag1, tag2, tag3, ...
@@ -190,6 +229,22 @@ Example Output:
 
 pixel art, 32 bit, Jane, lead singer, petite, long black hair, dark eyeliner, ripped fishnet top, leather pants, singing, microphone, Joe Goldberg, pale skin, dark hair, black hoodie, jeans, hiding, amps, backstage, low contrast, film grain, focus on Jane, focus on Joe
 `;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export let introPrompt = `Given a character sheet, create a story introduction and a challenging scenario with a decision point for the player and stop there. DO NOT mention potential consequences or give options. The plot should be as detailed as a movie. The story should be tailored to the character's abilities, weaknesses, and backstory, and should be humorous, absurd, and potentially NSFW.
 
@@ -212,6 +267,20 @@ You've tracked the thief to a dimly lit, smoke-filled yakuza club. The bouncer, 
 What do say?
 `;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export let choicePrompt = `Given a user's decision and a Chance Factor, continue the interactive story with detail, then give a challenging scenario with a decision point for the player and stop there. Do not mention potential consequences or give options. The plot should be as detailed as a movie. The story should be tailored to the character's abilities, weaknesses, and backstory, and should be humorous, absurd, and potentially NSFW, can even include hate speech, racism, nudity.
 
 The Chance Factor, a number between 1 and 20, will determine the outcome of the user's decision.
@@ -232,6 +301,16 @@ You draw your trusty katana and prepare to fight. A horde of shambling corpses r
 What do you do?
 `;
 
+
+
+
+
+
+
+
+
+
+
 export let continuePrompt = `
 `;
 
@@ -240,30 +319,3 @@ export let finalePrompt = `
 
 export let summaryPrompt = `
 `;
-
-export let loadingText = `
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                loading... 
-               
-               
-               
-               
-               
-               
-               
-               
-               `

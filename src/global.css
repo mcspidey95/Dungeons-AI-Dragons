@@ -74,6 +74,8 @@ body {
     transform: scale(0.8); /* Start smaller */
     transition: all 0.5s ease; /* Smooth transition for properties */
     background-color: rgb(10, 10, 10);
+    width: 10px;
+    height: 10px;
     animation: fadeInPop 0.5s ease forwards;
 }
 
@@ -527,4 +529,17 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 
 #sheet-name1{
     color:rgba(253, 251, 251, 0.76);
+}
+
+#loading {
+    text-align: center;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    color: grey;
+    transition: all 0.5s ease;
+}
+
+#loading.hidden {
+    display: none;
 }
