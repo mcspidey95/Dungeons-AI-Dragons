@@ -41,33 +41,33 @@ async function getTxtFile(url) {
 }
 
 export async function getDefaultCharacters() {
-    let char1 = await getTxtFile('./src/lib/characters/char1.txt');
-    let char2 = await getTxtFile('./src/lib/characters/char2.txt');
-    let char3 = await getTxtFile('./src/lib/characters/char3.txt');
-    let char4 = await getTxtFile('./src/lib/characters/char4.txt');
-    let char5 = await getTxtFile('./src/lib/characters/char5.txt');
-    let char6 = await getTxtFile('./src/lib/characters/char6.txt');
-    let char7 = await getTxtFile('./src/lib/characters/char7.txt');
-    let char8 = await getTxtFile('./src/lib/characters/char8.txt');
-    let char9 = await getTxtFile('./src/lib/characters/char9.txt');
-    let char10 = await getTxtFile('./src/lib/characters/char10.txt');
-    let charSelmon1 = await getTxtFile('/src/lib/characters/charSelmon1.txt');
-    let charSelmon2 = await getTxtFile('/src/lib/characters/charSelmon2.txt');
-    let charSelmon3 = await getTxtFile('/src/lib/characters/charSelmon3.txt');
+    let char1 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char1.txt');
+    let char2 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char2.txt');
+    let char3 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char3.txt');
+    let char4 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char4.txt');
+    let char5 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char5.txt');
+    let char6 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char6.txt');
+    let char7 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char7.txt');
+    let char8 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char8.txt');
+    let char9 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char9.txt');
+    let char10 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/char10.txt');
+    let charSelmon1 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/charSelmon1.txt');
+    let charSelmon2 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/charSelmon2.txt');
+    let charSelmon3 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/charSelmon3.txt');
 
-    let sheet1 = await getTxtFile('/src/lib/characters/sheet1.txt');
-    let sheet2 = await getTxtFile('/src/lib/characters/sheet2.txt');
-    let sheet3 = await getTxtFile('/src/lib/characters/sheet3.txt');
-    let sheet4 = await getTxtFile('/src/lib/characters/sheet4.txt');
-    let sheet5 = await getTxtFile('/src/lib/characters/sheet5.txt');
-    let sheet6 = await getTxtFile('/src/lib/characters/sheet6.txt');
-    let sheet7 = await getTxtFile('/src/lib/characters/sheet7.txt');
-    let sheet8 = await getTxtFile('/src/lib/characters/sheet8.txt');
-    let sheet9 = await getTxtFile('/src/lib/characters/sheet9.txt');
-    let sheet10 = await getTxtFile('/src/lib/characters/sheet10.txt');
-    let sheetSelmon1 = await getTxtFile('/src/lib/characters/sheetSelmon1.txt');
-    let sheetSelmon2 = await getTxtFile('/src/lib/characters/sheetSelmon2.txt');
-    let sheetSelmon3 = await getTxtFile('/src/lib/characters/sheetSelmon3.txt');
+    let sheet1 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet1.txt');
+    let sheet2 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet2.txt');
+    let sheet3 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet3.txt');
+    let sheet4 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet4.txt');
+    let sheet5 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet5.txt');
+    let sheet6 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet6.txt');
+    let sheet7 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet7.txt');
+    let sheet8 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet8.txt');
+    let sheet9 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet9.txt');
+    let sheet10 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheet10.txt');
+    let sheetSelmon1 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheetSelmon1.txt');
+    let sheetSelmon2 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheetSelmon2.txt');
+    let sheetSelmon3 = await getTxtFile('https://raw.githubusercontent.com/mcspidey95/Dungeons-AI-Dragons/refs/heads/main/src/lib/characters/sheetSelmon3.txt');
 
     return [
         {

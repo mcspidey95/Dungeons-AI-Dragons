@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, Loading, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading, getDefaultCharacters, back, back1 } from '$lib';
 	import { characterSheetPrompt, themePrompt, introPrompt, choicePrompt, avatarGenerationPrompt, finalePrompt, summaryPrompt } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
@@ -139,109 +139,6 @@
 			}, 1000)
 		);
 	}
-
-	async function getTxtFile(url) {
-    const response = await fetch(url);
-    return await response.text();
-}
-
-	async function getDefaultCharacters() {
-    let char1 = await getTxtFile('./src/lib/characters/char1.txt');
-    let char2 = await getTxtFile('./src/lib/characters/char2.txt');
-    let char3 = await getTxtFile('./src/lib/characters/char3.txt');
-    let char4 = await getTxtFile('./src/lib/characters/char4.txt');
-    let char5 = await getTxtFile('./src/lib/characters/char5.txt');
-    let char6 = await getTxtFile('./src/lib/characters/char6.txt');
-    let char7 = await getTxtFile('./src/lib/characters/char7.txt');
-    let char8 = await getTxtFile('./src/lib/characters/char8.txt');
-    let char9 = await getTxtFile('./src/lib/characters/char9.txt');
-    let char10 = await getTxtFile('./src/lib/characters/char10.txt');
-    let charSelmon1 = await getTxtFile('/src/lib/characters/charSelmon1.txt');
-    let charSelmon2 = await getTxtFile('/src/lib/characters/charSelmon2.txt');
-    let charSelmon3 = await getTxtFile('/src/lib/characters/charSelmon3.txt');
-
-    let sheet1 = await getTxtFile('/src/lib/characters/sheet1.txt');
-    let sheet2 = await getTxtFile('/src/lib/characters/sheet2.txt');
-    let sheet3 = await getTxtFile('/src/lib/characters/sheet3.txt');
-    let sheet4 = await getTxtFile('/src/lib/characters/sheet4.txt');
-    let sheet5 = await getTxtFile('/src/lib/characters/sheet5.txt');
-    let sheet6 = await getTxtFile('/src/lib/characters/sheet6.txt');
-    let sheet7 = await getTxtFile('/src/lib/characters/sheet7.txt');
-    let sheet8 = await getTxtFile('/src/lib/characters/sheet8.txt');
-    let sheet9 = await getTxtFile('/src/lib/characters/sheet9.txt');
-    let sheet10 = await getTxtFile('/src/lib/characters/sheet10.txt');
-    let sheetSelmon1 = await getTxtFile('/src/lib/characters/sheetSelmon1.txt');
-    let sheetSelmon2 = await getTxtFile('/src/lib/characters/sheetSelmon2.txt');
-    let sheetSelmon3 = await getTxtFile('/src/lib/characters/sheetSelmon3.txt');
-
-    return [
-        {
-            name: 'Deeps',
-            pfp: char1,
-            desc: sheet1,
-        },
-        {
-            name: 'Aphrodite',
-            pfp: char2,
-            desc: sheet2,
-        },
-        {
-            name: 'Drawf',
-            pfp: char3,
-            desc: sheet3,
-        },
-        {
-            name: 'Cham',
-            pfp: char4,
-            desc: sheet4,
-        },
-        {
-            name: 'Edamame',
-            pfp: char5,
-            desc: sheet5,
-        },
-        {
-            name: 'Soup',
-            pfp: char6,
-            desc: sheet6,
-        },
-        {
-            name: 'Cobra Bhai',
-            pfp: char7,
-            desc: sheet7,
-        },
-        {
-            name: 'Clara',
-            pfp: char8,
-            desc: sheet8,
-        },
-        {
-            name: 'Tp',
-            pfp: char9,
-            desc: sheet9,
-        },
-        {
-            name: 'Ruby',
-            pfp: char10,
-            desc: sheet10,
-        },
-        {
-            name: 'Deer Killer',
-            pfp: charSelmon1,
-            desc: sheetSelmon1,
-        },
-        {
-            name: 'Heavy Driver',
-            pfp: charSelmon2,
-            desc: sheetSelmon2,
-        },
-        {
-            name: 'Selmon Bhai',
-            pfp: charSelmon3,
-            desc: sheetSelmon3,
-        },
-    ];
-}
 
 	async function random3Char() {
 		let num = Math.floor(Math.random() * 10);
