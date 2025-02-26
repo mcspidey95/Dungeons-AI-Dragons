@@ -41,16 +41,16 @@ async function getTxtFile(url) {
 }
 
 export async function getDefaultCharacters() {
-    let char1 = await getTxtFile('/src/lib/characters/char1.txt');
-    let char2 = await getTxtFile('/src/lib/characters/char2.txt');
-    let char3 = await getTxtFile('/src/lib/characters/char3.txt');
-    let char4 = await getTxtFile('/src/lib/characters/char4.txt');
-    let char5 = await getTxtFile('/src/lib/characters/char5.txt');
-    let char6 = await getTxtFile('/src/lib/characters/char6.txt');
-    let char7 = await getTxtFile('/src/lib/characters/char7.txt');
-    let char8 = await getTxtFile('/src/lib/characters/char8.txt');
-    let char9 = await getTxtFile('/src/lib/characters/char9.txt');
-    let char10 = await getTxtFile('/src/lib/characters/char10.txt');
+    let char1 = await getTxtFile('./src/lib/characters/char1.txt');
+    let char2 = await getTxtFile('./src/lib/characters/char2.txt');
+    let char3 = await getTxtFile('./src/lib/characters/char3.txt');
+    let char4 = await getTxtFile('./src/lib/characters/char4.txt');
+    let char5 = await getTxtFile('./src/lib/characters/char5.txt');
+    let char6 = await getTxtFile('./src/lib/characters/char6.txt');
+    let char7 = await getTxtFile('./src/lib/characters/char7.txt');
+    let char8 = await getTxtFile('./src/lib/characters/char8.txt');
+    let char9 = await getTxtFile('./src/lib/characters/char9.txt');
+    let char10 = await getTxtFile('./src/lib/characters/char10.txt');
     let charSelmon1 = await getTxtFile('/src/lib/characters/charSelmon1.txt');
     let charSelmon2 = await getTxtFile('/src/lib/characters/charSelmon2.txt');
     let charSelmon3 = await getTxtFile('/src/lib/characters/charSelmon3.txt');
