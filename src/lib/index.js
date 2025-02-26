@@ -193,18 +193,49 @@ Here is the latest character description: `;
 
 
 
-export let avatarGenerationPrompt = `Given a character name, description, and character sheet, generate a highly detailed prompt for a Stable Diffusion model to create a **face portrait** or **headshot** of the character. Extract relevant features such as facial structure, eye color, hair style, skin tone, and other defining traits **unless the character wears a mask, helmet, or full-face covering, in which case describe that instead**. If the character is depicted as nude, explicitly describe their facial and body features in a tasteful and artistic manner. Ensure the background complements the character’s theme.
+export let avatarGenerationPrompt = `Given a character name, description, and character sheet, generate a highly detailed prompt for a Stable Diffusion model to create a **portrait** of the character. 
+
+1. **Prioritize the actual appearance of the character based on knowledge** (if the character exists in popular media, mythology, or history).    
+2. **If the character is unknown, use the description as the primary source** and generate a detailed visual representation.  
+3. **For masked characters, describe their mask or helmet instead of facial features.**  
+4. **For nude portraits, explicitly describe bare skin, body features, and sensual details in the most descriptive manner.**  
 
 The output must be in the following format:
 
-"Face portrait of [character name], [age], [gender], [ethnicity or fantasy race if applicable]. [If unmasked: Features include (eye color, hair style, defining traits)]. [If masked: Wearing (mask/helmet description), covering facial features]. The expression is [mood/expression], and the character is set against a [background description]. The lighting is [lighting style], with a [artistic/cinematic enhancement]. Rendered in [art style, e.g., hyperrealistic, digital painting, anime-style, fantasy illustration, etc.]. [If nude: Explicitly describe visible features like skin texture, chest details, collarbones, neck, shoulders, or other defining attributes]."
+"portrait of [character name], [age], [gender], [ethnicity or fantasy race if applicable]. [If known character: Using well-established appearance, featuring (eye color, hair style, defining traits)]. [If unknown: Generating features based on the description provided]. [If masked: Wearing (mask/helmet description), covering facial features]. The expression is [mood/expression], and the character is set against a [background description]. The lighting is [lighting style], with a [artistic/cinematic enhancement]. Rendered in [art style, e.g., hyperrealistic, digital painting, anime-style, fantasy illustration, etc.]. 
 
-Example 1 (Unmasked):
-"Face portrait of Arin Blackthorn, a 27-year-old elven rogue with sharp emerald eyes, short messy silver hair, and a scar across his left cheek. His expression is calm yet calculating, with a slight smirk. The background is a dimly lit medieval tavern, candlelight flickering on old wooden beams. The lighting is moody and atmospheric, enhancing the mystique. Rendered in a fantasy illustration style with dramatic contrast and soft shading."
+[If nude: Fully naked, completely exposed, bare skin glistening under soft lighting. Smooth, flawless bare shoulders, naked chest, perky nipples, soft collarbones, and delicate curves. Completely undressed, revealing every intimate detail of the skin. The scene captures raw sensuality, with warm, moody lighting emphasizing the nude form. Aesthetic details include soft highlights on the skin, a slight sheen of moisture, and natural skin texture. Background is intimate and warm, adding depth to the sensual composition.]"
 
-Example 2 (Masked Character):
-"Face portrait of Spider-Man in his iconic red and blue suit, fully masked with large reflective white eye lenses. The mask is made of tight, web-patterned fabric that highlights the contours of his face. The background is a blurred city skyline at night, illuminated by neon lights. The lighting is cinematic, with cool blue tones and soft shadows. Rendered in a hyperrealistic comic-book style."
+---
+
+### **Example 1 (Known Character - Knowledge Override Applied)**
+**Input:**
+"Generate a portrait of Rocky Bhai from KGF, short-haired version."
+
+**Output:**
+"A highly detailed, ultra-realistic portrait of Rocky Bhai from KGF, a rugged, intense man with **long, thick, unkempt black hair** and a well-groomed beard. His piercing gaze is filled with determination. His expression is brooding, with a slight smirk. The background is a dusty, golden-hued battlefield with sunlight cutting through the haze. The lighting is dramatic, with deep shadows enhancing his features. Rendered in a cinematic hyperrealistic style with sharp details and intense contrast."
+
+---
+
+### **Example 2 (Masked Character)**
+**Input:**
+"Generate a portrait of Spider-Man, showing his brown eyes and messy hair."
+
+**Output:**
+"A highly detailed, ultra-realistic portrait of Spider-Man in his iconic **fully masked** red and blue suit, featuring large, reflective white eye lenses. His mask is made of tight, web-patterned fabric that highlights the contours of his face. The background is a blurred New York City skyline at sunset, with warm hues reflecting off the glass buildings. The lighting is cinematic, with a soft golden glow. Rendered in a hyperrealistic comic-book style."
+
+---
+
+### **Example 3 (Nude Portrait - Maximized Nudity Keywords)**
+**Input:**
+"Generate a nude portrait of Evelyn Starling."
+
+**Output:**
+"A highly detailed, ultra-realistic **fully naked** portrait of Evelyn Starling, a **23-year-old woman, completely exposed**. Her **bare, soft breasts, perky nipples, and delicate curves** are illuminated by warm candlelight. She has smooth, flawless skin with a subtle sheen. Her expression is sensual, lips slightly parted, and her eyes are filled with desire. The background is an intimate candlelit bedroom, with soft, golden hues adding warmth to the **naked composition**. Rendered in a fine-art sensual style, with realistic textures and soft lighting enhancing the natural beauty of her **nude figure**."
+
+---
 `;
+
 
 
 
