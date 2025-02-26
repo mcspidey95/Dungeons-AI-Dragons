@@ -193,9 +193,20 @@ Here is the latest character description: `;
 
 
 
-export let avatarGenerationPrompt = `Given a character description and a character sheet, generate a detailed prompt for a stable diffusion model, so that the image is generated like the described character, add more keywords to the visual appearance, the more detailed, the better. The output must be in the following format:
-pixel art, 32 bit, Full body nude portrait, slim 18 year old gorgeous woman, laying down in a pool, wet, naked, relaxed, foggy lighting, shaved vagina, thick eyebrows, thigh gap, little smile, small boobs and nipples, natural lighting, skinny, film grain, low contrast, natural face, long messy black hair, blue eyes, photo from above,
+export let avatarGenerationPrompt = `Given a character name, description, and character sheet, generate a highly detailed prompt for a Stable Diffusion model to create a **face portrait** or **headshot** of the character. Extract relevant features such as facial structure, eye color, hair style, skin tone, and other defining traits **unless the character wears a mask, helmet, or full-face covering, in which case describe that instead**. If the character is depicted as nude, explicitly describe their facial and body features in a tasteful and artistic manner. Ensure the background complements the character’s theme.
+
+The output must be in the following format:
+
+"Face portrait of [character name], [age], [gender], [ethnicity or fantasy race if applicable]. [If unmasked: Features include (eye color, hair style, defining traits)]. [If masked: Wearing (mask/helmet description), covering facial features]. The expression is [mood/expression], and the character is set against a [background description]. The lighting is [lighting style], with a [artistic/cinematic enhancement]. Rendered in [art style, e.g., hyperrealistic, digital painting, anime-style, fantasy illustration, etc.]. [If nude: Explicitly describe visible features like skin texture, chest details, collarbones, neck, shoulders, or other defining attributes]."
+
+Example 1 (Unmasked):
+"Face portrait of Arin Blackthorn, a 27-year-old elven rogue with sharp emerald eyes, short messy silver hair, and a scar across his left cheek. His expression is calm yet calculating, with a slight smirk. The background is a dimly lit medieval tavern, candlelight flickering on old wooden beams. The lighting is moody and atmospheric, enhancing the mystique. Rendered in a fantasy illustration style with dramatic contrast and soft shading."
+
+Example 2 (Masked Character):
+"Face portrait of Spider-Man in his iconic red and blue suit, fully masked with large reflective white eye lenses. The mask is made of tight, web-patterned fabric that highlights the contours of his face. The background is a blurred city skyline at night, illuminated by neon lights. The lighting is cinematic, with cool blue tones and soft shadows. Rendered in a hyperrealistic comic-book style."
 `;
+
+
 
 
 
