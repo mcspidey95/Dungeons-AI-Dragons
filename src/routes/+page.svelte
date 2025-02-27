@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { initialText, gameLogo, Loading, getDefaultCharacters, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading, Loading1, getDefaultCharacters, back, back1 } from '$lib';
 	import { characterSheetPrompt, themePrompt, introPrompt, choicePrompt, avatarGenerationPrompt, finalePrompt, summaryPrompt } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
@@ -141,14 +141,14 @@
 	}
 
 	async function random3Char() {
-		let num = Math.floor(Math.random() * 10);
-		let num1 = Math.floor(Math.random() * 10);
-		let num2 = Math.floor(Math.random() * 10);
+		let num = Math.floor(Math.random() * 12);
+		let num1 = Math.floor(Math.random() * 12);
+		let num2 = Math.floor(Math.random() * 12);
 
 		while(num === num1 || num === num2 || num1 === num2){
-			num = Math.floor(Math.random() * 10);
-			num1 = Math.floor(Math.random() * 10);
-			num2 = Math.floor(Math.random() * 10);
+			num = Math.floor(Math.random() * 12);
+			num1 = Math.floor(Math.random() * 12);
+			num2 = Math.floor(Math.random() * 12);
 		}
 
 		numArray = [num, num1, num2];
@@ -156,12 +156,12 @@
 		defaultCharacters = await getDefaultCharacters();
 
 		if(isSelmon){
-			char1 = defaultCharacters[10].pfp;
-			charName1 = defaultCharacters[10].name;
-			char2 = defaultCharacters[11].pfp;
-			charName2 = defaultCharacters[11].name;
-			char3 = defaultCharacters[12].pfp;
-			charName3 = defaultCharacters[12].name;
+			char1 = defaultCharacters[12].pfp;
+			charName1 = defaultCharacters[12].name;
+			char2 = defaultCharacters[13].pfp;
+			charName2 = defaultCharacters[13].name;
+			char3 = defaultCharacters[14].pfp;
+			charName3 = defaultCharacters[14].name;
 		}
 		else{
 			char1 = defaultCharacters[numArray[0]].pfp;
@@ -610,7 +610,7 @@
 
 {#if showLoadingCenter}
 	<div class="center-loading">
-		<img src="{Loading}" alt="Loading..." />
+		<img src="{Loading1}" alt="Loading..." />
 	</div>
 {/if}
 

@@ -538,6 +538,7 @@ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     padding: 0;
     color: grey;
     transition: all 0.5s ease;
+    animation: fadeInPop 0.5s ease forwards;
 }
 
 #loading.hidden {
