@@ -181,8 +181,8 @@
 		showCharacterSheet = true;
 
 		if(isSelmon){
-			characterContent = defaultCharacters[10+characterIndex].desc;
-			avatarImage = defaultCharacters[10+characterIndex].pfp;
+			characterContent = defaultCharacters[12+characterIndex].desc;
+			avatarImage = defaultCharacters[12+characterIndex].pfp;
 			formatCharacterSheet(characterContent);
 		}
 		else{
