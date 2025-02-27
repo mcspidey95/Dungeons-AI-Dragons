@@ -1,6 +1,6 @@
 ----------CHARACTER SHEET----------
 
-Name: Ruby  
+Name: Raven  
 Class: Elite Hacker
 Race: Human (with a talent for coding and a love for the thrill of the steal)  
 
@@ -14,10 +14,10 @@ Agility (18): Moves quickly through the dark web, but trips over her own feet wh
 
 Morality (6): Chaotic Neutral—steals from the government and supermarkets, but only because she can and it's fun, not because she's inherently evil.  
 
-Fame (15): Known only by her handle "ZeroCoolChick" in the hacking community; her exploits are legendary, but her true identity remains a mystery.  
+Fame (15): Known only by her handle "Technophile" in the hacking community; her exploits are legendary, but her true identity remains a mystery.  
 
 Special Abilities: Can hack into any system, write code in her sleep, and make a profit from even the most mundane online exploits.  
 
 
 Backstory:
-Ruby's life is a never-ending game of cat and mouse with the authorities, as she uses her exceptional hacking skills to steal from the government and local supermarkets, always staying one step ahead of the law and earning her reputation as the most elusive hacker in the game.
+Raven's life is a never-ending game of cat and mouse with the authorities, talent for coding and a love for the thrill of the steal, as she uses her exceptional hacking skills to steal from the government and local supermarkets, always staying one step ahead of the law and earning her reputation as the most elusive hacker in the game. She tries to be anonymous as possible and carries a mask everywhere she goes, Can bypass even the most secure systems, but struggles with carrying her own laptop.

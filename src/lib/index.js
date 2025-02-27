@@ -106,17 +106,17 @@ export async function getDefaultCharacters() {
             desc: sheet7,
         },
         {
-            name: 'Clara',
+            name: 'Dr. Zappina Volt',
             pfp: char8,
             desc: sheet8,
         },
         {
-            name: 'Tp',
+            name: 'The Penguin',
             pfp: char9,
             desc: sheet9,
         },
         {
-            name: 'Ruby',
+            name: 'Raven',
             pfp: char10,
             desc: sheet10,
         },
@@ -306,7 +306,7 @@ Scenario:
 
 You've tracked the thief to a dimly lit, smoke-filled yakuza club. The bouncer, a hulking brute with a face like a smashed watermelon, blocks your path. "Password?" he growls.
 
-What do say?
+What do you say?
 `;
 
 
