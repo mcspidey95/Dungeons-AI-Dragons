@@ -192,6 +192,7 @@
 		}
 
 		showStartButton = true;
+		
 	}
 
 	function handleBackClick() {
@@ -241,7 +242,7 @@
 		isLoading = false;
     	typeCharacterSheetText(20);
 
-    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt + characterContent);
+    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt);
 		console.log(avatarImage);
     	
 		showStartButton = true;
