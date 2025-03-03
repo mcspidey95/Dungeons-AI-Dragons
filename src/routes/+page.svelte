@@ -242,7 +242,7 @@
 		isLoading = false;
     	typeCharacterSheetText(20);
 
-    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt);
+    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024);
 		console.log(avatarImage);
     	
 		showStartButton = true;
@@ -414,7 +414,7 @@
 	}
 
 	async function generateBackground(story) {
-    	backgroundImage = await imgLLM(themePrompt + story);
+    	backgroundImage = await imgLLM(themePrompt + story, 1024, 1024);
 	}
 
 	// <-------------------------------------- UI Elements -------------------------------------->

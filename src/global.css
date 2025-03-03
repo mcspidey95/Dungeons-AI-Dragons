@@ -183,7 +183,7 @@ body {
 .image-display img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire container */
+    //object-fit: cover; /* Ensures the image covers the entire container */
     object-position: center; /* Centers the image if cropping is needed */
 }
 

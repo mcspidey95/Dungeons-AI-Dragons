@@ -1,6 +1,6 @@
 // src/routes/api/generate-image/+server.js
 export async function POST({ request }) {
-    const { prompt } = await request.json();
+    const { prompt, imgHeight, imgWidth } = await request.json();
     const url = 'https://sd.ifsvivek.in/sdapi/v1/txt2img';
 
     const params = {
@@ -10,8 +10,8 @@ export async function POST({ request }) {
         sampler_index: 'DPM++ 2M',
         negative_prompt: "extra fingers, missing fingers, poorly rendered hands, mutation, deformed limbs, watermark",
         clip_skip: 2,
-        width: 1024,
-        height: 1024,
+        height: imgHeight,
+        width: imgWidth,
     };
 
     try {
