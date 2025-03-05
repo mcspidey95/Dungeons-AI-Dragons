@@ -1,10 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
 	import { initialText, gameLogo, Loading, Loading1, getDefaultCharacters, back, back1 } from '$lib';
-	import { characterSheetPrompt, themePrompt, introPrompt, choicePrompt, avatarGenerationPrompt, finalePrompt, summaryPrompt } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
+	
 	import { storyLLM, charLLM, imgLLM} from './api/models';
+	import { themePrompt } from '$lib/prompts/backgroundPrompt';
+	import { characterSheetPrompt, avatarGenerationPrompt } from '$lib/prompts/characterPrompt';
+	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
 
 	let timer;
 	let countdown;
@@ -47,8 +50,11 @@
 	let userPrompt = '';
 	let avatarImage = '';
 	let backgroundImage = '';
+	let backgroundImage2 = '';
 	let displayText = '';
 	let story = '';
+	let storyFull = '';
+	let storyNext = '';
 	let userResponse = '';
 
 	let currentText = initialText;
@@ -412,10 +418,6 @@
     	}
 	}
 
-	async function generateBackground(story) {
-    	backgroundImage = await imgLLM(themePrompt + story, 1229, 1843);
-	}
-
 	// <-------------------------------------- UI Elements -------------------------------------->
 
 	async function openPopup() {
@@ -478,28 +480,46 @@
 
     	try {
 
-        	story = await storyLLM(introPrompt + characterContent);
-        	await generateBackground(story);
+        	storyFull = await storyLLM(preIntroPrompt + characterContent);
+			storyNext = storyLLM(preChoicePrompt + storyFull);
+        	backgroundImage = await imgLLM(themePrompt + storyFull, 1229, 1843);
+			backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
 
         	showLoadingCenter = false;
         	backgroundMusic.pause();
         	backgroundMusic.currentTime = 0;
 
         	await typeStoryText(story, 20);
-        	await openPopup();
-        	await waitForFlag();
-        
-        	for (let i = 0; i < 2; i++) {
-            	isSubmitted = false;
 
-           		await generateBackground(story);
 
-            	showLoadingCenter = false;
+			for(let i = 0; i < 2; i++){
+				
+				isSubmitted = false;
+				
+				if(i!=0){
+					storyFull = storyNext; 
+					storyNext = storyLLM(preChoicePrompt + storyFull);            //story continue
+					await typeStoryText(story, 20);    //story continue
 
-            	await typeStoryText(story, 20);
-            	await openPopup();
-            	await waitForFlag();
-        	}
+					backgroundImage = backgroundImage2;
+					backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
+				}
+
+				storyFull = storyNext;                 //pre-choice        
+				await typeStoryText(story, 20);        //pre-choice
+
+				await openPopup();                     //choice
+        		await waitForFlag();                   //choice
+
+				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+generateRandomNumber()+'}');
+				
+				//dice roll effect
+
+				backgroundImage = backgroundImage2; 
+				storyNext = storyLLM(continuePrompt + storyFull);   
+				backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
+				await typeStoryText(story, 20);        //post-choice
+			}
     	} catch (error) {
         	console.error('Error during initialization:', error);
         	showLoadingCenter = false;
