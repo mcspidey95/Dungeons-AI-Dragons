@@ -1,546 +1,561 @@
 @font-face {
-    font-family: 'VT323';
-    src: url('$lib/fonts/game.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'VT323';
+	src: url('$lib/fonts/game.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
 }
 
 ::-webkit-scrollbar {
-    width: 10px; /* Adjust scrollbar width */
-    height: 10px; /* Adjust scrollbar height */
-    transition: all 0.3s ease; /* Smooth fade-in/out effect */
+	width: 10px; /* Adjust scrollbar width */
+	height: 10px; /* Adjust scrollbar height */
+	transition: all 0.3s ease; /* Smooth fade-in/out effect */
 }
 
 ::-webkit-scrollbar-corner {
-    background: #1a1a1a;
+	background: #1a1a1a;
+	border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(10, 10, 10);
-    border-radius: 5px; /* Rounded corners for a modern look */
-    border: 2px solid rgba(0, 0, 0, 0); /* Padding effect around the thumb */
-    background-clip: content-box; /* Ensures proper padding appearance */
-    min-width: 32px; /* Minimum size for the thumb */
-    min-height: 32px; /* Minimum size for the thumb */
-    opacity: 0;
-    transition: all 0.3s ease; /* Smooth fade-in/out effect */
-    cursor: default; /* Change cursor on hover */
+	background-color: rgb(10, 10, 10);
+	border-radius: 5px; /* Rounded corners for a modern look */
+	border: 2px solid rgba(0, 0, 0, 0); /* Padding effect around the thumb */
+	background-clip: content-box; /* Ensures proper padding appearance */
+	min-width: 32px; /* Minimum size for the thumb */
+	min-height: 32px; /* Minimum size for the thumb */
+	opacity: 0;
+	transition: all 0.3s ease; /* Smooth fade-in/out effect */
+	cursor: default; /* Change cursor on hover */
 }
 
-.character-sheet:hover ::-webkit-scrollbar-thumb{
-    background-color: #888;
+.character-sheet:hover ::-webkit-scrollbar-thumb {
+	background-color: #888;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 5px; /* Rounded track corners */
+	border-radius: 5px; /* Rounded track corners */
 	margin: 8px 8px;
-    opacity: 0;
+	opacity: 0;
 }
 
 body {
-    margin: 0;
-    background-color: black;
-    color: white;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: 'VT323', monospace;
-    transition: background 0.5s ease; 
-    user-select: none; /* Disable text selection */
+	margin: 0;
+	background-color: black;
+	color: white;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: 'VT323', monospace;
+	transition: background 0.5s ease;
+	user-select: none; /* Disable text selection */
 }
 
 .typing-container {
-    display: inline-block;
-    white-space: pre;
-    font-family: 'VT323', monospace;
-    z-index: 1000;
-    cursor: default;
-    
+	display: inline-block;
+	white-space: pre;
+	font-family: 'VT323', monospace;
+	z-index: 1000;
+	cursor: default;
 }
 
 .image-container {
-    position: fixed;
-    top: 3vh; /* Adjusted to vh for responsiveness */
-    left: 3.5vw; /* Adjusted to vw for responsiveness */
-    width: 13vw; /* Base width scales with screen width */
-    height: 13vw; /* Square: height matches width */
-    z-index: 1000;
+	position: fixed;
+	top: 3vh; /* Adjusted to vh for responsiveness */
+	left: 3.5vw; /* Adjusted to vw for responsiveness */
+	width: 13vw; /* Base width scales with screen width */
+	height: 13vw; /* Square: height matches width */
+	z-index: 1000;
 }
 
 .placeholder-image {
-    opacity: 0; /* Start hidden */
-    transform: scale(0.8); /* Start smaller */
-    transition: all 0.5s ease; /* Smooth transition for properties */
-    background-color: rgb(10, 10, 10);
-    width: 10px;
-    height: 10px;
-    animation: fadeInPop 0.5s ease forwards;
+	opacity: 0; /* Start hidden */
+	transform: scale(0.8); /* Start smaller */
+	transition: all 0.5s ease; /* Smooth transition for properties */
+	background-color: rgb(10, 10, 10);
+	width: 10px;
+	height: 10px;
+	animation: fadeInPop 0.5s ease forwards;
 }
 
 .placeholder-image.pop-up {
-    opacity: 1;
-    transform: scale(1);
+	opacity: 1;
+	transform: scale(1);
 }
 
 .image-container img {
-    width: 100%;
-    height: 100%; /* Changed to 100% to fill square container */
-    object-fit: cover; /* Ensures image fills square without distortion */
-    border: 2px solid #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
+	width: 100%;
+	height: 100%; /* Changed to 100% to fill square container */
+	object-fit: cover; /* Ensures image fills square without distortion */
+	border: 2px solid #ffffff;
+	border-radius: 10px;
+	box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
 }
 
 .textarea-wrapper {
-    margin-top: 5vh; /* Adjusted to vh for responsiveness */
-    opacity: 0;
-    transform: scale(0.8);
-    animation: fadeInPop 0.5s ease forwards;
-    transition: all 0.5s ease; /* Smooth transition for repositioning */
-    z-index: 1000;
+	margin-top: 5vh; /* Adjusted to vh for responsiveness */
+	opacity: 0;
+	transform: scale(0.8);
+	animation: fadeInPop 0.5s ease forwards;
+	transition: all 0.5s ease; /* Smooth transition for repositioning */
+	z-index: 1000;
 }
 
 .textarea-wrapper.character-sheet {
-    position: fixed;
-    left: 1vw; /* Distance from left */
-    width: 17vw; /* Scales with screen width */
-    top: 14vw; /* Below image-container */
-    bottom: 1vw; /* Distance from bottom */
-    max-height: calc(100vh - top - 5vh); /* Ensure it doesn’t exceed viewport */
-    height: auto; /* Allow it to adjust dynamically */
-    transform: scale(1); /* Reset scaling */
-    opacity: 1; /* Ensure it's visible */
+	position: fixed;
+	left: 1vw; /* Distance from left */
+	width: 17vw; /* Scales with screen width */
+	top: 14vw; /* Below image-container */
+	bottom: 1vw; /* Distance from bottom */
+	max-height: calc(100vh - top - 5vh); /* Ensure it doesn’t exceed viewport */
+	height: auto; /* Allow it to adjust dynamically */
+	transform: scale(1); /* Reset scaling */
+	opacity: 1; /* Ensure it's visible */
 }
 
-
-
-
 .character-input {
-    width: 400px;
-    height: 150px;
-    background-color: black;
-    color: white;
-    border-radius: 8px;
-    padding: 10px;
-    font-family: 'VT323', monospace;
-    font-size: 16px;
-    outline: none;
-    background-color: rgb(10, 10, 10);
-    border: 2px solid #ffffff;
-    border-radius: 10px;
-    transition:
-        width 0.5s ease,
-        height 0.5s ease;
+	width: 400px;
+	height: 150px;
+	background-color: black;
+	color: white;
+	border-radius: 8px;
+	padding: 10px;
+	font-family: 'VT323', monospace;
+	font-size: 16px;
+	outline: none;
+	background-color: rgb(10, 10, 10);
+	border: 2px solid #ffffff;
+	border-radius: 10px;
+	transition:
+		width 0.5s ease,
+		height 0.5s ease;
 }
 
 .character-input.character-sheet {
-    width: 100%; /* Adjust width to match wrapper */
-    height: 60vh; /* Make it taller as a character sheet */
-    resize: none; /* Prevent resizing */
-    background-color: black;
-    color: white;
-    background-color:rgb(10, 10, 10);
-    border: 2px solid #ffffff;
-    border-radius: 10px;
-    padding: 10px;
-    font-family: 'VT323', monospace;
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto; /* Allow vertical scrolling */
+	width: 100%; /* Adjust width to match wrapper */
+	height: 60vh; /* Make it taller as a character sheet */
+	resize: none; /* Prevent resizing */
+	background-color: black;
+	color: white;
+	background-color: rgb(10, 10, 10);
+	border: 2px solid #ffffff;
+	border-radius: 10px;
+	padding: 10px;
+	font-family: 'VT323', monospace;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	overflow-y: auto; /* Allow vertical scrolling */
 }
 .character-input.character-sheet:focus {
-    box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
+	box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
 }
 
 .character-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+	color: rgba(255, 255, 255, 0.6);
 }
 
 .character-input:focus {
-    box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
+	box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
 }
 
 .image-display {
-    position: absolute;
-    right: 200px;
-    top: 20px;
-    width: 70%; /* Adjust as needed */
-    height: 95%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black; /* Optional: Contrast background */
-
-    border-radius: 8px;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth fade-in and scale */
+	position: absolute;
+	left: 21vw; /* Adjust based on character sheet width + padding */
+	right: 100px; /* Leave space on the right */
+	top: 1vw;
+	bottom: 1vw; /* Ensure it resizes properly */
+	width: 100vw%;
+	height: 100vw%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: black;
+	border: 2px solid #ffffff;
+	border-radius: 10px;
+	opacity: 0;
+	transition:
+		opacity 0.5s ease,
+		transform 0.5s ease;
 }
 
+
 .image-display img {
-    width: 100%;
-    height: 100%;
-    //object-fit: cover; /* Ensures the image covers the entire container */
-    object-position: center; /* Centers the image if cropping is needed */
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	//object-fit: cover; /* Ensures the image covers the entire container */
+	object-position: center; /* Centers the image if cropping is needed */
 }
 
 .image-display.show {
-    opacity: 1;
-    transform: scale(1);
+	opacity: 1;
+	transform: scale(1);
 }
 
 .story-display {
-    position: absolute;
-    bottom: 10px; /* Adjust to position at the bottom */
-    left: 20px; /* Adjust to position at the left */
-    width: 95%; /* Adjust width as needed */
-    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
-    color: white;
+	position: absolute;
+	bottom: 10px; /* Adjust to position at the bottom */
+	left: 20px; /* Adjust to position at the left */
+	width: 95%; /* Adjust width as needed */
+	background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+	color: white;
 
-    border-radius: 8px;
-    padding: 10px;
-    font-family: 'VT323', monospace;
-    font-size: 20px;
-    resize: none; /* Prevent resizing */
-    overflow: auto; /* Allow scrolling for overflow */
-    height: 20%; /* Adjust as needed */
-    z-index: 1000; /* Ensure it appears above other elements */
+	border-radius: 8px;
+	padding: 10px;
+	font-family: 'VT323', monospace;
+	font-size: 20px;
+	resize: none; /* Prevent resizing */
+	overflow: auto; /* Allow scrolling for overflow */
+	height: 20%; /* Adjust as needed */
+	z-index: 1000; /* Ensure it appears above other elements */
 }
 
 .popup-overlay {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 2000;
-font-family: 'VT323', monospace;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 2000;
+	font-family: 'VT323', monospace;
 }
 
 .popup-content {
-display: flex;
-flex-direction: column;
-align-items: center;
-border-radius: 8px;
-padding: 20px;
-width: 400px;
-text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 8px;
+	padding: 20px;
+	width: 400px;
+	text-align: center;
 }
 
 .countdown {
-font-size: 150px;
-padding-bottom: 50px;
-font-weight: bold;
-font-family: 'VT323';
-color: white;
-margin-bottom: 20px;
-text-align: center;
+	font-size: 150px;
+	padding-bottom: 50px;
+	font-weight: bold;
+	font-family: 'VT323';
+	color: white;
+	margin-bottom: 20px;
+	text-align: center;
 }
 
 .response-input {
-width: 100%;
-height: 100px;
-background-color: black;
-color: white;
-border: 1px solid white;
-border-radius: 8px;
-padding: 10px;
-font-family: 'VT323', monospace;
-font-size: 14px;
-resize: none;
-margin-bottom: 20px;
+	width: 100%;
+	height: 100px;
+	background-color: black;
+	color: white;
+	border: 1px solid white;
+	border-radius: 8px;
+	padding: 10px;
+	font-family: 'VT323', monospace;
+	font-size: 14px;
+	resize: none;
+	margin-bottom: 20px;
 }
 
 .submit-button {
-padding: 10px 20px;
-background-color: white;
-color: black;
-font-family: 'VT323', monospace;
-border: 2px solid white;
-border-radius: 8px;
-cursor: pointer;
-transition: transform 0.2s, box-shadow 0.2s;
+	padding: 10px 20px;
+	background-color: white;
+	color: black;
+	font-family: 'VT323', monospace;
+	border: 2px solid white;
+	border-radius: 8px;
+	cursor: pointer;
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
 }
 
 .submit-button:hover {
-transform: scale(1.1);
-box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+	transform: scale(1.1);
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-
 .cursor {
-    display: inline-block;
-    width: 1ch;
-    animation: blink 0.8s steps(2, start) infinite;
-    background-color: white;
-    height: 1em;
-    vertical-align: bottom;
+	display: inline-block;
+	width: 1ch;
+	animation: blink 0.8s steps(2, start) infinite;
+	background-color: white;
+	height: 1em;
+	vertical-align: bottom;
 }
 
 .start-button {
-    position: relative;
-    margin-top: 50px;
-    padding: 10px 20px;
-    background-color: white;
-    color: black;
-    font-family: 'VT323', monospace;
-    border: 2px solid white;
-    border-radius: 8px;
-    cursor: pointer;
-    animation: fadeInPop 0.5s ease none;
-    transition: transform 0.1s, box-shadow 0.1s;
+	position: relative;
+	margin-top: 50px;
+	padding: 10px 20px;
+	background-color: white;
+	color: black;
+	font-family: 'VT323', monospace;
+	border: 2px solid white;
+	border-radius: 8px;
+	cursor: pointer;
+	animation: fadeInPop 0.5s ease none;
+	transition:
+		transform 0.1s,
+		box-shadow 0.1s;
 }
 
 .start-button:hover {
-    transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+	transform: scale(1.05) translateY(-2px);
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .center-loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2000;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2000;
 }
 
 .center-loading img {
-    width: 200px; /* Smaller size for loading image */
-    height: auto;
+	width: 200px; /* Smaller size for loading image */
+	height: auto;
 }
 
 .hide-cursor .cursor {
-    display: none;
+	display: none;
 }
 
-
 @keyframes blink {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
 }
 
 @keyframes fadeInPop {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 /* Card Container */
 .card-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 50px;
-    z-index: 1000; /* Ensure it appears above other elements */
-    animation: fadeInPop 0.5s ease forwards;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 50px;
+	z-index: 1000; /* Ensure it appears above other elements */
+	animation: fadeInPop 0.5s ease forwards;
 }
 
 /* Character Card Styling */
 .character-card {
-    width: 150px;
-    height: 200px;
-    background-color: #1a1a1a;
-    border: 2px solid #ffffff;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+	width: 150px;
+	height: 200px;
+	background-color: #1a1a1a;
+	border: 2px solid #ffffff;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition:
+		transform 0.1s ease,
+		box-shadow 0.1s ease,
+		filter 0.1s ease;
 }
 
 .character-card:hover {
-    transform: scale(1.01) translateY(-5px);
-    box-shadow: 0 0 10px #ffffff;
+	transform: scale(1.01) translateY(-5px);
+	box-shadow: 0 0 10px #ffffff;
 }
 
 .character-card:hover .card-image {
-    filter: grayscale(0%); /* Revert to original image */
+	filter: grayscale(0%); /* Revert to original image */
 }
 
-
 .character-card:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 5px #cccccc;
+	transform: scale(0.95);
+	box-shadow: 0 0 5px #cccccc;
 }
 
 /* Card Image */
 .card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5px;
-    filter: grayscale(70%); /* Monochrome effect on images */
-    transition: filter 0.1s ease;
-    pointer-events: none; 
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 5px;
+	filter: grayscale(70%); /* Monochrome effect on images */
+	transition: filter 0.1s ease;
+	pointer-events: none;
 }
 
 /* Card Title */
 .card-title {
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    text-align: center;
-    color: #ffffff; /* White text */
-    text-transform: uppercase; /* Optional: for a sharper look */
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	text-align: center;
+	color: #ffffff; /* White text */
+	text-transform: uppercase; /* Optional: for a sharper look */
 }
 
 /* Custom Card */
 .custom-card {
-    background-color: #1a1a1a; /* Slightly lighter gray for distinction */
-    border: 2px solid #ffffff;
+	background-color: #1a1a1a; /* Slightly lighter gray for distinction */
+	border: 2px solid #ffffff;
 }
 
 /* Plus Symbol */
 .plus-symbol {
-    font-size: 50px;
-    font-weight: bold;
-    color: #ffffff; /* White plus sign */
+	font-size: 50px;
+	font-weight: bold;
+	color: #ffffff; /* White plus sign */
 }
 
 .back-button {
-    position: absolute; /* Position relative to the centered content */
-    left: calc(50% - 280px); /* 50% of screen width minus half the textarea width (300px) + some offset */
-    top: 58.5vh; /* Vertically center relative to the textarea */
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    border-radius: 10px; /* Adjust for visual alignment */
-    padding: 5px;
-    height: 25px;
-    width: 25px;
-    cursor: pointer;
-    z-index: 1000; /* Ensure it appears above other elements */
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+	position: absolute; /* Position relative to the centered content */
+	left: calc(
+		50% - 280px
+	); /* 50% of screen width minus half the textarea width (300px) + some offset */
+	top: 58.5vh; /* Vertically center relative to the textarea */
+	background-color: #1a1a1a;
+	color: #ffffff;
+	border: 2px solid #ffffff;
+	border-radius: 10px; /* Adjust for visual alignment */
+	padding: 5px;
+	height: 25px;
+	width: 25px;
+	cursor: pointer;
+	z-index: 1000; /* Ensure it appears above other elements */
+	transition:
+		background-color 0.2s ease,
+		transform 0.1s ease,
+		box-shadow 0.2s ease;
 }
 
 .back-button-hidden {
-    display: none; /* Hide the back button by default */
+	display: none; /* Hide the back button by default */
 }
 
 /* Hover Animation */
 .back-button:hover {
-    transform: translateY(-2px) scale(1.05); /* Maintain vertical centering */
-    box-shadow: 0 0 10px #ffffff;
+	transform: translateY(-2px) scale(1.05); /* Maintain vertical centering */
+	box-shadow: 0 0 10px #ffffff;
 }
 
 .back-button1 {
-    position: fixed; /* Position relative to the centered content */
-    left: 0;
-    top: 7vh;
-    transform: translateY(-50%); /* Adjust for vertical centering */
-    color: #ffffff;
-    border-radius: 5px; /* Adjust for visual alignment */
-    padding: 1.1vw;
-    height: 1.5em;
-    width: 1.5em;
-    cursor: pointer;
-    z-index: 1000; /* Ensure it appears above other elements */
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+	position: fixed; /* Position relative to the centered content */
+	left: 0;
+	top: 7vh;
+	transform: translateY(-50%); /* Adjust for vertical centering */
+	color: #ffffff;
+	border-radius: 5px; /* Adjust for visual alignment */
+	padding: 1.1vw;
+	height: 1.5em;
+	width: 1.5em;
+	cursor: pointer;
+	z-index: 1000; /* Ensure it appears above other elements */
+	transition:
+		background-color 0.2s ease,
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
 .back-button1:hover {
-    transform: translateY(-50%) scale(1.3); /* Maintain vertical centering */
+	transform: translateY(-50%) scale(1.3); /* Maintain vertical centering */
 }
 
 /* Center align the title */
 #sheet-title {
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
 }
 
 /* Style for feature spans */
 .sheet-feature {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color:white;
-    gap: 6px;
-    padding: 6px;
-    padding-left: 10px;
-    background: rgba(235, 223, 223, 0.1);
-    border-radius: 5px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: white;
+	gap: 6px;
+	padding: 6px;
+	padding-left: 10px;
+	background: rgba(235, 223, 223, 0.1);
+	border-radius: 5px;
 }
 
 .sheet-num {
-    display: block; /* Ensures it appears on a new line */
-    margin-top: 2px;
-    font-size: 14px; /* Adjust size as needed */
+	display: block; /* Ensures it appears on a new line */
+	margin-top: 2px;
+	font-size: 14px; /* Adjust size as needed */
 }
 
 .sheet-description {
-    text-align: left;
-    flex: 1; /* Ensures it takes the remaining space */
-    color: grey;
+	text-align: left;
+	flex: 1; /* Ensures it takes the remaining space */
+	color: grey;
 }
 
 /* Style feature text */
 .sheet-feature p {
-    margin: 0;
-    font-weight: bold;
+	margin: 0;
+	font-weight: bold;
 }
 
 /* Color-coded numbers */
 #red {
-    color:rgba(224, 20, 20, 0.76);
-    font-weight: bold;
+	color: rgba(224, 20, 20, 0.76);
+	font-weight: bold;
 }
 
 #green {
-    color: limegreen;
-    font-weight: bold;
-    text-allign: center;
+	color: limegreen;
+	font-weight: bold;
+	text-allign: center;
 }
 
 #grey {
-    color: grey;
+	color: grey;
 }
 
-#white{
-    color: white;
-    font-weight: bold;
-    width: 100px; /* Adjust as needed for consistent width */
-    flex-shrink: 0; /* Prevents it from shrinking */
+#white {
+	color: white;
+	font-weight: bold;
+	width: 100px; /* Adjust as needed for consistent width */
+	flex-shrink: 0; /* Prevents it from shrinking */
 }
 
-#sheet-name{
-    color: white;
+#sheet-name {
+	color: white;
 }
 
-#sheet-name1{
-    color:rgba(253, 251, 251, 0.76);
+#sheet-name1 {
+	color: rgba(253, 251, 251, 0.76);
 }
 
 #loading {
-    text-align: center;
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
-    color: grey;
-    transition: all 0.5s ease;
-    animation: fadeInPop 0.5s ease forwards;
+	text-align: center;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+	color: grey;
+	transition: all 0.5s ease;
+	animation: fadeInPop 0.5s ease forwards;
 }
 
 #loading.hidden {
-    display: none;
+	display: none;
 }

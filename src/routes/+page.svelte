@@ -5,7 +5,6 @@
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
 	import { storyLLM, charLLM, imgLLM} from './api/models';
-	//import { text } from '@sveltejs/kit';
 
 	let timer;
 	let countdown;
