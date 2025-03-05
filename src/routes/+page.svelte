@@ -413,7 +413,7 @@
 	}
 
 	async function generateBackground(story) {
-    	backgroundImage = await imgLLM(themePrompt + story, 1024, 1024);
+    	backgroundImage = await imgLLM(themePrompt + story, 1229, 1843);
 	}
 
 	// <-------------------------------------- UI Elements -------------------------------------->
