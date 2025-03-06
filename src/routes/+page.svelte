@@ -7,7 +7,7 @@
 	import { storyLLM, charLLM, imgLLM} from './api/models';
 	import { themePrompt } from '$lib/prompts/backgroundPrompt';
 	import { characterSheetPrompt, avatarGenerationPrompt } from '$lib/prompts/characterPrompt';
-	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
+	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
 
 	let timer;
 	let countdown;
@@ -74,6 +74,7 @@
 	let isBack1 = false;
 	let isSelmon = false;
 	let isLoading = false;
+	let isStoryEnd = false;
 
 
 	onMount(() => {
@@ -195,7 +196,6 @@
 			avatarImage = defaultCharacters[numArray[characterIndex]].pfp;
 			formatCharacterSheet(characterContent);
 		}
-
 		showStartButton = true;
 		
 	}
@@ -248,7 +248,6 @@
     	typeCharacterSheetText(20);
 
     	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024);
-		console.log(avatarImage);
     	
 		showStartButton = true;
 	}
@@ -402,8 +401,9 @@
 
 	// <-------------------------------------- Story Generation -------------------------------------->
 
-	async function typeStoryText(content, speed) {
+	async function storyAnimation(speed) {
     	let index = 0;
+		let content = story;
     	story = ''; // Reset the story text
 
     	while (index < content.length) {
@@ -418,50 +418,72 @@
     	}
 	}
 
+	async function typeStoryText() {
+		let typingIndex = 0;
+		let isStoryEnd = false;
+		let storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line); // Clean and remove empty lines
+
+		while (!isStoryEnd) {
+			story = storyLines[typingIndex];
+			await storyAnimation(5);
+
+			// Wait for a click event before proceeding
+			await new Promise(resolve => {
+				document.addEventListener('click', function onClick() {
+					document.removeEventListener('click', onClick); // Remove listener after the first click
+					resolve();
+				});
+			});
+
+			typingIndex++;
+			if (typingIndex >= storyLines.length) {
+				isStoryEnd = true;
+			}
+		}
+	}
+
+
 	// <-------------------------------------- UI Elements -------------------------------------->
 
-	async function openPopup() {
-    	userResponse = '';
-    	showPopup = true;
-    	await startCountdown();
-	}
+	async function handlePopup() {
+		userResponse = '';
+		showPopup = true;
+		countdown = 120;
+		isSubmitted = false;
 
-	function closePopup() {
-    	showPopup = false;
-    	clearInterval(timer);
-	}
+		function handleEnter(event) {
+			if (event.key === 'Enter' && userResponse!='') {
+				isSubmitted = true;
+			}
+		}
 
-	function waitForFlag() {
-		return new Promise((resolve) => {
-			const interval = setInterval(() => {
-        		if (isSubmitted) {
-            		clearInterval(interval); // Stop checking once the flag is true
-            		resolve(); // Resolve the promise to continue execution
-        		}
-    		}, 100); // Check every 100ms
+		document.addEventListener('keydown', handleEnter);
+
+		const countdownPromise = new Promise(resolve => {
+			timer = setInterval(() => {
+				if (--countdown <= 0) {
+					clearInterval(timer);
+					resolve();
+				}
+			}, 1000);
 		});
+
+		const submissionPromise = new Promise(resolve => {
+			const interval = setInterval(() => {
+				if (isSubmitted) {
+					clearInterval(interval);
+					clearInterval(timer);
+					resolve();
+				}
+			}, 100);
+		});
+
+		await Promise.race([countdownPromise, submissionPromise]);
+		window.removeEventListener('keydown', handleEnter);
+		showPopup = false;
 	}
 
-	function startCountdown() {
-    	countdown = 60;
-    	timer = setInterval(() => {
-        	countdown--;
-        	if (countdown <= 0) {
-            	clearInterval(timer);
-            	closePopup();
-        	}
-    	}, 1000);
-	}
 
-	async function handleResponseSubmit() {
-    	closePopup();
-
-    	showLoadingCenter = true;
-    	backgroundImage = '';
-    
-    	story = await storyLLM(choicePrompt + userResponse+' {'+generateRandomNumber()+'}');
-    	isSubmitted = true;
-	}
 
 	function generateRandomNumber() {
     	return Math.floor(Math.random() * 20) + 1;
@@ -480,46 +502,68 @@
 
     	try {
 
-        	storyFull = await storyLLM(preIntroPrompt + characterContent);
+        	storyFull = await storyLLM(introPrompt + characterContent);
 			storyNext = storyLLM(preChoicePrompt + storyFull);
         	backgroundImage = await imgLLM(themePrompt + storyFull, 1229, 1843);
-			backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
+			backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);
 
         	showLoadingCenter = false;
         	backgroundMusic.pause();
         	backgroundMusic.currentTime = 0;
 
-        	await typeStoryText(story, 20);
-
+        	await typeStoryText();
 
 			for(let i = 0; i < 2; i++){
 				
-				isSubmitted = false;
-				
 				if(i!=0){
-					storyFull = storyNext; 
+					storyFull = await storyNext; 
 					storyNext = storyLLM(preChoicePrompt + storyFull);            //story continue
-					await typeStoryText(story, 20);    //story continue
+					await typeStoryText();    //story continue
 
-					backgroundImage = backgroundImage2;
-					backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
+					backgroundImage = await backgroundImage2;
+					backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);
 				}
 
-				storyFull = storyNext;                 //pre-choice        
-				await typeStoryText(story, 20);        //pre-choice
+				storyFull = await storyNext;                 //pre-choice     
 
-				await openPopup();                     //choice
-        		await waitForFlag();                   //choice
+				await typeStoryText();        //pre-choice
+
+				await handlePopup();                 //choice
 
 				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+generateRandomNumber()+'}');
 				
 				//dice roll effect
 
-				backgroundImage = backgroundImage2; 
-				storyNext = storyLLM(continuePrompt + storyFull);   
-				backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
-				await typeStoryText(story, 20);        //post-choice
+				backgroundImage = await backgroundImage2; 
+				if(i!=1) storyNext = storyLLM(continuePrompt + storyFull);
+				else storyNext = storyLLM(continueEndPrompt + storyFull);
+				backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);
+				storyFull = await storyFull;
+				await typeStoryText();        //post-choice
 			}
+
+			storyFull = await storyNext;                                  //ending
+			storyNext = storyLLM(preFinalePrompt + storyFull);            
+			await typeStoryText();                                        //ending
+
+			backgroundImage = await backgroundImage2;
+			backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
+			storyFull = await storyNext;                 //pre-finale   
+
+			await typeStoryText();        //pre-finale
+
+			await handlePopup();                 //choice
+
+			storyFull = storyLLM(finalePrompt + userResponse+' {'+generateRandomNumber()+'}');
+
+			//dice roll effect
+
+			backgroundImage = await backgroundImage2;   //finale
+			storyFull = await storyFull;                //finale
+			await typeStoryText();                      //finale
+
+			let summary = storyLLM(summaryPrompt);      //summary
+
     	} catch (error) {
         	console.error('Error during initialization:', error);
         	showLoadingCenter = false;
@@ -645,7 +689,7 @@
 				bind:value={userResponse}
                 placeholder="Enter your response here..."
             ></textarea>
-            <button class="submit-button" on:click={handleResponseSubmit}>
+            <button class="submit-button" on:click={() => {isSubmitted = true}}>
                 Submit
             </button>
         </div>

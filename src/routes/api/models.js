@@ -18,7 +18,7 @@ export async function storyLLM(userPrompt) {
             // Save the response to the messages list
             messages = [...messages, { role: 'assistant', content: data.content }];
 
-            console.log('Input:', userPrompt);
+            //console.log('Input:', userPrompt);
             console.log('Response:', data.content);
 
             return data.content;
@@ -47,7 +47,7 @@ export async function charLLM(userPrompt) {
         if (response.ok) {
             const data = await response.json();
 
-            console.log('Input:', userPrompt);
+            //console.log('Input:', userPrompt);
             console.log('Response:', data.content);
 
             return data.content;
@@ -108,10 +108,6 @@ async function stableDiffusion(imagePrompt, height, width) {
         });
 
         if (response.ok) {
-            setTimeout(() => {
-                isImageReady = true;
-            }, 1000);
-
             const data = await response.json();
             return data.image;
         } else {

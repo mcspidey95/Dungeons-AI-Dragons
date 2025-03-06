@@ -89,6 +89,14 @@ export let continuePrompt = `
 `;
 
 
+export let continueEndPrompt = `
+`;
+
+
+export let preFinalePrompt = `
+`;
+
+
 export let finalePrompt = `
 `;
 
