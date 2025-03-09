@@ -1,32 +1,30 @@
 export let introPrompt = `
 
-"Once upon a time, in [setting description], there existed a most peculiar individual—[Character’s Name]."
+"Once upon a time, in [setting description], there existed a most peculiar individual—[Character's Name]."*  
 
-Using the following character sheet:
-[Insert character sheet details here]
+*Using the provided character sheet:*  
 
-Craft a humorous introduction for this character. The story should:
+*Craft a humorous introduction for this character. The story should:*  
+- **Be purely narration**—no dialogue.  
+- **Set a scene** that immerses the reader in the character's world.  
+- **Describe the character in a funny way** without listing stats—just naturally weave in the details.  
+- **Keep it short, simple, and punchy** (aim for 3-5 sentences max).  
+- **Introduce supporting characters** (nemeses, enemies, or unfortunate bystanders) if relevant.  
+- **Ensure that each sentence is followed by a newline (enter) for better readability.**  
 
-Be purely narration—no dialogue.
-Set a scene that immerses the reader in the character's world.
-Describe the character in a funny way by naturally integrating details from the character sheet rather than listing them.
-Avoid directly stating stats or categories (e.g., do not say "Strength: 5" or "Weakness: 10"). Instead, use them as inspiration for the storytelling.
-Ensure that each sentence is followed by a newline (enter) for better readability.
-Example Output Format:
+**Example Output Format:**  
 
-*"Once upon a time, in the sleepy town of Bumbledorf, where even the squirrels had social anxiety, there lived a man who could trip over absolutely nothing.
+*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man whose greatest enemy was his own two feet.  
 
-His name was Sir Reginald Wobblebottom, and he moved through life with all the poise of a giraffe attempting ballet on ice.
+Sir Reginald Wobblebottom could trip over a shadow, and often did.  
 
-If a door could be walked into, he would find it.
+The townsfolk had stopped gasping at his falls and had started taking bets.  
 
-If a carpet had even the slightest wrinkle, his face would soon be acquainted with the floor.
+Even the town's pigeons, normally impartial creatures, seemed to target him with remarkable accuracy.  
 
-Gravity, it seemed, had a personal vendetta against him.
+Yet, despite the universe's clear bias against him, Reginald marched forward—until, of course, he marched straight into the town fountain."*  
 
-The townsfolk had long given up on being surprised, merely taking bets on when and where he'd fall next.
 
-But despite the world treating him as its favorite slapstick act, Reginald persevered, head held high—until, of course, the lamppost intervened."*
 - Now here is your new character sheet: 
 
 `;
@@ -35,25 +33,32 @@ But despite the world treating him as its favorite slapstick act, Reginald perse
 
 export let preChoicePrompt = `
 
-Given a character sheet, create a story introduction and a challenging scenario with a decision point for the player and stop there. DO NOT mention potential consequences or give options. The plot should be as detailed as a movie. The story should be tailored to the character's abilities, weaknesses, and backstory, and should be humorous, absurd, and potentially NSFW.
+*Continue the humorous story:*
 
-Example Input:
+*The continuation should:*  
+- **Follow the same style**—pure narration, lighthearted, and comedic.  
+- **Introduce a new scenario** that puts the character in an absurd or tricky situation.  
+- **Force the character to make a choice**—one that could impact the story's direction.  
+- **Keep it short, simple, and punchy** (3-5 sentences max).  
+- **Include other characters or elements** (nemeses, allies, or even animals conspiring against them).  
+- **End with a question** to prompt the user to decide the next action.  
+- **Ensure each sentence has a newline (enter) for better readability.**  
 
-Character Sheet:
+**Example Output Format:**  
 
-Name: John Wick
-Class: Lethally Efficient Murderhobo
-Race: Human (but seriously, how does he do that?)
-...
-Example Output:
+*"As Sir Reginald Wobblebottom emerged from the town fountain, drenched and defeated, he faced a dilemma.  
 
-John Wick, the legendary assassin, finds himself in a seedy, neon-lit metropolis, Tokyo. He's been hired to retrieve a stolen antique katana, a family heirloom. The only problem? The thief is a yakuza boss with a penchant for violence and a taste for exotic pets.
+To his left, the mayor's wife approached, her prized porcelain poodle statue shattered at his feet.  
 
-Scenario:
+To his right, the annual Bumbledorf Pie Festival had just begun, and the scent of freshly baked disaster filled the air.  
 
-You've tracked the thief to a dimly lit, smoke-filled yakuza club. The bouncer, a hulking brute with a face like a smashed watermelon, blocks your path. "Password?" he growls.
+He could stay and attempt an apology, though history suggested his words would somehow make things worse.  
 
-What do you say?
+Or he could flee—straight into a gathering of elderly ladies armed with dangerously wobbly custard pies.  
+
+Both options seemed equally disastrous.  
+
+What does he do?"*
 `;
 
 

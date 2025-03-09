@@ -4,7 +4,7 @@ import { GROQ_API_KEY } from '$env/static/private';
 
 const llm = new ChatGroq({
     apiKey: GROQ_API_KEY,
-    model: 'mistral-saba-24b',
+    model: 'llama-3.3-70b-versatile',
     temperature: 0,
     maxTokens: undefined,
 });

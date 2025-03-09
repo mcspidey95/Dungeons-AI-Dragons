@@ -1,4 +1,3 @@
-let num = 2;
 let messages = [];
 
 export async function storyLLM(userPrompt) {
@@ -34,11 +33,8 @@ export async function storyLLM(userPrompt) {
 
 export async function charLLM(userPrompt) {
 
-    if(num === 1) num = 2;
-    else num = 1;
-
     try {
-        const response = await fetch('/api/charModel' + num, {
+        const response = await fetch('/api/charModel', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ messages: [{ role: 'user', content: userPrompt }] })
