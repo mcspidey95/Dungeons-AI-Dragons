@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { initialText, gameLogo, Loading, Loading1, getDefaultCharacters, back, back1 } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
@@ -57,6 +57,13 @@
 	let storyNext = '';
 	let userResponse = '';
 
+	let diceImage = "";
+	let targetNumber;
+	let fastRollInterval;
+	let resultText = "";
+	let lastNumber;
+	let onDiceRollComplete = null;
+
 	let currentText = initialText;
 	let index = 0;
 	let typingSpeed = 30;
@@ -75,6 +82,11 @@
 	let isSelmon = false;
 	let isLoading = false;
 	let isStoryEnd = false;
+	let showDice = false;
+	let rolling = false;
+	let slowingDown = false;
+	let showFinalImage = false;
+	let showDiceButton = true;
 
 
 	onMount(() => {
@@ -489,6 +501,95 @@
     	return Math.floor(Math.random() * 20) + 1;
 	}
 
+	// <-------------------------------------- Dice Functions -------------------------------------->
+
+	function getRandomDiceNumber() {
+		let newNumber;
+		do {
+			newNumber = Math.floor(Math.random() * 20) + 1;
+		} while (newNumber === lastNumber);
+
+		lastNumber = newNumber;
+		return newNumber;
+	}
+
+	function startFastRolling() {
+		showDice = true;
+		rolling = true;
+		resultText = "";
+		showFinalImage = false;
+
+		fastRollInterval = setInterval(() => {
+			diceImage = `src/lib/dice/dice${getRandomDiceNumber()}.png`;
+		}, 10); // Constant fast speed
+	}
+
+	async function rollDice(finalNumber) {
+		if (!rolling || slowingDown) return; // Prevent multiple triggers
+
+		slowingDown = true;
+		showDiceButton = false;
+		targetNumber = finalNumber;
+		clearInterval(fastRollInterval);
+
+		let duration = 4000; // Time to slow down
+		let startTime = Date.now();
+		let speed = 10; // Start fast
+
+		function easeOutQuad(t) {
+			return 1 - (1 - t) * (1 - t); // Smooth easing curve
+		}
+
+		function getNextFrame() {
+			let elapsed = Date.now() - startTime;
+			let progress = Math.min(elapsed / duration, 1); // 0 → 1
+			speed = 10 + easeOutQuad(progress) * 200; // Smooth slowdown
+
+			diceImage = `src/lib/dice/dice${getRandomDiceNumber()}.png`;
+
+			if (progress < 1) {
+				setTimeout(getNextFrame, speed);
+			} else {
+				revealFinalImage();
+			}
+		}
+
+		getNextFrame(); // Start slowdown
+	}
+
+	async function revealFinalImage() {
+		diceImage = `src/lib/dice/dice${targetNumber}.png`;
+		//diceImage = "src/lib/dice/flash.png"; // A blank/flash image for blink effect
+		await tick();
+		await new Promise((resolve) => setTimeout(resolve, 500)); // Short blink delay
+
+		diceImage = `src/lib/dice/dice${targetNumber}.png`;
+		showFinalImage = true;
+		resultText = `Shit! You got a ${targetNumber}`;
+
+		setTimeout(() => {
+			showDice = false;
+			showFinalImage = false;
+			
+			if (onDiceRollComplete) {
+				onDiceRollComplete();
+				onDiceRollComplete = null;
+			}
+		}, 3000); // Hide after 3s
+	}
+
+	export function startDiceRoll(finalNumber) {
+		return new Promise((resolve) => {
+			if (!rolling) {
+				startFastRolling();
+			}
+			targetNumber = finalNumber;
+
+			onDiceRollComplete = resolve;
+		});
+	}
+
+
 	// <-------------------------------------- Main Functions -------------------------------------->
 
 	export async function handleStartClick() {
@@ -530,9 +631,10 @@
 
 				await handlePopup();                 //choice
 
-				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+generateRandomNumber()+'}');
+				let luckyNumber = generateRandomNumber();
+				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');
 				
-				//dice roll effect
+				await startDiceRoll(luckyNumber);
 
 				backgroundImage = await backgroundImage2; 
 				if(i!=1) storyNext = storyLLM(continuePrompt + storyFull);
@@ -554,9 +656,10 @@
 
 			await handlePopup();                 //choice
 
-			storyFull = storyLLM(finalePrompt + userResponse+' {'+generateRandomNumber()+'}');
+			let luckyNumber = generateRandomNumber();
+			storyFull = storyLLM(finalePrompt + userResponse+' {'+luckyNumber+'}');
 
-			//dice roll effect
+			await startDiceRoll(luckyNumber);
 
 			backgroundImage = await backgroundImage2;   //finale
 			storyFull = await storyFull;                //finale
@@ -591,6 +694,19 @@
 		<img src="{Loading}" alt="Loading..." class="placeholder-image  {isImageReady ? 'pop-up' : ''}" />
 	{/if}
 </div>
+
+{#if showDice}
+   <div class="overlay">
+       <img class="dice {showFinalImage ? 'reveal' : ''}" src="{diceImage}" alt="Dice">
+       {#if showFinalImage}
+           <div class="result-text show">{resultText}</div>
+       {/if}
+       {#if showDiceButton}
+         <button class="start-button" on:click={() => rollDice(targetNumber)}>Ask God</button>
+       {/if}
+   </div>
+{/if}
+
 
 {#if showCharacterSelection}
     <div class="card-container">
