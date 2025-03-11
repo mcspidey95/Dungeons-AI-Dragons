@@ -1,27 +1,33 @@
 let messages = [];
 
 export async function storyLLM(userPrompt) {
+    // Process the first user input for storage
+    if (messages.length === 0) {
+        let splitText = userPrompt.split("here is your new character sheet:");
+        let relevantContent = splitText[1].trim(); // Extract relevant part
 
-    messages = [...messages, { role: 'user', content: userPrompt }];
+        let storedContent = await diceLLM(relevantContent + `
+            summarize the character sheet as simple as possible, without loosing detail, and using the least tokens possible`);
+        messages.push({ role: 'user', content: storedContent }); // Store only relevant content
+    }
 
     try {
         const response = await fetch('/api/storyModel', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages })
+            body: JSON.stringify({ messages: [...messages, { role: 'user', content: userPrompt }] }) // Send full user input
         });
 
         if (response.ok) {
             const data = await response.json();
 
-            // Save the response to the messages list
-            messages = [...messages, { role: 'assistant', content: data.content }];
+            // Store only the model's responses
+            let summarizedContent = await diceLLM(data.content + `
+                summarize the story as simple as possible, without loosing detail, and using the least tokens possible`);
+            messages.push({ role: 'assistant', content: summarizedContent });
 
-            //console.log('Input:', userPrompt);
             console.log('Response:', data.content);
-
             return data.content;
-            
         } else {
             console.error('Error in response:', response.statusText);
         }

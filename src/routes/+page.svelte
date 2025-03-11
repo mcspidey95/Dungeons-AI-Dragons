@@ -599,7 +599,8 @@
 	// <-------------------------------------- Main Functions -------------------------------------->
 
 	export async function handleStartClick() {
-    	showLoadingCenter = true;
+    	startDiceRoll(19)
+		showLoadingCenter = true;
     	showStartButton = false; // Hide the Start button
 		isBack1 = false;
     	currentText = ''; // Hide text2

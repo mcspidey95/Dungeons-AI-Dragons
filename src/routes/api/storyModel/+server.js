@@ -1,9 +1,11 @@
 import { json } from '@sveltejs/kit';
 import { ChatGroq } from '@langchain/groq';
-import { GROQ_API_KEY } from '$env/static/private';
+import { GROQ_API_KEY, GROQ_API_KEY1, GROQ_API_KEY2, GROQ_API_KEY3, GROQ_API_KEY4 } from '$env/static/private';
+
+let API_KEY = [GROQ_API_KEY, GROQ_API_KEY1, GROQ_API_KEY2, GROQ_API_KEY3, GROQ_API_KEY4];
 
 const llm = new ChatGroq({
-    apiKey: GROQ_API_KEY,
+    apiKey: API_KEY[Math.floor(Math.random() * API_KEY.length)],
     model: 'llama-3.3-70b-versatile',
     temperature: 0,
     maxTokens: undefined,
