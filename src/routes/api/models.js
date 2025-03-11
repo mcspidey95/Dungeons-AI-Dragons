@@ -56,6 +56,33 @@ export async function charLLM(userPrompt) {
     }
 }
 
+
+export async function diceLLM(userPrompt) {
+
+    try {
+        const response = await fetch('/api/diceModel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: [{ role: 'user', content: userPrompt }] })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            //console.log('Input:', userPrompt);
+            console.log('Response:', data.content);
+
+            return data.content;
+            
+        } else {
+            console.error('Error in response:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
 export async function imgLLM(userPrompt, height, width) {
 
     try {

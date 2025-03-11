@@ -4,8 +4,8 @@
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
 	
-	import { storyLLM, charLLM, imgLLM} from './api/models';
-	import { themePrompt } from '$lib/prompts/backgroundPrompt';
+	import { storyLLM, charLLM, imgLLM, diceLLM} from './api/models';
+	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
 	import { characterSheetPrompt, avatarGenerationPrompt } from '$lib/prompts/characterPrompt';
 	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
 
@@ -62,7 +62,8 @@
 	let fastRollInterval;
 	let resultText = "";
 	let lastNumber;
-	let onDiceRollComplete = null;
+	let onDiceRollComplete;
+	let diceText;
 
 	let currentText = initialText;
 	let index = 0;
@@ -565,7 +566,7 @@
 
 		diceImage = `src/lib/dice/dice${targetNumber}.png`;
 		showFinalImage = true;
-		resultText = `Shit! You got a ${targetNumber}`;
+		resultText = await diceText;
 
 		setTimeout(() => {
 			showDice = false;
@@ -573,6 +574,9 @@
 			
 			if (onDiceRollComplete) {
 				onDiceRollComplete();
+				rolling = false;
+				showDiceButton = true;
+				slowingDown = false;
 				onDiceRollComplete = null;
 			}
 		}, 3000); // Hide after 3s
@@ -584,6 +588,8 @@
 				startFastRolling();
 			}
 			targetNumber = finalNumber;
+
+			diceText = diceLLM(dicePrompt + targetNumber);
 
 			onDiceRollComplete = resolve;
 		});
@@ -635,6 +641,7 @@
 				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');
 				
 				await startDiceRoll(luckyNumber);
+				console.log('dice roll finished')
 
 				backgroundImage = await backgroundImage2; 
 				if(i!=1) storyNext = storyLLM(continuePrompt + storyFull);
