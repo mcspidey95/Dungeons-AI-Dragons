@@ -2,6 +2,7 @@ export {default as Loading} from './img/loading.gif';
 export {default as Loading1} from './img/loading1.gif';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
+export {default as diceLoading} from './img/dice.gif';
 
 export {default as bgm} from './audio/bgm.mp3';
 export {default as bgm1} from './audio/bgm1.mp3';
@@ -16,6 +17,10 @@ export {default as bgm9} from './audio/bgm9.mp3';
 export {default as bgm10} from './audio/bgm10.mp3';
 export {default as bgm11} from './audio/bgm11.mp3';
 export {default as bgm12} from './audio/bgm12.mp3';
+export {default as dice1} from './audio/dice1.mp3';
+export {default as dice2a} from './audio/dice2a.mp3';
+export {default as dice2b} from './audio/dice2b.mp3';
+export {default as response} from './audio/response.mp3';
 
 export {default as TypingSFX} from './audio/boop.mp3';
 export {default as blip1} from './audio/blip1.mp3';
@@ -40,6 +45,20 @@ async function getTxtFile(url) {
     const response = await fetch(url);
     return await response.text();
 }
+
+export let diceButtonText = [
+    `Shake 'n' Pray`,
+    `Yeet the Luck`,
+    `Dice, Don’t Fail Me!`,
+    `Send It!`,
+    `Pray & Play`,
+    `Spin the Doom Cube`,
+    `Click Here, Cry Later`,
+    `Roll It, Rascal`,
+    `Doom Cube Go Brr`,
+    `Skill Issue Incoming`,
+    `Pure RNG Time`
+];
 
 export async function getDefaultCharacters() {
     let char1 = await getTxtFile('/characters/char1.txt');

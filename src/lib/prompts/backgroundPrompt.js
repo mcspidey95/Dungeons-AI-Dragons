@@ -31,8 +31,8 @@ export let dicePrompt = `
 Given a D20 dice roll (a number between 1 and 20), return a short(under 15 words), savage, and spicy roast. The response must match the roll—low numbers (1-5) should be brutally insulting, mid numbers (6-14) should be sarcastic and dismissive, and high numbers (15-20) should be cocky, lucky, or slightly backhanded. Make sure the response is funny, sharp, and dice-related. Avoid repeating exact examples.
 
 Examples:
-1 → "Nah 1?! That’s not a roll, that’s a cry for help."
-5 → "A 5? That’s ‘even the tutorial boss would body you’ bad."
+1 → "Nah 1?! That's not a roll, that's a cry for help."
+5 → "A 5? That's ‘even the tutorial boss would body you’ bad."
 10 → "A 10? Right in the middle, like that awkward hug with your ex."
 15 → "A 15? Decent. You might actually survive… probably."
 20 → "Nah 20?! Did you seduce the dice or just threaten them?"

@@ -1,8 +1,8 @@
 <script>
 	import { onMount, tick } from 'svelte';
-	import { initialText, gameLogo, Loading, Loading1, getDefaultCharacters, back, back1 } from '$lib';
+	import { initialText, gameLogo, Loading, Loading1, diceLoading, getDefaultCharacters, back, back1, diceButtonText } from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
-	import { TypingSFX, blip1, blip2, death, select, switchSFX } from '$lib';
+	import { TypingSFX, blip1, blip2, dice1, dice2a, dice2b, death, select, switchSFX, response } from '$lib';
 	
 	import { storyLLM, charLLM, imgLLM, diceLLM} from './api/models';
 	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
@@ -20,6 +20,10 @@
 	let boop2;
 	let boop3;
 	let boop4;
+	let diceSFX;
+	let diceSFX1;
+	let diceSFX2;
+	let responseSFX;
 	let selectSFX;
 	let numArray;
 	let char1;
@@ -64,6 +68,7 @@
 	let lastNumber;
 	let onDiceRollComplete;
 	let diceText;
+	let diceQuote = "Ask God Re";
 
 	let currentText = initialText;
 	let index = 0;
@@ -88,6 +93,7 @@
 	let slowingDown = false;
 	let showFinalImage = false;
 	let showDiceButton = true;
+	let showDiceLoading = false;
 
 
 	onMount(() => {
@@ -102,6 +108,18 @@
 
 		selectSFX = new Audio(select);
 		selectSFX.volume = 0.2;
+
+		diceSFX = new Audio(dice1);
+		diceSFX.volume = 0.8;
+
+		diceSFX1 = new Audio(dice2a);
+		diceSFX1.volume = 0.8;
+
+		diceSFX2 = new Audio(dice2b);
+		diceSFX2.volume = 0.8;
+
+		responseSFX = new Audio(response);
+		responseSFX.volume = 0.2;
 
 		random3Char();
 
@@ -464,6 +482,8 @@
 		countdown = 120;
 		isSubmitted = false;
 
+		await responseSFX.play();
+
 		function handleEnter(event) {
 			if (event.key === 'Enter' && userResponse!='') {
 				isSubmitted = true;
@@ -493,6 +513,7 @@
 
 		await Promise.race([countdownPromise, submissionPromise]);
 		window.removeEventListener('keydown', handleEnter);
+		await responseSFX.pause();
 		showPopup = false;
 	}
 
@@ -520,8 +541,8 @@
 		resultText = "";
 		showFinalImage = false;
 
-		fastRollInterval = setInterval(() => {
-			diceImage = `src/lib/dice/dice${getRandomDiceNumber()}.png`;
+		fastRollInterval = setInterval(async () => {
+			diceImage = `/dice/dice${getRandomDiceNumber()}.png`;
 		}, 10); // Constant fast speed
 	}
 
@@ -541,12 +562,14 @@
 			return 1 - (1 - t) * (1 - t); // Smooth easing curve
 		}
 
-		function getNextFrame() {
+		async function getNextFrame() {
 			let elapsed = Date.now() - startTime;
 			let progress = Math.min(elapsed / duration, 1); // 0 → 1
 			speed = 10 + easeOutQuad(progress) * 200; // Smooth slowdown
 
-			diceImage = `src/lib/dice/dice${getRandomDiceNumber()}.png`;
+			diceImage = `/dice/dice${getRandomDiceNumber()}.png`;
+			diceSFX.currentTime = 0;
+			await diceSFX.play();
 
 			if (progress < 1) {
 				setTimeout(getNextFrame, speed);
@@ -559,13 +582,23 @@
 	}
 
 	async function revealFinalImage() {
-		diceImage = `src/lib/dice/dice${targetNumber}.png`;
+		diceImage = `/dice/dice${targetNumber}.png`;
 		//diceImage = "src/lib/dice/flash.png"; // A blank/flash image for blink effect
 		await tick();
 		await new Promise((resolve) => setTimeout(resolve, 500)); // Short blink delay
 
-		diceImage = `src/lib/dice/dice${targetNumber}.png`;
+		diceImage = `/dice/dice${targetNumber}.png`;
 		showFinalImage = true;
+
+		if(targetNumber > 10) {
+			diceSFX1.currentTime = 0;
+			await diceSFX1.play();
+		}
+		else {
+			diceSFX2.currentTime = 0;
+			await diceSFX2.play();
+		}
+
 		resultText = await diceText;
 
 		setTimeout(() => {
@@ -584,16 +617,24 @@
 
 	export function startDiceRoll(finalNumber) {
 		return new Promise((resolve) => {
-			if (!rolling) {
-				startFastRolling();
-			}
-			targetNumber = finalNumber;
+			showDiceLoading = true;
+			diceQuote = diceButtonText[Math.floor(Math.random() * diceButtonText.length)];
 
-			diceText = diceLLM(dicePrompt + targetNumber);
+			setTimeout(() => {
+				showDiceLoading = false;
+				
+				if (!rolling) {
+					startFastRolling();
+				}
+				targetNumber = finalNumber;
 
-			onDiceRollComplete = resolve;
+				diceText = diceLLM(dicePrompt + targetNumber);
+
+				onDiceRollComplete = resolve;
+			}, 1600);
 		});
 	}
+
 
 
 	// <-------------------------------------- Main Functions -------------------------------------->
@@ -702,6 +743,12 @@
 	{/if}
 </div>
 
+{#if showDiceLoading}
+	<div class="overlay">
+		<img class="dice" src="{diceLoading}" alt="Dice Gif" />
+	</div>
+{/if}
+
 {#if showDice}
    <div class="overlay">
        <img class="dice {showFinalImage ? 'reveal' : ''}" src="{diceImage}" alt="Dice">
@@ -709,7 +756,7 @@
            <div class="result-text show">{resultText}</div>
        {/if}
        {#if showDiceButton}
-         <button class="start-button" on:click={() => rollDice(targetNumber)}>Ask God</button>
+         <button class="start-button" on:click={() => rollDice(targetNumber)}>{diceQuote}</button>
        {/if}
    </div>
 {/if}
