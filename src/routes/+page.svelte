@@ -60,6 +60,7 @@
 	let storyFull = '';
 	let storyNext = '';
 	let userResponse = '';
+	let storyLines = [];
 
 	let diceImage = "";
 	let targetNumber;
@@ -72,6 +73,7 @@
 
 	let currentText = initialText;
 	let index = 0;
+	let typingIndex = 0;
 	let typingSpeed = 30;
 	
 	let showTextarea = false;
@@ -94,6 +96,10 @@
 	let showFinalImage = false;
 	let showDiceButton = true;
 	let showDiceLoading = false;
+	let isTyping = false;
+	let backButton = false;
+	let nextButton = true;
+	let cancelTyping = false;
 
 
 	onMount(() => {
@@ -435,9 +441,18 @@
 	async function storyAnimation(speed) {
     	let index = 0;
 		let content = story;
+		cancelTyping = false;
     	story = ''; // Reset the story text
 
     	while (index < content.length) {
+
+			if (cancelTyping) {
+				story = '';
+				return;
+			}
+
+			//typingSound.currentTime = 0;
+			//await typingSound.play();
         	story += content[index];
         	index++;
 
@@ -450,28 +465,82 @@
 	}
 
 	async function typeStoryText() {
-		let typingIndex = 0;
-		let isStoryEnd = false;
-		let storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line); // Clean and remove empty lines
+    typingIndex = 0;
+    storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line);
+    isTyping = false; // Prevent input during animation
+    let isRunning = true; // Control loop execution
 
-		while (!isStoryEnd) {
-			story = storyLines[typingIndex];
-			await storyAnimation(5);
+    async function updateStory() {
+        if (isTyping) return; // Block if already typing
+        isTyping = true; // Disable input
 
-			// Wait for a click event before proceeding
-			await new Promise(resolve => {
-				document.addEventListener('click', function onClick() {
-					document.removeEventListener('click', onClick); // Remove listener after the first click
-					resolve();
-				});
-			});
+        story = storyLines[typingIndex] || "";
+        await storyAnimation(35); // Wait for animation to complete
 
-			typingIndex++;
-			if (typingIndex >= storyLines.length) {
-				isStoryEnd = true;
-			}
-		}
-	}
+        isTyping = false; // Re-enable input after animation
+    }
+
+    function handleNavigation(event) {
+        if (isTyping && event.key !== "Backspace" && event.key !== "ArrowLeft") return; // Block input if typing is in progress
+
+        if (event.key === " ") {
+            event.preventDefault(); // Prevent default spacebar scrolling
+            incrementIndex();
+        } else if (event.key === "ArrowRight") {
+            incrementIndex();
+        } else if (event.key === "Backspace" || event.key === "ArrowLeft") {
+            decrementIndex();
+        } else if (event.key === "Enter") {
+            event.preventDefault(); // Ignore Enter key completely
+        }
+    }
+
+    function incrementIndex() {
+        if (isTyping) return; // Prevent action during animation
+        if (typingIndex < storyLines.length - 1) {
+            typingIndex++;
+            updateStory();
+        } else {
+            isRunning = false; // Stop loop when last line is reached
+        }
+    }
+
+    function decrementIndex() {
+        //if (isTyping) return; // Prevent action during animation
+        if (typingIndex > 0) {
+			cancelTyping = true;
+			isTyping = false;
+            typingIndex--;
+			setTimeout(() => {
+            	updateStory();
+			},50);
+        }
+    }
+
+    // Start Listening for Keyboard Events
+    document.addEventListener("keydown", handleNavigation);
+
+    // Start Typing First Line
+    updateStory();
+
+    // Continuously Check for Button Click Flags
+    while (isRunning) {
+        await new Promise(resolve => setTimeout(resolve, 50)); // Small delay to avoid blocking UI
+
+        if (nextButton) {
+            nextButton = false;
+            incrementIndex();
+        }
+        if (backButton) {
+            backButton = false;
+            decrementIndex();
+        }
+    }
+
+    // Cleanup when finished
+    document.removeEventListener("keydown", handleNavigation);
+}
+
 
 
 	// <-------------------------------------- UI Elements -------------------------------------->
@@ -832,7 +901,24 @@
 <div class="image-display {backgroundImage ? 'show' : ''}">
 	{#if backgroundImage}
 		<img src="data:image/png;base64,{backgroundImage}" alt="Generated Background" />
-		<textarea bind:this={storyContainer} class="story-display" readonly>{story}</textarea>
+		<div bind:this={storyContainer} class="story-display" readonly>{story}<span class="text-cursor"></span></div>
+
+		{#if typingIndex > 0}
+			<button class="story-btn back-btn" on:click={() => backButton = true}>
+				⬅ Back
+			</button>
+		{/if}
+	
+		{#if typingIndex < storyLines.length - 1 && !isTyping}
+			<button class="story-btn next-btn" on:click={() => nextButton = true}>
+				Next ➡
+			</button>
+		{:else if typingIndex === storyLines.length - 1 && !isTyping}
+			<button class="story-btn next-btn" on:click={() => nextButton = true}>
+				Reply ➡
+			</button>
+		{/if}
+	
 	{/if}
 </div>
 

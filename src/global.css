@@ -195,22 +195,43 @@ body {
 }
 
 .story-display {
-	position: absolute;
-	bottom: 10px; /* Adjust to position at the bottom */
-	left: 20px; /* Adjust to position at the left */
-	width: 95%; /* Adjust width as needed */
-	background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
-	color: white;
-
-	border-radius: 8px;
-	padding: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Centering */
+    width: 94%;
+    height: 12%;
+    
+    background: rgba(0, 0, 0, 0.85); /* Darker for better readability */
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
 	font-family: 'VT323', monospace;
-	font-size: 20px;
-	resize: none; /* Prevent resizing */
-	overflow: auto; /* Allow scrolling for overflow */
-	height: 20%; /* Adjust as needed */
-	z-index: 1000; /* Ensure it appears above other elements */
+    font-size: 18px;
+    line-height: 1.4; /* More readable */
+    
+	border: 2px solid #ffffff;
+    
+    resize: none; /* No resizing */
+    overflow-y: auto; /* Scrollable text */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5); /* Themed scrollbar */
+    
+    z-index: 1000;
 }
+
+/* Custom Scrollbar for WebKit browsers */
+.story-display::-webkit-scrollbar {
+    width: 8px;
+}
+.story-display::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+.story-display::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
 
 .popup-overlay {
 	position: fixed;
@@ -285,6 +306,15 @@ body {
 	background-color: white;
 	height: 1em;
 	vertical-align: bottom;
+}
+
+.text-cursor {
+	display: inline-block;
+	width: 0.5ch;
+	animation: blink 0.8s steps(2, start) infinite;
+	background-color: white;
+	height: 0.8em;
+	transform: translateY(3px);
 }
 
 .start-button {
@@ -623,4 +653,39 @@ body {
 
 .result-text.show {
 	opacity: 1;
+}
+
+
+
+.story-btn {
+    position: absolute;
+    bottom: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+	outline: none;
+    transition: all 0.1s;
+	font-family: 'VT323', monospace;
+	opacity: 0.6;
+	z-index: 2000;
+}
+
+.story-btn:hover {
+    opacity: 1;
+}
+
+/* Back Button */
+.back-btn {
+    left: 30px;
+	bottom: 25px;
+}
+
+/* Next Button */
+.next-btn {
+    right: 30px;
+	bottom: 25px;
 }
