@@ -1,31 +1,39 @@
 export let introPrompt = `
 
-"Once upon a time, in [setting description], there existed a most peculiar individual—[Character's Name]."*  
+"Once upon a time, in [setting description], there was a most peculiar individual—[Character's Name]."  
 
 *Using the provided character sheet:*  
 
-*Craft a humorous introduction for this character. The story should:*  
-- **Be purely narration**—no dialogue.  
-- **Set a scene** that immerses the reader in the character's world.  
-- **Describe the character in a funny way** without listing stats—just naturally weave in the details.  
-- **Keep it short, simple, and punchy** (aim for 3-5 sentences max).  
-- **Introduce supporting characters** (nemeses, enemies, or unfortunate bystanders) if relevant.  
-- **Ensure that each sentence is followed by a newline (enter) for better readability.**  
+*Write a funny introduction for this character. The story should:*  
+- **Be mostly narration**, but **brief dialogue is allowed** to add humor.  
+- **Set a scene** that makes the reader feel like the're in the character's world.  
+- **Describe the character in a fun way** without listing stats—just weave the details into the story.  
+- **Use simple, clear English** so anyone can enjoy it.  
+- **Keep sentences short**, or break them into smaller ones when needed.  
+- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
+- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
 
 **Example Output Format:**  
 
-*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man whose greatest enemy was his own two feet.  
+*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man at war with his own two feet.  
 
-Sir Reginald Wobblebottom could trip over a shadow, and often did.  
+Sir Reginald Wobblebottom could trip over a shadow.  
 
-The townsfolk had stopped gasping at his falls and had started taking bets.  
+And often did.  
 
-Even the town's pigeons, normally impartial creatures, seemed to target him with remarkable accuracy.  
+The townspeople had stopped asking if he was okay.  
 
-Yet, despite the universe's clear bias against him, Reginald marched forward—until, of course, he marched straight into the town fountain."*  
+Instead, they placed bets.  
 
+"Five seconds," said the baker.  
 
-- Now here is your new character sheet: 
+"Three," said a passing squirrel.  
+
+Reginald marched on, head held high.  
+
+Until, of course, he walked straight into the town fountain."*  
+
+- Now here is your new character sheet:  
 
 `;
 
@@ -33,33 +41,41 @@ Yet, despite the universe's clear bias against him, Reginald marched forward—u
 
 export let preChoicePrompt = `
 
-*Continue the humorous story:*
+*Continue the humorous story:*  
 
 *The continuation should:*  
-- **Follow the same style**—pure narration, lighthearted, and comedic.  
-- **Introduce a new scenario** that puts the character in an absurd or tricky situation.  
-- **Force the character to make a choice**—one that could impact the story's direction.  
-- **Keep it short, simple, and punchy** (3-5 sentences max).  
-- **Include other characters or elements** (nemeses, allies, or even animals conspiring against them).  
-- **End with a question** to prompt the user to decide the next action.  
-- **Ensure each sentence has a newline (enter) for better readability.**  
+- **Follow a movie-like plot**—with clear progression, rising stakes, and a sense of adventure.  
+- **Keep the same style**—mostly narration, but **brief dialogue is allowed** for humor.  
+- **Introduce a new scenario** that feels like the next "scene" in the story.  
+- **Force the character to make a choice**—one that could impact the story’s direction.  
+- **Use simple, clear English** so everyone can enjoy it.  
+- **Keep sentences short** or break long ones into smaller parts.  
+- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
+- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
+- **End with a question** to let the user decide what happens next.  
 
 **Example Output Format:**  
 
-*"As Sir Reginald Wobblebottom emerged from the town fountain, drenched and defeated, he faced a dilemma.  
+*"The sun was setting over Bumbledorf, casting golden light over the chaos about to unfold.  
 
-To his left, the mayor's wife approached, her prized porcelain poodle statue shattered at his feet.  
+Sir Reginald Wobblebottom clutched a stolen pie, breathless.  
 
-To his right, the annual Bumbledorf Pie Festival had just begun, and the scent of freshly baked disaster filled the air.  
+Behind him, the Pie Festival crowd roared.  
 
-He could stay and attempt an apology, though history suggested his words would somehow make things worse.  
+To his left, the mayor’s wife stood, holding a very sharp umbrella.  
 
-Or he could flee—straight into a gathering of elderly ladies armed with dangerously wobbly custard pies.  
+To his right, a suspiciously fast goose was approaching, eyes locked on the pie.  
 
-Both options seemed equally disastrous.  
+He had to think fast.  
 
-What does he do?"*
+Surrender the pie and face the mayor’s wrath?  
+
+Or flee into the unknown, with the goose in hot pursuit?  
+
+What does he do?"*  
+
 `;
+
 
 
 
@@ -134,11 +150,17 @@ The player failed to escape and **suffered a leg injury** while trying to shove 
 
 Pain surges through your leg with every heartbeat, the twisted mess of bone and muscle making escape feel impossible.  
 
-The zombies **close in**, their moans merging into a haunting chorus of death. Deepesh—what's left of him—is already a torn-up pile of meat. You don't even have time to process the guilt before you hear **something worse.**  
+The zombies **close in**, their moans merging into a haunting chorus of death. 
+
+Deepesh—what's left of him—is already a torn-up pile of meat. 
+
+You don't even have time to process the guilt before you hear **something worse.**  
 
 A deep, guttural **snarl.**  
 
-Emerging from behind the horde is a **mutated abomination**, twice the size of the others, its bloated, rotting body pulsating unnaturally. Its dead, cloudy eyes fixate on you, **sensing weakness.**  
+Emerging from behind the horde is a **mutated abomination**, twice the size of the others, its bloated, rotting body pulsating unnaturally. 
+
+Its dead, cloudy eyes fixate on you, **sensing weakness.**  
 
 Your leg won't support your weight.  
 
@@ -165,7 +187,9 @@ The player successfully reached an abandoned military bunker, hoping for safety,
 
 ### **Example Output:**  
 
-You slam your fist against the reinforced steel door, desperation rising in your chest. **No response. No beeping access panel. Just silence.**  
+You slam your fist against the reinforced steel door, desperation rising in your chest. 
+
+**No response. No beeping access panel. Just silence.**  
 
 Then—**a sound.**  
 

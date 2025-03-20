@@ -284,7 +284,7 @@
 		isLoading = false;
     	typeCharacterSheetText(20);
 
-    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024);
+    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024, false);
     	
 		showStartButton = true;
 	}

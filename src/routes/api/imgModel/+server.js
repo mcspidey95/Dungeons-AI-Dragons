@@ -5,9 +5,9 @@ export async function POST({ request }) {
 
     const params = {
         prompt: prompt,
-        steps: 28,
+        steps: 30,
         guidance_scale: 6,
-        sampler_index: 'DPM++ 2M',
+        sampler_index: 'DPM++ 2M Karras',
         negative_prompt: "extra fingers, missing fingers, poorly rendered hands, mutation, deformed limbs, watermark",
         clip_skip: 2,
         height: imgHeight,
