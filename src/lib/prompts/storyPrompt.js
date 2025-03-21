@@ -1,41 +1,38 @@
 export let introPrompt = `
 
-"Once upon a time, in [setting description], there was a most peculiar individual—[Character's Name]."  
+"Once upon a time, in [setting description], there existed a most peculiar individual—[Character's Name]."*  
 
 *Using the provided character sheet:*  
 
-*Write a funny introduction for this character. The story should:*  
-- **Be mostly narration**, but **brief dialogue is allowed** to add humor.  
-- **Set a scene** that makes the reader feel like the're in the character's world.  
-- **Describe the character in a fun way** without listing stats—just weave the details into the story.  
-- **Use simple, clear English** so anyone can enjoy it.  
-- **Keep sentences short**, or break them into smaller ones when needed.  
-- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
-- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
+*Craft a humorous introduction for this character. The story should:*  
+- **Be purely narration**—but can include funny inner monologues or background dialogue for flair.  
+- **Set a scene** that immerses the reader in the character's world.  
+- **Describe the character in a funny way** without listing stats—just naturally weave in the details.  
+- **Keep it short, simple, and punchy** (aim for 3-5 sentences max).  
+- **Introduce supporting characters** (nemeses, enemies, or unfortunate bystanders) if relevant.  
+- **Ensure that each sentence is followed by a newline (enter) for better readability.**  
 
-**Example Output Format:**  
+---
 
-*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man at war with his own two feet.  
+### **Example Output Format:**  
 
-Sir Reginald Wobblebottom could trip over a shadow.  
+*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man whose greatest enemy was his own two feet.*  
 
-And often did.  
+Sir Reginald Wobblebottom could trip over a shadow, and often did.  
 
-The townspeople had stopped asking if he was okay.  
+“Did he just—?” someone muttered as he collapsed into a fruit stand.  
 
-Instead, they placed bets.  
+The shopkeeper sighed. “Yep. Third time this week.”  
 
-"Five seconds," said the baker.  
+Even the pigeons, usually impartial, had learned to clear a path when they saw him coming.  
 
-"Three," said a passing squirrel.  
+And yet, despite the universe's best attempts to flatten him, Reginald marched forward—until he inevitably marched straight into a lamppost."*  
 
-Reginald marched on, head held high.  
-
-Until, of course, he walked straight into the town fountain."*  
-
+---
 - Now here is your new character sheet:  
 
 `;
+
 
 
 
@@ -44,35 +41,33 @@ export let preChoicePrompt = `
 *Continue the humorous story:*  
 
 *The continuation should:*  
-- **Follow a movie-like plot**—with clear progression, rising stakes, and a sense of adventure.  
-- **Keep the same style**—mostly narration, but **brief dialogue is allowed** for humor.  
-- **Introduce a new scenario** that feels like the next "scene" in the story.  
-- **Force the character to make a choice**—one that could impact the story’s direction.  
-- **Use simple, clear English** so everyone can enjoy it.  
-- **Keep sentences short** or break long ones into smaller parts.  
-- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
-- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
-- **End with a question** to let the user decide what happens next.  
+- **Follow the same style**—pure narration, lighthearted, and comedic.  
+- **Introduce a new scenario** that puts the character in an absurd or tricky situation.  
+- **Force the character to make a choice**—one that could impact the story's direction.  
+- **Keep it short, simple, and punchy** (3-5 sentences max).  
+- **Include other characters or elements** (nemeses, allies, or even animals conspiring against them).  
+- **End with a question** to prompt the user to decide the next action.  
+- **Ensure each sentence has a newline (enter) for better readability.**  
 
-**Example Output Format:**  
+---
 
-*"The sun was setting over Bumbledorf, casting golden light over the chaos about to unfold.  
+### **Example Output Format:**  
 
-Sir Reginald Wobblebottom clutched a stolen pie, breathless.  
+*"Sir Reginald Wobblebottom stood in the center of town, sopping wet, his dignity draining into the cobblestone street.*  
 
-Behind him, the Pie Festival crowd roared.  
+The mayor's wife approached, her porcelain poodle statue lying in shattered pieces at his feet.  
 
-To his left, the mayor’s wife stood, holding a very sharp umbrella.  
+“Reginald.” Her voice was calm. *Too* calm.  
 
-To his right, a suspiciously fast goose was approaching, eyes locked on the pie.  
+Behind him, the annual Bumbledorf Pie Festival was in full swing. The scent of disaster (and lemon meringue) filled the air.  
 
-He had to think fast.  
+Reginald gulped. He could attempt an apology—though history suggested his words would only dig the hole deeper.  
 
-Surrender the pie and face the mayor’s wrath?  
+Or he could flee—straight into the arms of the town's elderly pie-wielding champions.  
 
-Or flee into the unknown, with the goose in hot pursuit?  
+Both options seemed equally disastrous.  
 
-What does he do?"*  
+**What does he do?**"  
 
 `;
 
@@ -84,94 +79,112 @@ What does he do?"*
 
 
 export let postChoicePrompt = `  
-Given a user's decision, a Chance Factor (1-20), and the character's abilities, continue the interactive story.  
 
-The Chance Factor directly determines the outcome:  
+Given the user's decision, a **Chance Factor (1-20),** and the **character's abilities**, continue the interactive story.  
 
-- **1-3:** **Catastrophic failure.** The plan backfires horribly, often making the situation worse. The character may suffer severe injuries, mental trauma, or unintended consequences.  
-- **4-9:** **Significant setback.** The decision is partially successful, but at a high cost. Character abilities should play a minor role—if they are skilled, they might lessen the damage slightly, but the result is still mostly bad.  
-- **10:** **A true neutral result.** Neither a full success nor failure. The outcome has both positive and negative elements that balance out.  
-- **11-13:** **Near-success.** The decision mostly works out, but some complications remain. The character's strengths play a more active role in mitigating damage or influencing the outcome.  
-- **14-18:** **Successful but not perfect.** The plan works, though minor setbacks occur based on character weaknesses. Their strengths may improve the result, but their flaws might still introduce some small issues.  
-- **19-20:** **Critical success.** The plan goes exactly as intended—or even better—with potential bonuses. Character abilities may enhance the victory, and luck plays a role in rewarding them with unexpected advantages. 
- 
+The **Chance Factor** determines the outcome:  
 
-**Guidelines for the response:**  
+- **1-3:** **Disastrous failure.** The plan backfires spectacularly. The character may suffer severe injury, humiliation, or an unexpected consequence that escalates the situation.  
+- **4-9:** **Major setback.** The decision partially works, but at a cost. The character’s abilities may lessen the damage slightly, but the situation still worsens.  
+- **10:** **True neutral result.** Neither a full success nor a failure. The outcome has **both upsides and downsides** that balance out.  
+- **11-13:** **Near success.** The plan mostly works, but something complicates things. The character's strengths help, but obstacles remain.  
+- **14-18:** **Success with a hitch.** The character achieves what they wanted, but their weaknesses cause **minor issues** along the way.  
+- **19-20:** **Critical success.** Everything goes better than expected. The character’s strengths shine, and luck grants them unexpected advantages.  
 
-- The story should be immersive and cinematic, fully describing what happens.  
-- Decisions should be affected by the character sheet, especially in Chance Factor ranges **4-18** where abilities, weaknesses, and past choices influence success or failure.  
-- **Bad decisions might not only fail but also physically or mentally harm the character**—injuries, sickness, or trauma may occur if applicable.  
-- The response should end with a dramatic **decision point** without listing choices or explaining consequences.  
-- Keep it short, simple, and punchy (3-5 sentences max). 
+---
+
+### **Guidelines for the Response:**  
+
+- The story should **feel cinematic**, like a pivotal scene in a movie.  
+- **Include fun and engaging dialogue**—characters should react with personality, humor, or dramatic flair.  
+- **Decisions should feel meaningful**—past choices and character abilities should shape the outcome.  
+- **Failures should be amusing or dramatic**—whether through injury, humiliation, or an escalating crisis.  
+- **Victories should feel earned**—not just handed to the character but influenced by their strengths.  
+- Keep sentences **short and impactful**. If a sentence is too long, split it naturally.  
+
+---
 
 ### **Example Input:**  
 *Shove Deepesh into the horde and run.* {7}  
 
-### **Example Output (Significant Setback 4-9):**  
+### **Example Output (Major Setback 4-9):**  
 
-You shove Deepesh forward, hoping he'll distract the horde long enough for you to bolt.  
+You shove Deepesh forward.  
 
-It works—kind of.  
+“Wow. Rude.”  
 
-Deepesh stumbles, flailing wildly as the zombies swarm him. But just as you turn to run, he grabs your wrist, yanking you down with him.  
+For a second, you think it worked—until he flails wildly and **grabs your shirt** on the way down.  
 
-Your knee smashes into the pavement. Pain explodes through your leg, and a sickening pop tells you something is **very wrong.**  
+“You absolute menace!” he shrieks, dragging you with him.  
 
-You're injured.  
+Your knee smacks the pavement. Pain explodes up your leg.  
 
-Deepesh is screaming.  
+The zombies turn, their rotting heads snapping in your direction.  
 
-The zombies are coming.  
+Deepesh is floundering, smacking one of them with a sandal. “I swear if we survive this, I’m keying your bike!”  
 
-Your leg isn't working right.  
+You try to stand. Your leg says, *nope.*  
 
-**What do you do?**  
+The zombies lurch forward.  
+
+---
+
+here's the user decision:
+
 `;
 
 
-export let continuePrompt = `   
+export let continuePrompt = `  
+
 Given the last story event, continue the narrative based on what happened.  
 
-- The next scene should logically follow from the previous result, incorporating the **consequences of the player's last decision.**  
+- The next scene should **logically follow** from the previous result, incorporating the **consequences of the player's last decision.**  
 - The outcome should **change the story's path, scene, or even the overall situation** the player is in.  
 - If the last action **failed**, the player might be in a worse situation—injuries, mental strain, or new dangers may arise.  
 - If the last action **succeeded**, build on the victory while introducing **new challenges, dilemmas, or unexpected developments.**  
 - **Characters' actions should have lasting consequences.**  
   - If they were injured, they should feel the effects (limited mobility, pain, etc.).  
   - If they made a smart move, it should give them a future advantage.  
-- The response should be immersive and cinematic, filled with vivid detail.  
-- End with a **dramatic decision point** to keep the player engaged, but do not list options or explain consequences.
-- Keep it short, simple, and punchy (3-5 sentences max).  
+- **Keep the story immersive and cinematic**, filled with vivid detail and engaging dialogue.  
+- End with a **dramatic decision point** but do NOT list options or explain consequences.  
+- **Sentences should be short and impactful.** If a sentence is too long, break it up naturally.  
+
+---
 
 ### **Example Previous Event:**  
 The player failed to escape and **suffered a leg injury** while trying to shove Deepesh into the horde.  
 
 ### **Example Output:**  
 
-Pain surges through your leg with every heartbeat, the twisted mess of bone and muscle making escape feel impossible.  
+Your leg is screaming.  
 
-The zombies **close in**, their moans merging into a haunting chorus of death. 
+So are the zombies.  
 
-Deepesh—what's left of him—is already a torn-up pile of meat. 
+Deepesh is… well, what's left of him isn't making noise anymore.  
 
-You don't even have time to process the guilt before you hear **something worse.**  
+You don't even have time to feel bad before the air shifts—thick with something rotten, heavy, **wrong.**  
+
+Then you hear it.  
 
 A deep, guttural **snarl.**  
 
-Emerging from behind the horde is a **mutated abomination**, twice the size of the others, its bloated, rotting body pulsating unnaturally. 
+Emerging from behind the horde is something **worse**—a hulking, rotting **mutant**, its bloated body **pulsating** like it's about to burst.  
 
-Its dead, cloudy eyes fixate on you, **sensing weakness.**  
+Its dead, cloudy eyes lock onto you, its head tilting. **Sensing weakness.**  
 
-Your leg won't support your weight.  
+Your leg is useless.  
 
 Your weapons are just out of reach.  
 
 The monster **lunges.**  
- 
+
+---
+
 `;
 
 
 export let continueEndPrompt = `  
+
 Given the last story event, **continue the narrative while steering the story toward an ending** based on the player's past decisions and consequences.  
 
 - The story should **shift toward a climactic moment** without outright concluding.  
@@ -179,41 +192,45 @@ Given the last story event, **continue the narrative while steering the story to
 - The scene should set up **a high-stakes moment**, putting the player in a position where their **next choice will be critical.**  
 - Whether the situation looks **good or bad**, **leave room for a potential turnaround or devastating failure** based on their **next action** and **Chance Factor.**  
 - Past **injuries, losses, or advantages should still play a role** in the unfolding events.  
-- End with a **suspenseful setup** for the **preFinalePrompt** or **finalePrompt**—a dangerous, emotional, or impossible choice.
-- Keep it short, simple, and punchy (3-5 sentences max).  
+- End with a **suspenseful setup** for the **preFinalePrompt** or **finalePrompt**—a dangerous, emotional, or impossible choice.  
+- **Sentences should be short and impactful.** If a sentence is too long, break it up naturally.  
+
+---
 
 ### **Example Previous Event:**  
 The player successfully reached an abandoned military bunker, hoping for safety, only to discover **the door won't open—and they're not alone.**  
 
 ### **Example Output:**  
 
-You slam your fist against the reinforced steel door, desperation rising in your chest. 
+You slam your fist against the steel door. **Nothing.**  
 
-**No response. No beeping access panel. Just silence.**  
+No beep. No mechanical whir. Just **silence.**  
 
 Then—**a sound.**  
 
-A **low growl** rumbles through the hallway behind you.  
+A **low growl** rolls through the hallway.  
 
-You turn.  
+You spin around.  
 
-A **figure stumbles into view**, half-lit by the flickering red emergency lights.  
+A figure shuffles forward, half-lit by the flickering red emergency lights.  
 
-For a brief, stupid moment, **hope flares in your chest.** Maybe someone survived.  
+For a second, **hope** stirs in your chest. Maybe someone survived.  
 
-Then the figure **lifts its head**, and your blood runs cold.  
+Then it lifts its head.  
 
-It's not human. Not anymore.  
+**Skin torn. Jaw unhinged. Milky, dead eyes locked onto you.**  
 
-The flesh on its face is **peeled back**, exposing twitching muscle and jagged teeth. Its **milky, pupil-less eyes** lock onto you, and it **lunges**—  
+It **lunges.**  
 
-Just as the **bunker door clicks.**  
+Behind you—**the bunker door clicks.**  
 
 It's opening.  
-  
+---
+
 `;
 
 export let preFinalePrompt = `  
+
 Given the last story event, **escalate the tension with a final twist**, leading to a crucial, life-altering decision.  
 
 - The scene should **shift dramatically**, revealing new dangers, betrayals, or shocking truths.  
@@ -221,42 +238,47 @@ Given the last story event, **escalate the tension with a final twist**, leading
 - The story should **not resolve yet**—instead, it should end with a **final situation** that forces the player to act immediately.  
 - The response should be **cinematic, intense, and filled with emotional weight.**  
 - **Do not provide choices or explain consequences—only set up the moment.**  
-- Keep it short, simple, and punchy (3-5 sentences max). 
+- **End with a direct question, forcing the player to make their final choice.**  
+- Keep it short, simple, and punchy.  
+
+---
 
 ### **Example Previous Event:**  
 The player barely escapes a burning hospital, thinking they're safe—until they hear **a familiar voice crying out for help.**  
 
 ### **Example Output:**  
 
-You **stagger through the alley,** your body screaming in pain, the acrid stench of burning flesh thick in the air.  
+You **stumble forward,** lungs burning, legs barely holding you up.  
 
-You made it. **You survived.**  
+Behind you, the hospital collapses in a storm of fire and steel. **You made it.**  
 
-Then—**a voice.**  
+Then—**the scream.**  
 
-Faint. **Desperate.**  
+Your blood runs cold. **You know that voice.**  
 
-You turn.  
+You turn, and there she is.  
 
-Through the smoke, you see **her.**  
+Trapped. **Pinned under rubble.** Eyes wild with panic.  
 
-She's trapped. **Pinned beneath the wreckage.** Blood soaks her clothes, her eyes wide with terror.  
+Behind her, something **shifts in the smoke.**  
 
-Behind her, in the flickering firelight, **something moves.**  
+A **shadow.** Massive. **Wrong.**  
 
-The monstrous silhouette **emerges from the shadows**, its hollow eyes locking onto you.  
+The firelight flickers, and you see **the creature's twisted form** emerge, its mouth splitting into something not meant for this world.  
 
-You don't have much time.  
+Her eyes meet yours.  
 
-Your wounds are slowing you down.  
+"Please," she whispers.  
 
-Your ammo is almost gone.  
+You have **seconds** to act.  
 
-**What do you do?**  
+Do you save her? **Or save yourself?**  
+
 `;
 
 
 export let finalePrompt = `  
+
 Given the user's **final decision and a Chance Factor (1-20),** conclude the story with a **definitive ending**—either **good or bad** based on the outcome.  
 
 - The **Chance Factor will determine success or failure**, with character abilities and past choices playing a role.  
@@ -271,7 +293,9 @@ Given the user's **final decision and a Chance Factor (1-20),** conclude the sto
 - **Make the ending cinematic, emotional, and intense.**  
 - **Tie back to the player's journey, past choices, and consequences.**  
 - **Do not leave the ending open-ended—fully conclude the story.**  
-- Keep it short, simple, and punchy (3-5 sentences max). 
+- Keep it short, simple, and punchy.  
+
+---
 
 ### **Example Input:**  
 *The player tries to save the trapped woman while fending off the monster.* {6}  
@@ -284,7 +308,9 @@ She screams.
 
 The monster is **faster.**  
 
-Before you can reach her, its **clawed hands pierce her chest**, lifting her into the air. A **wet gurgle** escapes her lips as her wide, terrified eyes lock onto yours.  
+Before you can reach her, its **clawed hands pierce her chest**, lifting her into the air. 
+
+A **wet gurgle** escapes her lips as her wide, terrified eyes lock onto yours.  
 
 She tries to say something—then **goes limp.**  
 
@@ -305,6 +331,7 @@ You survived.
 But at what cost?  
 
 **The End.**  
+
 `;
 
 export let summaryPrompt = `   
