@@ -21,9 +21,9 @@ But unlike traditional RPGs, **the story can be anything** – fantasy, sci-fi, 
 
 ## 🚀 Roadmap
 - [x] **Character Creation**
-- [ ] **Story Generation**   (In Progress)
-- [ ] **Decision Process**
-- [ ] **Single Player Mode**
+- [x] **Story Generation** 
+- [x] **Decision Process**
+- [ ] **Single Player Mode**  (In Progress)
 - [ ] **Multiplayer Mode**
 
 ## 🎮 How to Play
