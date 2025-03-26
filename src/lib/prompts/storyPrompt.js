@@ -1,85 +1,80 @@
 export let introPrompt = `
 
-"Once upon a time, in [setting description], there existed a most peculiar individual—[Character's Name]."*  
+"Once upon a time, in [setting description], there was a most peculiar individual—[Character's Name]."  
 
 *Using the provided character sheet:*  
 
-*Craft a humorous introduction for this character. The story should:*  
-- **Be purely narration**—but can include funny inner monologues or background dialogue for flair.  
-- **Set a scene** that immerses the reader in the character's world.  
-- **Describe the character in a funny way** without listing stats—just naturally weave in the details.  
-- **Keep it short, simple, and punchy** (aim for 3-5 sentences max).  
-- **Introduce supporting characters** (nemeses, enemies, or unfortunate bystanders) if relevant.  
-- **Ensure that each sentence is followed by a newline (enter) for better readability.**  
+*Write a funny introduction for this character. The story should:*  
+- **Be mostly narration**, but **brief dialogue is allowed** to add humor.  
+- **Set a scene** that makes the reader feel like they’re in the character’s world.  
+- **Describe the character in a fun way** without listing stats—just weave the details into the story.  
+- **Use simple, clear English** so anyone can enjoy it.  
+- **Keep sentences short**, or break them into smaller ones when needed.  
+- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
+- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
 
----
+**Example Output Format:**  
 
-### **Example Output Format:**  
+*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man at war with his own two feet.  
 
-*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man whose greatest enemy was his own two feet.*  
+Sir Reginald Wobblebottom could trip over a shadow.  
 
-Sir Reginald Wobblebottom could trip over a shadow, and often did.  
+And often did.  
 
-“Did he just—?” someone muttered as he collapsed into a fruit stand.  
+The townspeople had stopped asking if he was okay.  
 
-The shopkeeper sighed. “Yep. Third time this week.”  
+Instead, they placed bets.  
 
-Even the pigeons, usually impartial, had learned to clear a path when they saw him coming.  
+"Five seconds," said the baker.  
 
-And yet, despite the universe's best attempts to flatten him, Reginald marched forward—until he inevitably marched straight into a lamppost."*  
+"Three," said a passing squirrel.  
 
----
+Reginald marched on, head held high.  
+
+Until, of course, he walked straight into the town fountain."*  
+
 - Now here is your new character sheet:  
 
 `;
-
-
-
 
 export let preChoicePrompt = `
 
 *Continue the humorous story:*  
 
 *The continuation should:*  
-- **Follow the same style**—pure narration, lighthearted, and comedic.  
-- **Introduce a new scenario** that puts the character in an absurd or tricky situation.  
-- **Force the character to make a choice**—one that could impact the story's direction.  
-- **Keep it short, simple, and punchy** (3-5 sentences max).  
-- **Include other characters or elements** (nemeses, allies, or even animals conspiring against them).  
-- **End with a question** to prompt the user to decide the next action.  
-- **Ensure each sentence has a newline (enter) for better readability.**  
+- **Follow a movie-like plot**—with clear progression, rising stakes, and a sense of adventure.  
+- **Keep the same style**—mostly narration, but **brief dialogue is allowed** for humor.  
+- **Introduce a new scenario** that feels like the next "scene" in the story.  
+- **Force the character to make a choice**—one that could impact the story’s direction.  
+- **Use simple, clear English** so everyone can enjoy it.  
+- **Keep sentences short** or break long ones into smaller parts.  
+- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
+- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
+- **End with a question** to let the user decide what happens next.  
 
----
+**Example Output Format:**  
 
-### **Example Output Format:**  
+*"The sun was setting over Bumbledorf, casting golden light over the chaos about to unfold.  
 
-*"Sir Reginald Wobblebottom stood in the center of town, sopping wet, his dignity draining into the cobblestone street.*  
+Sir Reginald Wobblebottom clutched a stolen pie, breathless.  
 
-The mayor's wife approached, her porcelain poodle statue lying in shattered pieces at his feet.  
+Behind him, the Pie Festival crowd roared.  
 
-“Reginald.” Her voice was calm. *Too* calm.  
+To his left, the mayor’s wife stood, holding a very sharp umbrella.  
 
-Behind him, the annual Bumbledorf Pie Festival was in full swing. The scent of disaster (and lemon meringue) filled the air.  
+To his right, a suspiciously fast goose was approaching, eyes locked on the pie.  
 
-Reginald gulped. He could attempt an apology—though history suggested his words would only dig the hole deeper.  
+He had to think fast.  
 
-Or he could flee—straight into the arms of the town's elderly pie-wielding champions.  
+Surrender the pie and face the mayor’s wrath?  
 
-Both options seemed equally disastrous.  
+Or flee into the unknown, with the goose in hot pursuit?  
 
-**What does he do?**"  
+What does he do?"*  
 
 `;
 
-
-
-
-
-
-
-
 export let postChoicePrompt = `  
-
 Given the user's decision, a **Chance Factor (1-20),** and the **character's abilities**, continue the interactive story.  
 
 The **Chance Factor** determines the outcome:  
@@ -128,25 +123,17 @@ You try to stand. Your leg says, *nope.*
 The zombies lurch forward.  
 
 ---
-
-here's the user decision:
-
 `;
 
-
 export let continuePrompt = `  
+Continue the narrative based on the last story event.  
 
-Given the last story event, continue the narrative based on what happened.  
-
-- The next scene should **logically follow** from the previous result, incorporating the **consequences of the player's last decision.**  
-- The outcome should **change the story's path, scene, or even the overall situation** the player is in.  
-- If the last action **failed**, the player might be in a worse situation—injuries, mental strain, or new dangers may arise.  
-- If the last action **succeeded**, build on the victory while introducing **new challenges, dilemmas, or unexpected developments.**  
-- **Characters' actions should have lasting consequences.**  
-  - If they were injured, they should feel the effects (limited mobility, pain, etc.).  
-  - If they made a smart move, it should give them a future advantage.  
-- **Keep the story immersive and cinematic**, filled with vivid detail and engaging dialogue.  
-- End with a **dramatic decision point** but do NOT list options or explain consequences.  
+- The next scene should flow naturally from what just happened, with **consequences unfolding.**  
+- If the last action **failed,** the player is in a worse situation—injuries, mental strain, or new dangers may arise.  
+- If the last action **succeeded,** build on the victory while introducing **new challenges or twists.**  
+- **Past events should have a lasting impact**—wounds, lost allies, dwindling resources, or emotional scars should carry forward.  
+- The response should be **cinematic, immersive, and intense.**  
+- End with a **dramatic moment** that propels the story forward—**but do NOT ask a question or list choices.**  
 - **Sentences should be short and impactful.** If a sentence is too long, break it up naturally.  
 
 ---
@@ -156,35 +143,23 @@ The player failed to escape and **suffered a leg injury** while trying to shove 
 
 ### **Example Output:**  
 
-Your leg is screaming.  
+Pain surges through your leg with every heartbeat, the twisted mess of bone and muscle making escape feel impossible.  
 
-So are the zombies.  
+The zombies **close in,** their moans merging into a haunting chorus of death.  
 
-Deepesh is… well, what's left of him isn't making noise anymore.  
+Deepesh—what’s left of him—is already a torn-up pile of meat.  
 
-You don't even have time to feel bad before the air shifts—thick with something rotten, heavy, **wrong.**  
+You barely have time to process the horror before a **deep, guttural snarl** rumbles through the air.  
 
-Then you hear it.  
+Emerging from behind the horde is a **mutated abomination,** its bloated, rotting body pulsating unnaturally.  
 
-A deep, guttural **snarl.**  
+Its dead, cloudy eyes **fixate on you.**  
 
-Emerging from behind the horde is something **worse**—a hulking, rotting **mutant**, its bloated body **pulsating** like it's about to burst.  
-
-Its dead, cloudy eyes lock onto you, its head tilting. **Sensing weakness.**  
-
-Your leg is useless.  
-
-Your weapons are just out of reach.  
-
-The monster **lunges.**  
-
----
-
+The thing **lunges.**  
 `;
 
 
 export let continueEndPrompt = `  
-
 Given the last story event, **continue the narrative while steering the story toward an ending** based on the player's past decisions and consequences.  
 
 - The story should **shift toward a climactic moment** without outright concluding.  
@@ -194,6 +169,7 @@ Given the last story event, **continue the narrative while steering the story to
 - Past **injuries, losses, or advantages should still play a role** in the unfolding events.  
 - End with a **suspenseful setup** for the **preFinalePrompt** or **finalePrompt**—a dangerous, emotional, or impossible choice.  
 - **Sentences should be short and impactful.** If a sentence is too long, break it up naturally.  
+- **DO NOT end with a question.** Leave the moment tense, but without directly prompting a decision.  
 
 ---
 
@@ -202,7 +178,9 @@ The player successfully reached an abandoned military bunker, hoping for safety,
 
 ### **Example Output:**  
 
-You slam your fist against the steel door. **Nothing.**  
+You slam your fist against the steel door.  
+
+**Nothing.**  
 
 No beep. No mechanical whir. Just **silence.**  
 
@@ -225,18 +203,22 @@ It **lunges.**
 Behind you—**the bunker door clicks.**  
 
 It's opening.  
----
 
+The growl turns into a snarl.  
+
+Your next move has to be fast.  
+---
 `;
 
-export let preFinalePrompt = `  
 
+export let preFinalePrompt = `  
 Given the last story event, **escalate the tension with a final twist**, leading to a crucial, life-altering decision.  
 
 - The scene should **shift dramatically**, revealing new dangers, betrayals, or shocking truths.  
 - The **stakes must be at their highest**—this choice will determine whether the player gets a **bad ending (severe injury, loss, or death)** or a **good ending (survival, victory, or bittersweet success).**  
 - The story should **not resolve yet**—instead, it should end with a **final situation** that forces the player to act immediately.  
 - The response should be **cinematic, intense, and filled with emotional weight.**  
+- **Every sentence must appear on a new line, with an empty line between them.** **DO NOT write in paragraphs.**  
 - **Do not provide choices or explain consequences—only set up the moment.**  
 - **End with a direct question, forcing the player to make their final choice.**  
 - Keep it short, simple, and punchy.  
@@ -248,23 +230,45 @@ The player barely escapes a burning hospital, thinking they're safe—until they
 
 ### **Example Output:**  
 
-You **stumble forward,** lungs burning, legs barely holding you up.  
+You **stumble forward.**  
 
-Behind you, the hospital collapses in a storm of fire and steel. **You made it.**  
+Lungs burning.  
+
+Legs barely holding you up.  
+
+Behind you, the hospital collapses in a storm of fire and steel.  
+
+**You made it.**  
 
 Then—**the scream.**  
 
-Your blood runs cold. **You know that voice.**  
+Your blood runs cold.  
 
-You turn, and there she is.  
+**You know that voice.**  
 
-Trapped. **Pinned under rubble.** Eyes wild with panic.  
+You turn.  
+
+And there she is.  
+
+Trapped.  
+
+**Pinned under rubble.**  
+
+Eyes wild with panic.  
 
 Behind her, something **shifts in the smoke.**  
 
-A **shadow.** Massive. **Wrong.**  
+A **shadow.**  
 
-The firelight flickers, and you see **the creature's twisted form** emerge, its mouth splitting into something not meant for this world.  
+Massive.  
+
+**Wrong.**  
+
+The firelight flickers.  
+
+You see **the creature’s twisted form** emerge.  
+
+Its mouth **splits into something not meant for this world.**  
 
 Her eyes meet yours.  
 
@@ -272,13 +276,12 @@ Her eyes meet yours.
 
 You have **seconds** to act.  
 
-Do you save her? **Or save yourself?**  
+Do you save her?  
 
+**Or save yourself?**  
 `;
 
-
 export let finalePrompt = `  
-
 Given the user's **final decision and a Chance Factor (1-20),** conclude the story with a **definitive ending**—either **good or bad** based on the outcome.  
 
 - The **Chance Factor will determine success or failure**, with character abilities and past choices playing a role.  
@@ -293,26 +296,52 @@ Given the user's **final decision and a Chance Factor (1-20),** conclude the sto
 - **Make the ending cinematic, emotional, and intense.**  
 - **Tie back to the player's journey, past choices, and consequences.**  
 - **Do not leave the ending open-ended—fully conclude the story.**  
-- Keep it short, simple, and punchy.  
+- **Make good endings feel rewarding (victory, survival, even romance/sex if appropriate).**  
+- **Make bad endings feel painful (loss, death, or suffering).**  
+- **Use short, impactful sentences.** If a sentence is too long, break it up naturally.  
 
 ---
 
 ### **Example Input:**  
 *The player tries to save the trapped woman while fending off the monster.* {6}  
 
-### **Example Output (Tragic Ending - 4-9):**  
+### **Example Outputs:**  
 
-You lunge forward, ignoring the fire searing your lungs, the pain clawing at your broken body.  
+#### **(Horrific Failure - 1-3):**  
+The monster moves **first.**  
+
+Its claws **tear through your chest.**  
+
+The pain is blinding.  
+
+You collapse, choking on blood.  
 
 She screams.  
 
+Then—**silence.**  
+
+The last thing you see is her lifeless body, crumpled in the monster’s grip.  
+
+Then the darkness takes you, too.  
+
+**The End.**  
+
+---
+
+#### **(Tragic Ending - 4-9):**  
+You lunge forward, ignoring the fire searing your lungs.  
+
+She reaches for you.  
+
 The monster is **faster.**  
 
-Before you can reach her, its **clawed hands pierce her chest**, lifting her into the air. 
+Its claws **pierce her chest**, lifting her into the air.  
 
-A **wet gurgle** escapes her lips as her wide, terrified eyes lock onto yours.  
+A **wet gurgle** escapes her lips.  
 
-She tries to say something—then **goes limp.**  
+Her wide, terrified eyes lock onto yours.  
+
+Then—**she goes limp.**  
 
 Rage surges through you.  
 
@@ -322,7 +351,7 @@ The monster collapses, but it's too late.
 
 You're too late.  
 
-The fire **closes in**, and the world feels unbearably quiet.  
+The fire **closes in.**  
 
 You stumble away, haunted by the image of **her lifeless body.**  
 
@@ -332,7 +361,82 @@ But at what cost?
 
 **The End.**  
 
+---
+
+#### **(Bittersweet Ending - 10-13):**  
+You grab her, **pulling with everything you have.**  
+
+The rubble shifts.  
+
+She’s free.  
+
+But the monster is **already upon you.**  
+
+Its claws **slash deep.**  
+
+Agony.  
+
+You fire your last bullet straight into its skull.  
+
+It collapses, twitching, finally **dead.**  
+
+She holds you as blood pours from your wounds.  
+
+You made it.  
+
+But you’ll never be the same.  
+
+**The End.**  
+
+---
+
+#### **(Successful but Costly - 14-18):**  
+You **dodge**, dragging her free in one swift motion.  
+
+The monster lunges.  
+
+You fire **point blank.**  
+
+Its skull **explodes.**  
+
+For a moment, there is only silence.  
+
+Then—**laughter.**  
+
+You both collapse, exhausted, alive.  
+
+The world is in ruins.  
+
+But together, **you have a chance.**  
+
+**The End.**  
+
+---
+
+#### **(Perfect Victory - 19-20):**  
+You act **without thinking.**  
+
+With a single, perfect shot, the monster’s head **bursts apart.**  
+
+She stares, breathing hard, then **throws herself into your arms.**  
+
+You **made it.**  
+
+Together.  
+
+The danger is over.  
+
+She pulls you close, her breath warm against your ear.  
+
+“You saved me.”  
+
+Tonight, for the first time in forever—**you don’t feel alone.**  
+
+**The End.**  
+
+---
 `;
+
 
 export let summaryPrompt = `   
 Summarize the entire story in a **short, humorous, and exaggerated** way, highlighting the user's **key decisions and their consequences.**  
