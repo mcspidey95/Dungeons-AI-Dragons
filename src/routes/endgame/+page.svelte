@@ -16,6 +16,7 @@
 	let showIntro = $state(false);
 	let showTitleAndButtons = $state(false);
 	let showCarousel = $state(false);
+	let showCarouselDone = $state(false);
 
 	$effect(() => {
 		setTimeout(() => {
@@ -60,10 +61,16 @@
 
 	function startCarousel() {
 		showCarousel = true;
+
+		const firstPreviewCard = document.querySelector('.initial-wrapper');
+		setTimeout(() => {
+			firstPreviewCard.style.display = 'none';
+			showCarouselDone = true;
+		}, 500);
 	}
 
 	$effect(() => {
-		if (showCarousel) {
+		if (showCarouselDone) {
 			document.addEventListener('keydown', handleKeydown);
 		}
 		return () => document.removeEventListener('keydown', handleKeydown);
@@ -100,7 +107,7 @@
 	{/if}
 
 	<div class="carousel">
-		{#if showIntro && !showCarousel}
+		{#if showIntro}
 			<div class="initial-wrapper" class:fadeInPop={showIntro && !showCarousel}>
 				<div
 					class="card-wrapper center {flippedCardId === cards[currentIndex].id ? 'flipped' : ''}"
@@ -128,32 +135,32 @@
 		{/if}
 
 		{#if showCarousel}
-			{#each getCardsWithPositions() as card (card.id)}
-				<div
-					class="card-wrapper {card.position} {flippedCardId === card.id ? 'flipped' : ''} fade-in"
-					animate:flip={{ duration: 600, easing: cubicOut }}
-					on:click={() => handleCardClick(card)}
-				>
-					<div class="card-front">
-						<div class="card-top-left">
-							{#each card.content.split('') as letter}
-								<div class="card-letter">{letter}</div>
-							{/each}
-						</div>
-						<div class="card-bottom-right">
-							{#each card.content.split('') as letter}
-								<div class="card-letter">{letter}</div>
-							{/each}
-						</div>
+		{#each getCardsWithPositions() as card (card.id)}
+			<div
+				class="card-wrapper {card.position} {flippedCardId === card.id ? 'flipped' : ''} {card.position === 'far-left' || card.position === 'far-right' ? 'delayed-fade-in' : 'fade-in'}"
+				animate:flip={{ duration: 600, easing: cubicOut }}
+				on:click={() => handleCardClick(card)}
+			>
+				<div class="card-front">
+					<div class="card-top-left">
+						{#each card.content.split('') as letter}
+							<div class="card-letter">{letter}</div>
+						{/each}
 					</div>
-					<div class="card-back">
-						<div class="card-content">
-							{card.description}
-						</div>
+					<div class="card-bottom-right">
+						{#each card.content.split('') as letter}
+							<div class="card-letter">{letter}</div>
+						{/each}
 					</div>
 				</div>
-			{/each}
-		{/if}
+				<div class="card-back">
+					<div class="card-content">
+						{card.description}
+					</div>
+				</div>
+			</div>
+		{/each}
+	{/if}
 	</div>
 
 	{#if showTitleAndButtons}
@@ -208,6 +215,7 @@
 	}
 
 	.card-wrapper.left {
+		filter: grayscale(0.5);
 		transform: translateX(-450px) translateY(-50%) scale(0.8) translateZ(-100px);
 	}
 
@@ -224,14 +232,19 @@
 	}
 
 	.card-wrapper.right {
+		filter: grayscale(0.5);
 		transform: translateX(200px) translateY(-50%) scale(0.8) translateZ(-100px);
 	}
 
 	.card-wrapper.far-left {
+		opacity: 0;
+		filter: grayscale(0);
 		transform: translateX(-450px) translateY(-50%) scale(0.6) translateZ(-200px);
 	}
 
 	.card-wrapper.far-right {
+		opacity: 0;
+		filter: grayscale(0);
 		transform: translateX(200px) translateY(-50%) scale(0.6) translateZ(-200px);
 	}
 
@@ -318,16 +331,16 @@
 	}
 
 	.fade-in {
-		animation: fadeIn 0.5s ease-in;
+		animation: fadeIn 0.3s ease-in;
+	}
+
+	.delayed-fade-in {
+		animation: fadeIn 0.1s ease-in 1s forwards;
 	}
 
 	@keyframes fadeIn {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
+		0% { opacity: 0; }
+		100% { opacity: 1; }
 	}
 
 	.fadeInPop {
