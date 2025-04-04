@@ -779,21 +779,39 @@
 			await startDiceRoll(luckyNumber);
 
 			backgroundImage = await backgroundImage2;   //finale
-			storyFull = await storyFull;                //finale
-			let summary = storyLLM(summaryPrompt); 
+			storyFull = await storyFull;         
+			       //finale
+			let summaryRaw = storyLLM(summaryPrompt);
+			let cardAvatar = avatarImage;
+			//let cardAvatar = imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024, false);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			await typeStoryText();                      //finale
 
+			let [summaryName, summaryContent] = await summaryRaw.split('\n');
+			cardAvatar = await cardAvatar;
+
+			let previousData = JSON.parse(localStorage.getItem('endgame'));
+			let prisonerCount = previousData ? previousData.prisonerCount + 1 : 0;
+
 			localStorage.setItem('endgame', JSON.stringify({
+				name: summaryName,
+				avatar: cardAvatar,
+				summary: summaryContent,
+
+				prisonerCount: prisonerCount,
 				avatarPrompt: userPrompt, 
-				summary: await summary
 			}));
 
 			const endgameData = JSON.parse(localStorage.getItem('endgame'));
 
 			if (endgameData) {
-    			console.log("Summary:", endgameData.summary);
+				console.log("=== Endgame Data ===");
+				console.log("Name:", endgameData.name);
+				console.log("Avatar (base64):", endgameData.avatar);
+				console.log("Summary:", endgameData.summary);
+				console.log("Prisoner Count:", endgameData.prisonerCount);
+				console.log("Avatar Prompt:", endgameData.avatarPrompt);
 			}
-
 
 
     	} catch (error) {

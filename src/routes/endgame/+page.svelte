@@ -1,6 +1,7 @@
 <script>
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
+	import { goto } from '$app/navigation';
 
 	let cards = $state([
 		{ id: 1, content: 'JOKER', description: 'Description for Card 1' },
@@ -14,16 +15,19 @@
 	let isAnimating = $state(false);
 	let flippedCardId = $state(null);
 	let showIntro = $state(false);
-	let showTitleAndButtons = $state(false);
+	let showTitle = $state(false);
+	let showButtons = $state(false);
 	let showCarousel = $state(false);
 	let showCarouselDone = $state(false);
 
 	$effect(() => {
 		setTimeout(() => {
-			showIntro = true;
+			showTitle = true;
+			
 			setTimeout(() => {
-				showTitleAndButtons = true;
-			}, 1000);
+				showIntro = true;
+				showButtons = true;
+			}, 3000);
 		}, 100);
 	});
 
@@ -51,22 +55,50 @@
 	}
 
 	function handleCardClick(card) {
-		if (
-			(showCarousel && card.position === 'center') ||
-			(!showCarousel && card.id === cards[currentIndex].id)
-		) {
+		if ((showCarousel && card.position === 'center') || (!showCarousel && card.id === cards[currentIndex].id)) {
 			flippedCardId = flippedCardId === card.id ? null : card.id;
+		} else if (card.position === 'left' && !isAnimating) {
+			// Move left when clicking left card
+			moveLeft();
+		} else if (card.position === 'right' && !isAnimating) {
+			// Move right when clicking right card
+			moveRight();
 		}
 	}
 
 	function startCarousel() {
-		showCarousel = true;
+		document.querySelectorAll('.card-wrapper.center, .card-wrapper.flipped').forEach((el) => {
+			el.style.transform = 'translateX(-50%) translateY(-50%) scale(1) translateZ(0)';
+		});
+
+		document.querySelectorAll('.card-wrapper.center:hover:not(.flipped), .card-wrapper.flipped:hover').forEach((el) => {
+			el.style.transform = 'translateX(-50%) translateY(-50%) scale(1) translateZ(0)';
+		});
+
+		document.querySelectorAll('.carousel-title, .button-container').forEach((el) => {
+			el.style.setProperty('opacity', '0', 'important');
+			el.style.animation = 'none';
+		});
+
+		document.querySelector('.carousel-title').textContent = 'Your Slave Collection';
+		document.getElementById('hide-button').style.display = 'none';
+
+		setTimeout(() => {
+			showCarousel = true;
+		}, 500);
 
 		const firstPreviewCard = document.querySelector('.initial-wrapper');
 		setTimeout(() => {
 			firstPreviewCard.style.display = 'none';
 			showCarouselDone = true;
-		}, 500);
+			document.querySelector('.instructions').style.opacity = '1';
+			document.querySelector('.carousel-title').style.setProperty('opacity', '1', 'important');
+		}, 1000);
+
+		setTimeout(() => {
+			const buttons = document.querySelector('.button-container');
+			buttons.style.setProperty('opacity', '1', 'important');
+		}, 3000);
 	}
 
 	$effect(() => {
@@ -102,8 +134,8 @@
 </script>
 
 <div class="carousel-container">
-	{#if showTitleAndButtons}
-		<h2 class="carousel-title fade-in">Your Character Collection</h2>
+	{#if showTitle}
+		<h2 class="{showIntro ? 'carousel-title' : 'centered-intro-title'} fadeInPop">The End. Somehow, you made it.</h2>
 	{/if}
 
 	<div class="carousel">
@@ -135,43 +167,73 @@
 		{/if}
 
 		{#if showCarousel}
-		{#each getCardsWithPositions() as card (card.id)}
-			<div
-				class="card-wrapper {card.position} {flippedCardId === card.id ? 'flipped' : ''} {card.position === 'far-left' || card.position === 'far-right' ? 'delayed-fade-in' : 'fade-in'}"
-				animate:flip={{ duration: 600, easing: cubicOut }}
-				on:click={() => handleCardClick(card)}
-			>
-				<div class="card-front">
-					<div class="card-top-left">
-						{#each card.content.split('') as letter}
-							<div class="card-letter">{letter}</div>
-						{/each}
+			{#each getCardsWithPositions() as card (card.id)}
+				<div
+					class="card-wrapper {card.position} {flippedCardId === card.id
+						? 'flipped'
+						: ''} {card.position === 'far-left' || card.position === 'far-right'
+						? 'delayed-fade-in'
+						: 'fade-in'}"
+					animate:flip={{ duration: 600, easing: cubicOut }}
+					on:click={() => handleCardClick(card)}
+				>
+					<div class="card-front">
+						<div class="card-top-left">
+							{#each card.content.split('') as letter}
+								<div class="card-letter">{letter}</div>
+							{/each}
+						</div>
+						<div class="card-bottom-right">
+							{#each card.content.split('') as letter}
+								<div class="card-letter">{letter}</div>
+							{/each}
+						</div>
 					</div>
-					<div class="card-bottom-right">
-						{#each card.content.split('') as letter}
-							<div class="card-letter">{letter}</div>
-						{/each}
+					<div class="card-back">
+						<div class="card-content">
+							{card.description}
+						</div>
 					</div>
 				</div>
-				<div class="card-back">
-					<div class="card-content">
-						{card.description}
-					</div>
-				</div>
-			</div>
-		{/each}
-	{/if}
+			{/each}
+		{/if}
 	</div>
 
-	{#if showTitleAndButtons}
-		<div class="button-container fade-in">
-			<button on:click={startCarousel}>Start Carousel</button>
-			<button>Another Action</button>
+	{#if showButtons}
+		<div class="instructions">Use ← and → arrow keys to navigate, click center card to flip</div>
+		<div class="button-container fadeInPop">
+			<button id="hide-button" class="start-button" on:click={startCarousel}>Keep</button>
+			<button class="start-button" on:click={() => goto('/')}>{showCarousel ? 'One Moree' : 'Nah`'}</button>
 		</div>
 	{/if}
 </div>
 
 <style>
+	#hide-button{
+		display: block;
+	}
+
+	.instructions{
+		position: absolute;
+		width: 500px;
+		align-items: center;
+		text-align: center;
+		margin-top: 500px;
+		color: gray;
+		font-size: 14px;
+		opacity: 0;
+	}
+
+	.centered-intro-title {
+		position: fixed;
+		top: 40%;
+		text-align: center;
+		width: 500px;
+		align-items: center;
+		color: wheat;
+		font-size: 48px;
+	}
+
 	.carousel-container {
 		display: flex;
 		flex-direction: column;
@@ -185,7 +247,7 @@
 		font-size: 24px;
 		font-weight: bold;
 		margin-bottom: 50px;
-		color: #c0bdbd;
+		color: wheat;
 		text-align: center;
 	}
 
@@ -200,6 +262,12 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
+	}
+
+	.carousel-title,
+	.button-container,
+	.instructions {
+		transition: all 0.4s ease-in-out;
 	}
 
 	.card-wrapper {
@@ -219,6 +287,12 @@
 		transform: translateX(-450px) translateY(-50%) scale(0.8) translateZ(-100px);
 	}
 
+	.card-wrapper.left:hover {
+		cursor: w-resize;
+		filter: grayscale(0.7);
+		transform: translateX(-450px) translateY(-53%) scale(0.8) translateZ(-90px);
+	}
+
 	.card-wrapper.center {
 		transform: translateX(-50%) translateY(-50%) scale(1) translateZ(0);
 		z-index: 3;
@@ -227,13 +301,31 @@
 	}
 
 	.card-wrapper.center:hover:not(.flipped) {
-		transform: translateX(-50%) translateY(-50%) scale(1.05) translateZ(0);
+		transform: translateX(-50%) translateY(-52%) scale(1.05) translateZ(0);
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	}
+
+	.initial-wrapper .card-wrapper.center {
+		transform: translateX(-50%) translateY(-45%) scale(1.3) translateZ(0);
+		z-index: 3;
+		opacity: 1;
+		cursor: pointer;
+	}
+
+	.initial-wrapper .card-wrapper.center:hover:not(.flipped) {
+		transform: translateX(-50%) translateY(-48%) scale(1.31) translateZ(0);
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 	}
 
 	.card-wrapper.right {
 		filter: grayscale(0.5);
 		transform: translateX(200px) translateY(-50%) scale(0.8) translateZ(-100px);
+	}
+
+	.card-wrapper.right:hover {
+		cursor: e-resize;
+		filter: grayscale(0.5);
+		transform: translateX(200px) translateY(-53%) scale(0.8) translateZ(-90px);
 	}
 
 	.card-wrapper.far-left {
@@ -250,6 +342,21 @@
 
 	.card-wrapper.flipped {
 		transform: translateX(-50%) translateY(-50%) scale(1) translateZ(0) rotateY(180deg);
+		z-index: 3;
+	}
+
+	.card-wrapper.flipped:hover {
+		transform: translateX(-50%) translateY(-52%) scale(1.05) translateZ(0) rotateY(180deg);
+		z-index: 3;
+	}
+
+	.initial-wrapper .card-wrapper.flipped {
+		transform: translateX(-50%) translateY(-45%) scale(1.3) translateZ(0) rotateY(180deg);
+		z-index: 3;
+	}
+
+	.initial-wrapper .card-wrapper.flipped:hover {
+		transform: translateX(-50%) translateY(-48%) scale(1.31) translateZ(0) rotateY(180deg);
 		z-index: 3;
 	}
 
@@ -322,16 +429,17 @@
 	}
 
 	button {
-		padding: 10px 20px;
 		font-size: 16px;
 		cursor: pointer;
-		background-color: #f5f5f5;
+		color: wheat;
+		background-color: #333;
+		outline: none;
 		border: none;
 		border-radius: 5px;
 	}
 
 	.fade-in {
-		animation: fadeIn 0.3s ease-in;
+		animation: fadeIn 0.3s ease-in none;
 	}
 
 	.delayed-fade-in {
@@ -339,8 +447,12 @@
 	}
 
 	@keyframes fadeIn {
-		0% { opacity: 0; }
-		100% { opacity: 1; }
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 
 	.fadeInPop {
