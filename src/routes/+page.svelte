@@ -780,9 +780,21 @@
 
 			backgroundImage = await backgroundImage2;   //finale
 			storyFull = await storyFull;                //finale
+			let summary = storyLLM(summaryPrompt); 
 			await typeStoryText();                      //finale
 
-			let summary = storyLLM(summaryPrompt);      //summary
+			localStorage.setItem('endgame', JSON.stringify({
+				avatarPrompt: userPrompt, 
+				summary: await summary
+			}));
+
+			const endgameData = JSON.parse(localStorage.getItem('endgame'));
+
+			if (endgameData) {
+    			console.log("Summary:", endgameData.summary);
+			}
+
+
 
     	} catch (error) {
         	console.error('Error during initialization:', error);
