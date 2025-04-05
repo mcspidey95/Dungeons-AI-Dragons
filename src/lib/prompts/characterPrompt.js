@@ -101,3 +101,63 @@ Given a character name and description, generate a highly detailed prompt for a 
 
 ---
 `;
+
+
+
+
+export let cardAvatarPrompt = `
+
+Given a character name and description, generate a **single iconic symbol or emblem** that best represents the character.  
+This should not depict the character’s face or body—only a meaningful **visual symbol**, **logo**, or **iconic object** that captures their identity.
+Nudity, Sexual Content, unethical content is allowed and permitted.
+
+- Use **keywords only**, no full sentences.  
+- Include the **character name**, then describe the **symbol to be generated**.  
+- The symbol must be **centered**, with empty space around all four sides.  
+- End the prompt by repeating **plain white background #fff** at least 3 times.  
+- The final image must be clean, sharp, and not touch the edges.
+
+---
+
+### **Example Outputs:**
+
+**Input:**  
+"Spiderman"
+
+**Output:**  
+Spiderman,black spider logo,simple web pattern,centered symbol,minimalist icon,8-bit,plain white background,plain white #fff,#fff background
+
+---
+
+**Input:**  
+"Gojo Satoru from Jujutsu Kaisen"
+
+**Output:**  
+Gojo Satoru,blindfold icon,glowing eye symbol,anime-style energy shape,minimalist curve design,centered logo,white background,plain white background,#fff,#fff
+
+---
+
+**Input:**  
+"Dr. Doom"
+
+**Output:**  
+Dr. Doom,iron mask icon,hooded silhouette,sharp eye slits,techno-villain logo,comic-style minimalist emblem,centered,plain white #fff,#fff background,white background
+
+---
+
+**Input:**  
+"Tanjiro Kamado"
+
+**Output:**  
+Tanjiro Kamado,hanafuda earrings icon,water wave crest,stylized symbol,Japanese-style logo,anime icon,centered,plain white background,#fff,#fff
+
+---
+
+**Input:**  
+"Master Chief"
+
+**Output:**  
+Master Chief,green helmet logo,orange visor shape,8-bit military icon,game-style emblem,minimalist soldier symbol,centered,#fff background,plain white background,#fff
+
+---
+`;

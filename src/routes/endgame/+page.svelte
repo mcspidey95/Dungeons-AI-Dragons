@@ -2,14 +2,10 @@
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { openDB, getAllPrisoners, savePrisoner } from '$lib/db.js';
 
-	let cards = $state([
-		{ id: 1, content: 'JOKER', description: 'Description for Card 1' },
-		{ id: 2, content: 'WICK', description: 'Description for Card 2' },
-		{ id: 3, content: 'SOUP', description: 'Description for Card 3' },
-		{ id: 4, content: 'SPIDEY', description: 'Description for Card 4' },
-		{ id: 5, content: 'HITLER', description: 'Description for Card 5' }
-	]);
+	let cards = $state([]);
 
 	let currentIndex = $state(0);
 	let isAnimating = $state(false);
@@ -19,6 +15,19 @@
 	let showButtons = $state(false);
 	let showCarousel = $state(false);
 	let showCarouselDone = $state(false);
+
+	onMount(() => {
+		const data = JSON.parse(localStorage.getItem('endgame'));
+		if (data) {
+			cards = [{
+				id: 1,
+				content: data.name || 'UNKNOWN',
+				description: data.summary || 'No summary found.',
+				avatar: data.avatar || '',
+				avatarPrompt: data.avatarPrompt || ''
+			}];
+		}
+	});
 
 	$effect(() => {
 		setTimeout(() => {
@@ -66,7 +75,77 @@
 		}
 	}
 
+	async function loadPrisonerCards() {
+		const db = await openDB();
+
+		const existingPrisoners = await getAllPrisoners(db);
+		for (const prisoner of existingPrisoners) {
+			cards.push({
+				id: cards.length + 1,
+				content: prisoner.content,
+				description: prisoner.description,
+				avatar: prisoner.avatar,
+				avatarPrompt: prisoner.avatarPrompt
+			});
+		}
+
+				// repeat cards for carousel effect if only 1 or 2 exist
+				if (cards.length === 1) {
+			cards = [
+				{ ...cards[0], id: 1 },
+				{ ...cards[0], id: 2 },
+				{ ...cards[0], id: 3 },
+				{ ...cards[0], id: 4 },
+				{ ...cards[0], id: 5 },
+			];
+		} else if (cards.length === 2) {
+			cards = [
+				{ ...cards[0], id: 1 },
+				{ ...cards[1], id: 2 },
+				{ ...cards[0], id: 3 },
+				{ ...cards[1], id: 4 },
+				{ ...cards[0], id: 5 },
+				{ ...cards[1], id: 6 },
+			];
+		} else if (cards.length === 3) {
+			cards = [
+				{ ...cards[0], id: 1 },
+				{ ...cards[1], id: 2 },
+				{ ...cards[2], id: 3 },
+				{ ...cards[0], id: 4 },
+				{ ...cards[1], id: 5 },
+				{ ...cards[2], id: 6 },
+			];
+		} else if (cards.length === 4) {
+			cards = [
+				{ ...cards[0], id: 1 },
+				{ ...cards[1], id: 2 },
+				{ ...cards[2], id: 3 },
+				{ ...cards[3], id: 4 },
+				{ ...cards[0], id: 5 },
+				{ ...cards[1], id: 6 },
+				{ ...cards[2], id: 7 },
+			];
+		}
+
+		// Save current card to IndexedDB
+		const firstCard = cards[0];
+		prisonerCount++;
+
+		await savePrisoner(db, {
+			id: prisonerCount,
+			content: firstCard.content,
+			description: firstCard.description,
+			avatar: firstCard.avatar,
+			avatarPrompt: firstCard.avatarPrompt
+		});
+	}
+
+
 	function startCarousel() {
+		
+		loadPrisonerCards();
+
 		document.querySelectorAll('.card-wrapper.center, .card-wrapper.flipped').forEach((el) => {
 			el.style.transform = 'translateX(-50%) translateY(-50%) scale(1) translateZ(0)';
 		});
@@ -139,7 +218,7 @@
 	{/if}
 
 	<div class="carousel">
-		{#if showIntro}
+		{#if showIntro && cards[currentIndex]}
 			<div class="initial-wrapper" class:fadeInPop={showIntro && !showCarousel}>
 				<div
 					class="card-wrapper center {flippedCardId === cards[currentIndex].id ? 'flipped' : ''}"
@@ -151,6 +230,12 @@
 								<div class="card-letter">{letter}</div>
 							{/each}
 						</div>
+
+							<!-- Avatar image in center -->
+							<div class="card-avatar-center">
+								<img src={`data:image/png;base64,${cards[currentIndex].avatar}`} alt="Avatar" />
+							</div>
+
 						<div class="card-bottom-right">
 							{#each cards[currentIndex].content.split('') as letter}
 								<div class="card-letter">{letter}</div>
@@ -183,6 +268,12 @@
 								<div class="card-letter">{letter}</div>
 							{/each}
 						</div>
+
+						<!-- Avatar image in center -->
+						<div class="card-avatar-center">
+							<img src={`data:image/png;base64,${card.avatar}`} alt="Avatar" />
+						</div>
+
 						<div class="card-bottom-right">
 							{#each card.content.split('') as letter}
 								<div class="card-letter">{letter}</div>
@@ -366,7 +457,7 @@
 		width: 100%;
 		height: 100%;
 		backface-visibility: hidden;
-		background-color: white;
+		background-color: #e8e6e8;
 		border-radius: 15px;
 		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 		padding: 20px;
@@ -383,6 +474,35 @@
 		flex-direction: column;
 		justify-content: space-between;
 	}
+
+	.card-avatar-center {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 60%;
+		border-radius: 15px;
+		aspect-ratio: 1;
+		overflow: hidden;
+		mask-image: 
+		linear-gradient(to top, transparent, black 10%, black 90%, transparent),
+		linear-gradient(to left, transparent, black 10%, black 90%, transparent);
+	-webkit-mask-image: 
+		linear-gradient(to top, transparent, black 10%, black 90%, transparent),
+		linear-gradient(to left, transparent, black 10%, black 90%, transparent);
+
+	mask-composite: intersect;
+	-webkit-mask-composite: destination-in;
+	mask-repeat: no-repeat;
+	mask-size: 100% 100%;
+	}
+
+	.card-avatar-center img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 
 	.card-top-left {
 		display: flex;
@@ -413,6 +533,7 @@
 
 	.card-content {
 		font-size: 14px;
+		white-space: pre-wrap;
 		font-weight: bold;
 		color: #333;
 		text-align: center;

@@ -6,7 +6,7 @@
 	
 	import { storyLLM, charLLM, imgLLM, diceLLM} from './api/models';
 	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
-	import { characterSheetPrompt, avatarGenerationPrompt } from '$lib/prompts/characterPrompt';
+	import { characterSheetPrompt, avatarGenerationPrompt, cardAvatarPrompt } from '$lib/prompts/characterPrompt';
 	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
 
 	let timer;
@@ -284,7 +284,7 @@
 		isLoading = false;
     	typeCharacterSheetText(20);
 
-    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024, false);
+    	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024, 0);
     	
 		showStartButton = true;
 	}
@@ -782,23 +782,21 @@
 			storyFull = await storyFull;         
 			       //finale
 			let summaryRaw = storyLLM(summaryPrompt);
-			let cardAvatar = avatarImage;
-			//let cardAvatar = imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024, false);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			let cardAvatar = imgLLM(cardAvatarPrompt + userPrompt, 1024, 1024, 0);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			await typeStoryText();                      //finale
+			summaryRaw  = await summaryRaw;
 
-			let [summaryName, summaryContent] = await summaryRaw.split('\n');
+			let [summaryName, summaryContent] = summaryRaw.includes('!') ? summaryRaw.split('!') : ['UNKNOWN', summaryRaw]; // fallback if '!' not present
 			cardAvatar = await cardAvatar;
 
 			let previousData = JSON.parse(localStorage.getItem('endgame'));
-			let prisonerCount = previousData ? previousData.prisonerCount + 1 : 0;
 
 			localStorage.setItem('endgame', JSON.stringify({
 				name: summaryName,
 				avatar: cardAvatar,
 				summary: summaryContent,
 
-				prisonerCount: prisonerCount,
 				avatarPrompt: userPrompt, 
 			}));
 
@@ -809,7 +807,6 @@
 				console.log("Name:", endgameData.name);
 				console.log("Avatar (base64):", endgameData.avatar);
 				console.log("Summary:", endgameData.summary);
-				console.log("Prisoner Count:", endgameData.prisonerCount);
 				console.log("Avatar Prompt:", endgameData.avatarPrompt);
 			}
 

@@ -438,21 +438,33 @@ Tonight, for the first time in forever—**you don’t feel alone.**
 `;
 
 
-export let summaryPrompt = `   
+export let summaryPrompt = `  
 Summarize the entire story in a **short, humorous, and exaggerated** way, highlighting the user's **key decisions and their consequences.**  
 
-- The summary should be **funny, sarcastic, or dramatic**, depending on the player's choices.  
-- If the player made **bad decisions**, emphasize their **spectacular failures** in a lighthearted way.  
-- If they succeeded, **congratulate them in an over-the-top manner** as if they just pulled off the impossible.  
-- Keep it **brief, witty, and entertaining**—like a ridiculous movie recap or a mocking narrator from a chaotic DnD campaign.  
+**Name formatting rules:**  
+- Start the summary with a nickname that follows these rules:  
+  - **One word**  
+  - **All caps**  
+  - **Ends with "!"**  
+  - **Under or exactly 7 letters**  
+- If the full name has multiple words, use the most **recognizable** one that's **under 7 letters** (e.g., "Tony Stark" → "STARK!")  
+- If the name is a single long word, shorten it to a **nickname** under 7 letters (e.g., "Annabelle" → "ANNA!", "Surajabinav" → "SURAJ!")  
+- If it's already 7 letters or less, use it as-is with "!" (e.g., "Deepsh" → "DEEPSH!")  
+
+**Summary formatting rules:**  
+- The name (e.g., DEEPS!) should be at the **start of the first line**, followed immediately by the story on the same line.  
+- Use **line breaks** to separate ideas and make the summary punchy and readable.  
+- The tone should be **funny, dramatic, sarcastic, or chaotic**, depending on how the story played out.  
+- If the player failed, **roast them**. If they won, **hype them up**.  
+- Highlight the **key decisions** and their **consequences**. 18+ content allowed.
+- **No more than 5 lines**.
+
+---
 
 ### **Example Output:**  
-
-"Ah yes, the legendary tale of *you*. The brave, foolish soul who thought shoving Deepesh into a zombie horde was a genius idea. Spoiler: it wasn't. Not only did he become zombie chow, but you also **broke your own leg** in the process. Nice work.  
-
-But somehow, against all logic and possibly divine intervention, you **limped your way to victory**, killed a zombie abomination, and even escaped in a conveniently abandoned truck. Sure, you're traumatized, half-dead, and have **absolutely no idea where to go next**, but hey—**you survived!**  
-
-10/10 would make terrible decisions again.  
-
-**The End.**"  
+DEEPS!Ah, DEEPS. The legend. The myth. The absolute chaos magnet.  
+Fed their friend to a zombie horde, then immediately paid the price with a broken leg.  
+Still managed to crawl through fire, blood, and undead stupidity.  
+Fought monsters, lost people, and made exactly zero smart choices.  
+But hey—still breathing. Somehow.  
 `;

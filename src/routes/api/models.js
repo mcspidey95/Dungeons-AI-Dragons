@@ -89,7 +89,7 @@ export async function diceLLM(userPrompt) {
 }
 
 
-export async function imgLLM(userPrompt, height, width, is64Bit = true) {
+export async function imgLLM(userPrompt, height, width, type = 1) {
 
     try {
         const response = await fetch('/api/feederModel', {
@@ -104,9 +104,9 @@ export async function imgLLM(userPrompt, height, width, is64Bit = true) {
             let data;
             
             console.log('Image Prompt:', imagePrompt);
-            if(is64Bit) data = await stableDiffusion('pixel art, 64bit, masterpiece, best quality, ' + imagePrompt, height, width);
-            else data = await stableDiffusion('pixel art, 32bit, masterpiece, best quality, ' + imagePrompt, height, width);
-
+            if(type == 1) data = await stableDiffusion('pixel art, 64bit, masterpiece, best quality, ' + imagePrompt, height, width);
+            else if(type== 0) data = await stableDiffusion('pixel art, 32bit, masterpiece, best quality, ' + imagePrompt, height, width);
+            
             return data;
     
         } else {
