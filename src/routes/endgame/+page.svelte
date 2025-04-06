@@ -1,11 +1,11 @@
 <script>
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { openDB, getAllPrisoners, savePrisoner } from '$lib/db.js';
+	import { openDB, getAllPrisoners, savePrisoner } from '$lib';
 
 	let cards = $state([]);
+	let charType = 0;
 
 	let currentIndex = $state(0);
 	let isAnimating = $state(false);
@@ -19,12 +19,14 @@
 	onMount(() => {
 		const data = JSON.parse(localStorage.getItem('endgame'));
 		if (data) {
+			charType = data.charType || 0;
 			cards = [{
 				id: 1,
 				content: data.name || 'UNKNOWN',
 				description: data.summary || 'No summary found.',
+				cardAvatar: data.cardAvatar || '',
 				avatar: data.avatar || '',
-				avatarPrompt: data.avatarPrompt || ''
+				charPrompt: data.charPrompt || ''
 			}];
 		}
 	});
@@ -77,20 +79,21 @@
 
 	async function loadPrisonerCards() {
 		const db = await openDB();
-
 		const existingPrisoners = await getAllPrisoners(db);
+
 		for (const prisoner of existingPrisoners) {
 			cards.push({
 				id: cards.length + 1,
 				content: prisoner.content,
 				description: prisoner.description,
+				cardAvatar: prisoner.cardAvatar,
 				avatar: prisoner.avatar,
-				avatarPrompt: prisoner.avatarPrompt
+				charPrompt: prisoner.charPrompt
 			});
 		}
 
-				// repeat cards for carousel effect if only 1 or 2 exist
-				if (cards.length === 1) {
+		// repeat cards for carousel effect if only 1 or 2 exist
+		if (cards.length === 1) {
 			cards = [
 				{ ...cards[0], id: 1 },
 				{ ...cards[0], id: 2 },
@@ -130,19 +133,43 @@
 
 		// Save current card to IndexedDB
 		const firstCard = cards[0];
-		prisonerCount++;
 
+		if (charType === 2) {
+			// Try to find matching content
+			const existing = existingPrisoners.find(p => p.content === firstCard.content);
+
+			if (existing) {
+				// Update existing prisoner with same content
+				await savePrisoner(db, {
+					id: existing.id,
+					content: firstCard.content,
+					description: firstCard.description,
+					cardAvatar: firstCard.cardAvatar,
+					avatar: firstCard.avatar,
+					charPrompt: firstCard.avatarPrompt
+				});
+				return;
+			}
+		}
+		
+		// Add as a new prisoner
 		await savePrisoner(db, {
-			id: prisonerCount,
+			id: existingPrisoners.length + 1,
 			content: firstCard.content,
 			description: firstCard.description,
+			cardAvatar: firstCard.cardAvatar,
 			avatar: firstCard.avatar,
-			avatarPrompt: firstCard.avatarPrompt
+			charPrompt: firstCard.avatarPrompt
 		});
 	}
 
 
 	function startCarousel() {
+
+		if(charType == 0){ 
+			window.location.href = '/';
+			return; 
+		}
 		
 		loadPrisonerCards();
 
@@ -233,7 +260,7 @@
 
 							<!-- Avatar image in center -->
 							<div class="card-avatar-center">
-								<img src={`data:image/png;base64,${cards[currentIndex].avatar}`} alt="Avatar" />
+								<img src={`data:image/png;base64,${cards[currentIndex].cardAvatar}`} alt="Avatar" />
 							</div>
 
 						<div class="card-bottom-right">
@@ -271,7 +298,7 @@
 
 						<!-- Avatar image in center -->
 						<div class="card-avatar-center">
-							<img src={`data:image/png;base64,${card.avatar}`} alt="Avatar" />
+							<img src={`data:image/png;base64,${card.cardAvatar}`} alt="Avatar" />
 						</div>
 
 						<div class="card-bottom-right">
@@ -293,8 +320,8 @@
 	{#if showButtons}
 		<div class="instructions">Use ← and → arrow keys to navigate, click center card to flip</div>
 		<div class="button-container fadeInPop">
-			<button id="hide-button" class="start-button" on:click={startCarousel}>Keep</button>
-			<button class="start-button" on:click={() => goto('/')}>{showCarousel ? 'One Moree' : 'Nah`'}</button>
+			<button id="hide-button" class="start-button" on:click={startCarousel}>{charType == 0 ? 'Alt F4' : 'Keep'}</button>
+			<button class="start-button" on:click={() => {window.location.href = '/';}}>{showCarousel ? 'One Moree' : 'Nah`'}</button>
 		</div>
 	{/if}
 </div>

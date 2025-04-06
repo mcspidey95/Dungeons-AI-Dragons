@@ -1,9 +1,11 @@
 <script>
 	import { onMount, tick } from 'svelte';
-	import { initialText, gameLogo, Loading, Loading1, diceLoading, getDefaultCharacters, back, back1, diceButtonText } from '$lib';
+	import { goto } from '$app/navigation';
+	import { initialText, gameLogo, Loading, Loading1, diceLoading, back, back1, diceButtonText} from '$lib';
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, dice1, dice2a, dice2b, death, select, switchSFX, response } from '$lib';
 	
+	import { openDB, getAllPrisoners, getTxtFile} from '$lib';
 	import { storyLLM, charLLM, imgLLM, diceLLM} from './api/models';
 	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
 	import { characterSheetPrompt, avatarGenerationPrompt, cardAvatarPrompt } from '$lib/prompts/characterPrompt';
@@ -32,6 +34,10 @@
 	let charName1;
 	let charName2;
 	let charName3;
+	let db;
+	let prisonerCount;
+	let prisonerChars;
+	let charType;
 
 	let sheetName;
 	let sheetClass;
@@ -102,7 +108,12 @@
 	let cancelTyping = false;
 
 
-	onMount(() => {
+	onMount(async () => {
+
+		db = await openDB();
+		prisonerChars = await getAllPrisoners(db);
+		prisonerCount = prisonerChars ? prisonerChars.length : 0;
+
 		typingSound = new Audio(TypingSFX);
 		typingSound.volume = 0.8;
 
@@ -148,6 +159,79 @@
         backgroundMusic.volume = 0.1;
 	});
 
+	export async function getDefaultCharacters() {
+		let charFiles = await Promise.all([
+			getTxtFile('/characters/char1.txt'),
+			getTxtFile('/characters/char2.txt'),
+			getTxtFile('/characters/char3.txt'),
+			getTxtFile('/characters/char4.txt'),
+			getTxtFile('/characters/char5.txt'),
+			getTxtFile('/characters/char6.txt'),
+			getTxtFile('/characters/char7.txt'),
+			getTxtFile('/characters/char8.txt'),
+			getTxtFile('/characters/char9.txt'),
+			getTxtFile('/characters/char10.txt'),
+			getTxtFile('/characters/char11.txt'),
+			getTxtFile('/characters/char12.txt'),
+			getTxtFile('/characters/charSelmon1.txt'),
+			getTxtFile('/characters/charSelmon2.txt'),
+			getTxtFile('/characters/charSelmon3.txt'),
+		]);
+
+		let sheetFiles = await Promise.all([
+			getTxtFile('/characters/sheet1.txt'),
+			getTxtFile('/characters/sheet2.txt'),
+			getTxtFile('/characters/sheet3.txt'),
+			getTxtFile('/characters/sheet4.txt'),
+			getTxtFile('/characters/sheet5.txt'),
+			getTxtFile('/characters/sheet6.txt'),
+			getTxtFile('/characters/sheet7.txt'),
+			getTxtFile('/characters/sheet8.txt'),
+			getTxtFile('/characters/sheet9.txt'),
+			getTxtFile('/characters/sheet10.txt'),
+			getTxtFile('/characters/sheet11.txt'),
+			getTxtFile('/characters/sheet12.txt'),
+			getTxtFile('/characters/sheetSelmon1.txt'),
+			getTxtFile('/characters/sheetSelmon2.txt'),
+			getTxtFile('/characters/sheetSelmon3.txt'),
+		]);
+
+		// First 12 characters
+		let characters = [
+			{ name: 'Deeps', pfp: charFiles[0], desc: sheetFiles[0] },
+			{ name: 'Aphrodite', pfp: charFiles[1], desc: sheetFiles[1] },
+			{ name: 'Drawf', pfp: charFiles[2], desc: sheetFiles[2] },
+			{ name: 'Yurei', pfp: charFiles[3], desc: sheetFiles[3] },
+			{ name: 'Edamame', pfp: charFiles[4], desc: sheetFiles[4] },
+			{ name: 'Soup', pfp: charFiles[5], desc: sheetFiles[5] },
+			{ name: 'Cobra Bhai', pfp: charFiles[6], desc: sheetFiles[6] },
+			{ name: 'Dr. Volt', pfp: charFiles[7], desc: sheetFiles[7] },
+			{ name: 'The Penguin', pfp: charFiles[8], desc: sheetFiles[8] },
+			{ name: 'Raven', pfp: charFiles[9], desc: sheetFiles[9] },
+			{ name: "Nikhil's Cat", pfp: charFiles[10], desc: sheetFiles[10] },
+			{ name: "Your Mom", pfp: charFiles[11], desc: sheetFiles[11] },
+		];
+
+		// Last 3 characters
+		let final3 = [
+			{ name: 'Deer Killer', pfp: charFiles[12], desc: sheetFiles[12] },
+			{ name: 'Heavy Driver', pfp: charFiles[13], desc: sheetFiles[13] },
+			{ name: 'Selmon Bhai', pfp: charFiles[14], desc: sheetFiles[14] },
+		];
+
+		// Insert prisoners
+		let prisonerCharacters = prisonerChars.map(p => ({
+			name: p.content || 'Unknown Prisoner',
+			pfp: p.avatar || '',
+			desc: (p.charPrompt + p.description) || 'No details available.',
+			prompt: p.charPrompt || '',
+		}));
+
+
+		return [...characters, ...prisonerCharacters, ...final3];
+	}
+
+
 	// <-------------------------------------- Landing Page -------------------------------------->
 
 	async function typeText(callback) {
@@ -184,14 +268,14 @@
 	}
 
 	async function random3Char() {
-		let num = Math.floor(Math.random() * 12);
-		let num1 = Math.floor(Math.random() * 12);
-		let num2 = Math.floor(Math.random() * 12);
+		let num = Math.floor(Math.random() * (prisonerCount+12));
+		let num1 = Math.floor(Math.random() * (prisonerCount+12));
+		let num2 = Math.floor(Math.random() * (prisonerCount+12));
 
 		while(num === num1 || num === num2 || num1 === num2){
-			num = Math.floor(Math.random() * 12);
-			num1 = Math.floor(Math.random() * 12);
-			num2 = Math.floor(Math.random() * 12);
+			num = Math.floor(Math.random() * (prisonerCount+12));
+			num1 = Math.floor(Math.random() * (prisonerCount+12));
+			num2 = Math.floor(Math.random() * (prisonerCount+12));
 		}
 
 		numArray = [num, num1, num2];
@@ -199,12 +283,12 @@
 		defaultCharacters = await getDefaultCharacters();
 
 		if(isSelmon){
-			char1 = defaultCharacters[12].pfp;
-			charName1 = defaultCharacters[12].name;
-			char2 = defaultCharacters[13].pfp;
-			charName2 = defaultCharacters[13].name;
-			char3 = defaultCharacters[14].pfp;
-			charName3 = defaultCharacters[14].name;
+			char1 = defaultCharacters[12+prisonerCount].pfp;
+			charName1 = defaultCharacters[12+prisonerCount].name;
+			char2 = defaultCharacters[13+prisonerCount].pfp;
+			charName2 = defaultCharacters[13+prisonerCount].name;
+			char3 = defaultCharacters[14+prisonerCount].pfp;
+			charName3 = defaultCharacters[14+prisonerCount].name;
 		}
 		else{
 			char1 = defaultCharacters[numArray[0]].pfp;
@@ -216,7 +300,7 @@
 		}
 	}
 
-	function selectCharacter(characterIndex) {
+	async function selectCharacter(characterIndex) {
 		isBack1 = true;
 		showCharacterSelection = false;
 		showTextarea = true;
@@ -224,14 +308,25 @@
 		showCharacterSheet = true;
 
 		if(isSelmon){
-			characterContent = defaultCharacters[12+characterIndex].desc;
-			avatarImage = defaultCharacters[12+characterIndex].pfp;
+			characterContent = defaultCharacters[12+prisonerCount+characterIndex].desc;
+			avatarImage = defaultCharacters[12+prisonerCount+characterIndex].pfp;
 			formatCharacterSheet(characterContent);
+			charType = 0;
 		}
-		else{
+		else if(numArray[characterIndex] >= 12){
+			avatarImage = defaultCharacters[numArray[characterIndex]].pfp;
+			isLoading = true;
+			characterContent = await charLLM(characterSheetPrompt + defaultCharacters[numArray[characterIndex]].desc);
+			formatCharacterSheet(characterContent);
+			isLoading = false;
+			typeCharacterSheetText(20);
+			userPrompt = defaultCharacters[numArray[characterIndex]].prompt;
+			charType = 2;
+		}else{
 			characterContent = defaultCharacters[numArray[characterIndex]].desc;
 			avatarImage = defaultCharacters[numArray[characterIndex]].pfp;
 			formatCharacterSheet(characterContent);
+			charType = 0;
 		}
 		showStartButton = true;
 		
@@ -287,6 +382,7 @@
     	avatarImage = await imgLLM(avatarGenerationPrompt + userPrompt, 1024, 1024, 0);
     	
 		showStartButton = true;
+		charType = 1;
 	}
 
 	async function typeCharacterSheetText(speed) {
@@ -790,25 +886,24 @@
 			let [summaryName, summaryContent] = summaryRaw.includes('!') ? summaryRaw.split('!') : ['UNKNOWN', summaryRaw]; // fallback if '!' not present
 			cardAvatar = await cardAvatar;
 
-			let previousData = JSON.parse(localStorage.getItem('endgame'));
+			localStorage.clear();
 
 			localStorage.setItem('endgame', JSON.stringify({
 				name: summaryName,
-				avatar: cardAvatar,
+				cardAvatar: cardAvatar,
 				summary: summaryContent,
-
-				avatarPrompt: userPrompt, 
+				charType: charType,
+				avatar: avatarImage, 
+				charPrompt: userPrompt
 			}));
 
-			const endgameData = JSON.parse(localStorage.getItem('endgame'));
+			avatarImage = null;
+			showCharacterSheet = false;
+			backgroundImage = null;
 
-			if (endgameData) {
-				console.log("=== Endgame Data ===");
-				console.log("Name:", endgameData.name);
-				console.log("Avatar (base64):", endgameData.avatar);
-				console.log("Summary:", endgameData.summary);
-				console.log("Avatar Prompt:", endgameData.avatarPrompt);
-			}
+			setTimeout (() => {
+				goto('/endgame');
+			}, 500);
 
 
     	} catch (error) {

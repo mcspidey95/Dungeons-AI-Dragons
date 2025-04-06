@@ -449,15 +449,15 @@ Summarize the entire story in a **short, humorous, and exaggerated** way, highli
   - **Under or exactly 7 letters**  
 - If the full name has multiple words, use the most **recognizable** one that's **under 7 letters** (e.g., "Tony Stark" → "STARK!")  
 - If the name is a single long word, shorten it to a **nickname** under 7 letters (e.g., "Annabelle" → "ANNA!", "Surajabinav" → "SURAJ!")  
-- If it's already 7 letters or less, use it as-is with "!" (e.g., "Deepsh" → "DEEPSH!")  
+- If it's already 7 letters or less, use it as-is with "!" (e.g., "Deepesh" → "DEEPESH!")  
+- If you can fit the full word in, use it as-is with "!" (e.g., "Mia" → "MIA!")
 
 **Summary formatting rules:**  
 - The name (e.g., DEEPS!) should be at the **start of the first line**, followed immediately by the story on the same line.  
 - Use **line breaks** to separate ideas and make the summary punchy and readable.  
-- The tone should be **funny, dramatic, sarcastic, or chaotic**, depending on how the story played out.  
 - If the player failed, **roast them**. If they won, **hype them up**.  
 - Highlight the **key decisions** and their **consequences**. 18+ content allowed.
-- **No more than 5 lines**.
+- **No more than 7 lines**.
 
 ---
 
