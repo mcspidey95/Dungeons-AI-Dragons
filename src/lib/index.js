@@ -107,3 +107,12 @@ export async function clearAllPrisoners() {
 	prisonerChars = [];
 	prisonerCount = 0;
 }
+
+export function deletePrisoner(db, id, storeName = 'prisoners') {
+	return new Promise((resolve) => {
+		const tx = db.transaction(storeName, 'readwrite');
+		const store = tx.objectStore(storeName);
+		store.delete(id);
+		tx.oncomplete = () => resolve();
+	});
+}

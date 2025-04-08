@@ -195,43 +195,42 @@ body {
 }
 
 .story-display {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%); /* Centering */
-    width: 94%;
-    height: 12%;
-    
-    background: rgba(0, 0, 0, 0.85); /* Darker for better readability */
-    color: white;
-    border-radius: 10px;
-    padding: 15px;
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%); /* Centering */
+	width: 94%;
+	height: 12%;
+
+	background: rgba(0, 0, 0, 0.85); /* Darker for better readability */
+	color: white;
+	border-radius: 10px;
+	padding: 15px;
 	font-family: 'VT323', monospace;
-    font-size: 18px;
-    line-height: 1.4; /* More readable */
-    
+	font-size: 18px;
+	line-height: 1.4; /* More readable */
+
 	border: 2px solid #ffffff;
-    
-    resize: none; /* No resizing */
-    overflow-y: auto; /* Scrollable text */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5); /* Themed scrollbar */
-    
-    z-index: 1000;
+
+	resize: none; /* No resizing */
+	overflow-y: auto; /* Scrollable text */
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.5); /* Themed scrollbar */
+
+	z-index: 1000;
 }
 
 /* Custom Scrollbar for WebKit browsers */
 .story-display::-webkit-scrollbar {
-    width: 8px;
+	width: 8px;
 }
 .story-display::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+	background: rgba(255, 255, 255, 0.5);
+	border-radius: 10px;
 }
 .story-display::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+	background: rgba(0, 0, 0, 0.3);
 }
-
 
 .popup-overlay {
 	position: fixed;
@@ -655,37 +654,133 @@ body {
 	opacity: 1;
 }
 
-
-
 .story-btn {
-    position: absolute;
-    bottom: 10px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 8px;
-    cursor: pointer;
+	position: absolute;
+	bottom: 10px;
+	background: none;
+	border: none;
+	color: white;
+	font-size: 14px;
+	padding: 5px 10px;
+	border-radius: 8px;
+	cursor: pointer;
 	outline: none;
-    transition: all 0.1s;
+	transition: all 0.1s;
 	font-family: 'VT323', monospace;
 	opacity: 0.6;
 	z-index: 2000;
 }
 
 .story-btn:hover {
-    opacity: 1;
+	opacity: 1;
 }
 
 /* Back Button */
 .back-btn {
-    left: 30px;
+	left: 30px;
 	bottom: 25px;
 }
 
 /* Next Button */
 .next-btn {
-    right: 30px;
+	right: 30px;
 	bottom: 25px;
+}
+
+.settings-bar {
+	position: fixed;
+	top: 0;
+	right: 10px;
+	width: 80px;
+	height: 96vh;
+	background-color: #111; /* or your preferred dark shade */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	border-radius: 10px;
+	z-index: 100;
+	animation: fadeInPop 0.5s ease;
+}
+
+.settings-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: #fff;
+	font-size: 0.8rem;
+	user-select: none;
+	transition: transform 0.1s ease;
+}
+
+.settings-item:hover {
+	cursor: pointer;
+	transform: translateY(-3px) scale(1.07);
+}
+
+.settings-icon {
+	fill: wheat;
+	width: 30px;
+	height: 30px;
+	margin-bottom: 15px;
+}
+
+.settings-text {
+	font-size: 0.6rem;
+	opacity: 0.6;
+}
+
+.big-icon {
+	color: wheat;
+	font-size: 2rem;
+	margin-bottom: 4px;
+}
+
+.popup-box {
+	position: fixed;
+	right: 100px;
+	background-color: #222;
+	color: #fff;
+	padding: 1em;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	z-index: 101;
+	min-width: 120px;
+	animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateX(10px); }
+	to { opacity: 1; transform: translateX(0); }
+}
+
+.popup-box .option-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5em;
+}
+
+.popup-box .option {
+	background: #333;
+	font-size: 2rem;
+	padding: 0.5em;
+	text-align: center;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: transform 0.1s ease;
+}
+
+.selected {
+	color: wheat !important;
+}
+
+.popup-box .option:hover {
+	transform: translateY(-3px);
+}
+
+.disabled {
+	opacity: 0.3;
+	pointer-events: none;
 }
