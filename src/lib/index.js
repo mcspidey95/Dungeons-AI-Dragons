@@ -60,6 +60,15 @@ export let diceButtonText = [
     `Pure RNG Time`
 ];
 
+export let plotPrompt = {
+	'D': ``,
+	'P': ``,
+	'Z': ``,
+	'M': ``,
+	'J': ``,
+	'C': ``,
+}
+
 // db.js
 export function openDB(name = 'PrisonDB', storeName = 'prisoners') {
 	return new Promise((resolve, reject) => {

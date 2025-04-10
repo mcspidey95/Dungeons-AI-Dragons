@@ -117,6 +117,31 @@ export async function imgLLM(userPrompt, height, width, type = 1) {
     }
 }
 
+export async function audioLLM(input) {
+	try {
+		const response = await fetch('/api/audioModel', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ input })
+		});
+
+		if (response.ok) {
+			const blob = await response.blob();
+			const audioUrl = URL.createObjectURL(blob); // optional if you want to use it directly later
+            console.log(audioUrl);
+
+			return audioUrl;
+		} else {
+			console.error('TTS Response Error:', response.statusText);
+			return null;
+		}
+	} catch (error) {
+		console.error('TTS Error:', error);
+		return null;
+	}
+}
+
+
 
 
 

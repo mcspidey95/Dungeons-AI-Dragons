@@ -5,8 +5,8 @@
 	import { bgm, bgm1, bgm2, bgm3, bgm4, bgm5, bgm6, bgm7, bgm8, bgm9, bgm10, bgm11, bgm12 } from '$lib';
 	import { TypingSFX, blip1, blip2, dice1, dice2a, dice2b, death, select, switchSFX, response } from '$lib';
 	
-	import { openDB, getAllPrisoners, getTxtFile} from '$lib';
-	import { storyLLM, charLLM, imgLLM, diceLLM} from './api/models';
+	import { openDB, getAllPrisoners, getTxtFile, plotPrompt } from '$lib';
+	import { storyLLM, charLLM, imgLLM, diceLLM, audioLLM } from './api/models';
 	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
 	import { characterSheetPrompt, avatarGenerationPrompt, cardAvatarPrompt } from '$lib/prompts/characterPrompt';
 	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
@@ -38,6 +38,7 @@
 	let prisonerCount;
 	let prisonerChars;
 	let charType;
+	let newIntroPrompt;
 
 	let sheetName;
 	let sheetClass;
@@ -68,6 +69,7 @@
 	let userResponse = '';
 	let storyLines = [];
 	let activePopup = '';
+	let customPlot = '';
 
 	let diceImage = "";
 	let targetNumber;
@@ -112,41 +114,45 @@
 	let settingsVolume = 1;
 	let settingsDuration = 2;
 	let durationValue = 15;
+	let storyValue = 'D';
+	let storyNameValue = 'Default';
 	let isDurationAllowed = true;
-	let isStoryModeAllowed = false;
+	let isStoryModeAllowed = true;
 	let isGameModeAllowed = false;
 	let isPartyCodeAllowed = false;
 
 
 	onMount(async () => {
 
+		settingsVolume = parseFloat(localStorage.getItem('volume') ?? '1');
+
 		db = await openDB();
 		prisonerChars = await getAllPrisoners(db);
 		prisonerCount = prisonerChars ? prisonerChars.length : 0;
 
 		typingSound = new Audio(TypingSFX);
-		typingSound.volume = 0.8;
+		typingSound.volume = 0.8*settingsVolume;
 
 		boop1 = new Audio(blip1);
-		boop1.volume = 0.4;
+		boop1.volume = 0.4*settingsVolume;
 
 		boop2 = new Audio(blip2);
-		boop2.volume = 0.1;
+		boop2.volume = 0.1*settingsVolume;
 
 		selectSFX = new Audio(select);
-		selectSFX.volume = 0.2;
+		selectSFX.volume = 0.2*settingsVolume;
 
 		diceSFX = new Audio(dice1);
-		diceSFX.volume = 0.8;
+		diceSFX.volume = 0.8*settingsVolume;
 
 		diceSFX1 = new Audio(dice2a);
-		diceSFX1.volume = 0.8;
+		diceSFX1.volume = 0.8*settingsVolume;
 
 		diceSFX2 = new Audio(dice2b);
-		diceSFX2.volume = 0.8;
+		diceSFX2.volume = 0.8*settingsVolume;
 
 		responseSFX = new Audio(response);
-		responseSFX.volume = 0.2;
+		responseSFX.volume = 0.2*settingsVolume;
 
 		random3Char();
 
@@ -166,7 +172,7 @@
 		
 		backgroundMusic = new Audio(bgmList[num]);
         backgroundMusic.loop = true;
-        backgroundMusic.volume = 0.1;
+        backgroundMusic.volume = 0.1*settingsVolume;
 	});
 
 	export async function getDefaultCharacters() {
@@ -270,12 +276,38 @@
 		diceSFX2.volume = 0.8*settingsVolume;
 		responseSFX.volume = 0.2*settingsVolume;
 		backgroundMusic.volume = 0.1*settingsVolume;
+
+		localStorage.setItem('volume', settingsVolume);
 	}
 	
 	function toggleDuration(duration){
 		settingsDuration = duration === 15 ? 2 : duration === 30 ? 5 : 9;
 		durationValue = duration;
 		togglePopup('duration');
+	}
+
+	function toggleStory(storyName){
+		storyNameValue = storyName;
+		storyValue = storyName.charAt(0);
+		togglePopup('storymode');
+
+		if(storyValue == 'C') togglePopup('custom');
+	}
+
+	function setStoryMode(){
+		if(storyValue == 'C' && customPlot == ''){
+			toggleStory('Default');
+			togglePopup('storymode');
+		}
+
+		let [half1, half2] = introPrompt.split('line as a separator).**');
+		
+		if(storyValue == 'C') {
+			newIntroPrompt = half1 + ' ' + plotPrompt[storyValue] + ' '+ customPlot + ' ' + half2;
+		}
+		else {
+			newIntroPrompt = half1 + ' ' + plotPrompt[storyValue] + ' ' + half2;
+		}
 	}
 
 
@@ -611,81 +643,110 @@
 	}
 
 	async function typeStoryText() {
-    typingIndex = 0;
-    storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line);
-    isTyping = false; // Prevent input during animation
-    let isRunning = true; // Control loop execution
+		typingIndex = 0;
+		storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line);
+		isTyping = false; // Prevent input during animation
 
-    async function updateStory() {
-        if (isTyping) return; // Block if already typing
-        isTyping = true; // Disable input
+		let storyAudio = [];
 
-        story = storyLines[typingIndex] || "";
-        await storyAnimation(35); // Wait for animation to complete
+		/*
+		// Step 1: Generate audio for all story lines
+		for (const line of storyLines) {
+			const result = await audioLLM(line);
+			if (result) {
+				storyAudio.push(result); // or store result.blob if needed
+			} else {
+				storyAudio.push(null); // placeholder to keep indexes in sync
+			}
+		}
+		*/
 
-        isTyping = false; // Re-enable input after animation
-    }
+		let isRunning = true; // Control loop execution
 
-    function handleNavigation(event) {
-        if (isTyping && event.key !== "Backspace" && event.key !== "ArrowLeft") return; // Block input if typing is in progress
+		async function updateStory() {
+			if (isTyping) return; // Block if already typing
+			isTyping = true; // Disable input
 
-        if (event.key === " ") {
-            event.preventDefault(); // Prevent default spacebar scrolling
-            incrementIndex();
-        } else if (event.key === "ArrowRight") {
-            incrementIndex();
-        } else if (event.key === "Backspace" || event.key === "ArrowLeft") {
-            decrementIndex();
-        } else if (event.key === "Enter") {
-            event.preventDefault(); // Ignore Enter key completely
-        }
-    }
+			story = storyLines[typingIndex] || "";
 
-    function incrementIndex() {
-        if (isTyping) return; // Prevent action during animation
-        if (typingIndex < storyLines.length - 1) {
-            typingIndex++;
-            updateStory();
-        } else {
-            isRunning = false; // Stop loop when last line is reached
-        }
-    }
+			/*
+			// Step 2: Play corresponding audio if available
+			const audioUrl = storyAudio[typingIndex];
+			if (audioUrl) {
+				const audio = new Audio(audioUrl);
+				await new Promise((resolve) => {
+					audio.onended = resolve;
+					audio.onerror = resolve;
+					audio.play();
+				});
+			}
+			*/
 
-    function decrementIndex() {
-        //if (isTyping) return; // Prevent action during animation
-        if (typingIndex > 0) {
-			cancelTyping = true;
-			isTyping = false;
-            typingIndex--;
-			setTimeout(() => {
-            	updateStory();
-			},50);
-        }
-    }
+			await storyAnimation(35); // Wait for animation to complete
 
-    // Start Listening for Keyboard Events
-    document.addEventListener("keydown", handleNavigation);
+			isTyping = false; // Re-enable input after animation
+		}
 
-    // Start Typing First Line
-    updateStory();
+		function handleNavigation(event) {
+			if (isTyping && event.key !== "Backspace" && event.key !== "ArrowLeft") return; // Block input if typing is in progress
 
-    // Continuously Check for Button Click Flags
-    while (isRunning) {
-        await new Promise(resolve => setTimeout(resolve, 50)); // Small delay to avoid blocking UI
+			if (event.key === " ") {
+				event.preventDefault(); // Prevent default spacebar scrolling
+				incrementIndex();
+			} else if (event.key === "ArrowRight") {
+				incrementIndex();
+			} else if (event.key === "Backspace" || event.key === "ArrowLeft") {
+				decrementIndex();
+			} else if (event.key === "Enter") {
+				event.preventDefault(); // Ignore Enter key completely
+			}
+		}
 
-        if (nextButton) {
-            nextButton = false;
-            incrementIndex();
-        }
-        if (backButton) {
-            backButton = false;
-            decrementIndex();
-        }
-    }
+		function incrementIndex() {
+			if (isTyping) return; // Prevent action during animation
+			if (typingIndex < storyLines.length - 1) {
+				typingIndex++;
+				updateStory();
+			} else {
+				isRunning = false; // Stop loop when last line is reached
+			}
+		}
 
-    // Cleanup when finished
-    document.removeEventListener("keydown", handleNavigation);
-}
+		function decrementIndex() {
+			//if (isTyping) return; // Prevent action during animation
+			if (typingIndex > 0) {
+				cancelTyping = true;
+				isTyping = false;
+				typingIndex--;
+				setTimeout(() => {
+					updateStory();
+				},50);
+			}
+		}
+
+		// Start Listening for Keyboard Events
+		document.addEventListener("keydown", handleNavigation);
+
+		// Start Typing First Line
+		updateStory();
+
+		// Continuously Check for Button Click Flags
+		while (isRunning) {
+			await new Promise(resolve => setTimeout(resolve, 50)); // Small delay to avoid blocking UI
+
+			if (nextButton) {
+				nextButton = false;
+				incrementIndex();
+			}
+			if (backButton) {
+				backButton = false;
+				decrementIndex();
+			}
+		}
+
+		// Cleanup when finished
+		document.removeEventListener("keydown", handleNavigation);
+	}
 
 
 
@@ -860,6 +921,9 @@
 		isBack1 = false;
     	currentText = ''; // Hide text2
     	displayText = ''; // Clear typing animation
+		isStoryModeAllowed = false;
+
+		setStoryMode();
 
     	document.body.classList.add('hide-cursor');
 
@@ -1149,8 +1213,8 @@
 
 		<!-- Storymode -->
 		<div class="settings-item {isStoryModeAllowed ? '' : 'disabled'}" on:click={() => togglePopup('storymode')}>
-			<div class="big-icon">D</div>
-			<div class="settings-text">Default</div>
+			<div class="big-icon">{storyValue}</div>
+			<div class="settings-text">{storyNameValue}</div>
 		</div>
 
 		<!-- Gamemode -->
@@ -1189,12 +1253,24 @@
 	<div class="popup-box" style="top: 35vh;">
 		<div style="text-align:center; font-size: 0.7rem; margin-bottom: 10px; color: wheat;">Story Theme</div>
 		<div class="option-grid">
-			<div class="option">D<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Default</div></div>
-			<div class="option">P<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Plane Hijack</div></div>
-			<div class="option">Z<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Zombie Apoc.</div></div>
-			<div class="option">M<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Murder Spree</div></div>
-			<div class="option">J<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Jumanji</div></div>
-			<div class="option">C<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Custom</div></div>
+			<div class="option {storyValue === 'D' ? 'selected' : ''}" on:click={() => toggleStory('Default')}>D<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Default</div></div>
+			<div class="option {storyValue === 'P' ? 'selected' : ''}" on:click={() => toggleStory('Plane')}>P<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Plane Hijack</div></div>
+			<div class="option {storyValue === 'Z' ? 'selected' : ''}" on:click={() => toggleStory('Zombie')}>Z<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Zombie Apoc.</div></div>
+			<div class="option {storyValue === 'M' ? 'selected' : ''}" on:click={() => toggleStory('Murder')}>M<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Murder Spree</div></div>
+			<div class="option {storyValue === 'J' ? 'selected' : ''}" on:click={() => toggleStory('Jumanji')}>J<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Jumanji</div></div>
+			<div class="option {storyValue === 'C' ? 'selected' : ''}" on:click={() => toggleStory('Custom')}>C<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Custom</div></div>
+		</div>
+	</div>
+{/if}
+
+{#if activePopup === 'custom'}
+	<div class="popup-box" style="top: 35vh;">
+		<div style="text-align: center; font-size: 0.7rem; margin-bottom: 10px; color: wheat;">Custom Story</div>
+
+		<textarea class="custom-textarea" bind:value={customPlot} placeholder="Type your custom story..."></textarea>
+
+		<div class="custom-button">
+			<button on:click={() => togglePopup('custom')}>Save</button>
 		</div>
 	</div>
 {/if}

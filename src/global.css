@@ -784,3 +784,38 @@ body {
 	opacity: 0.3;
 	pointer-events: none;
 }
+
+.custom-textarea {
+	height: 100px;
+	width: 300px;
+	background-color: #111;
+	color: white;
+	border-radius: 8px;
+	outline: none;
+	border: none;
+	padding: 10px;
+	font-family: 'VT323', monospace;
+	font-size: 14px;
+	resize: none;
+}
+
+.custom-button{
+	margin-top: 10px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.custom-button button{
+	position: relative;
+	padding: 5px 10px;
+	background-color: #333;
+	color: wheat;
+	font-family: 'VT323', monospace;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: transform 0.1s ease;
+}
+
+.custom-button button:hover {
+	transform: scale(1.01) translateY(-1px);
+}
