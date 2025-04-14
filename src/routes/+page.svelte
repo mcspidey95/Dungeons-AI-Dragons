@@ -1113,8 +1113,8 @@
 				<span class="sheet-feature" id="grey"><p id="white">Race</p><span class="sheet-description" id="sheet-name1">{sheetRace}</span></span>
 				<br/>
 				<span class="sheet-feature" id="grey"><p id="white">Strength<span class="sheet-num" id={sheetStrNum > 10 ? "green" : "red"}>({sheetStrNum})</span></p><span class="sheet-description">{sheetStr}</span></span>
-				<span class="sheet-feature" id="grey"><p id="white">Weakness<span class="sheet-num" id={sheetWeakNum > 10 ? "green" : "red"}>({sheetWeakNum})</span></p><span class="sheet-description">{sheetWeak}</span></span>
-				<span class="sheet-feature" id="grey"><p id="white">Fear<span class="sheet-num" id={sheetFearNum> 10 ? "green" : "red"}>({sheetFearNum})</span></p><span class="sheet-description">{SheetFear}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Weakness<span class="sheet-num" id={sheetWeakNum > 10 ? "red" : "green"}>({sheetWeakNum})</span></p><span class="sheet-description">{sheetWeak}</span></span>
+				<span class="sheet-feature" id="grey"><p id="white">Fear<span class="sheet-num" id={sheetFearNum> 10 ? "red" : "green"}>({sheetFearNum})</span></p><span class="sheet-description">{SheetFear}</span></span>
 				<span class="sheet-feature" id="grey"><p id="white">Agility<span class="sheet-num" id={sheetAgilityNum> 10 ? "green" : "red"}>({sheetAgilityNum})</span></p><span class="sheet-description">{sheetAgility}</span></span>
 				<span class="sheet-feature" id="grey"><p id="white">Morality<span class="sheet-num" id={sheetMoralityNum > 10 ? "green" : "red"}>({sheetMoralityNum})</span></p><span class="sheet-description">{sheetMorality}</span></span>
 				<span class="sheet-feature" id="grey"><p id="white">Fame<span class="sheet-num" id={sheetFameNum > 10 ? "green" : "red"}>({sheetFameNum})</span></p><span class="sheet-description">{sheetFame}</span></span>

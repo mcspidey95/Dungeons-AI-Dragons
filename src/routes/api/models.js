@@ -25,8 +25,7 @@ export async function storyLLM(userPrompt) {
             let summarizedContent = await diceLLM(data.content + `
                 summarize the story as simple as possible, without loosing detail, and using the least tokens possible`);
             messages.push({ role: 'assistant', content: summarizedContent });
-
-            console.log('Response:', data.content);
+            //console.log('Response:', data.content);
             return data.content;
         } else {
             console.error('Error in response:', response.statusText);
@@ -50,7 +49,7 @@ export async function charLLM(userPrompt) {
             const data = await response.json();
 
             //console.log('Input:', userPrompt);
-            console.log('Response:', data.content);
+            //console.log('Response:', data.content);
 
             return data.content;
             
@@ -103,7 +102,7 @@ export async function imgLLM(userPrompt, height, width, type = 1) {
             let imagePrompt = feeder.content.trim();
             let data;
             
-            console.log('Image Prompt:', imagePrompt);
+            //('Image Prompt:', imagePrompt);
             if(type == 1) data = await stableDiffusion('pixel art, 64bit, masterpiece, best quality, ' + imagePrompt, height, width);
             else if(type== 0) data = await stableDiffusion('pixel art, 32bit, masterpiece, best quality, ' + imagePrompt, height, width);
             
