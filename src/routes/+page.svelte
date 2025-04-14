@@ -300,7 +300,7 @@
 			togglePopup('storymode');
 		}
 
-		let [half1, half2] = introPrompt.split('line as a separator).**');
+		let [half1, half2] = introPrompt.split('### Story Plot Instruction:');
 		
 		if(storyValue == 'C') {
 			newIntroPrompt = half1 + ' ' + plotPrompt[storyValue] + ' '+ customPlot + ' ' + half2;
@@ -929,7 +929,7 @@
 
     	try {
 
-        	storyFull = await storyLLM(introPrompt + characterContent);
+        	storyFull = await storyLLM(newIntroPrompt + characterContent);
 			storyNext = storyLLM(preChoicePrompt + storyFull);
         	backgroundImage = await imgLLM(themePrompt + storyFull, 1229, 1843);
 			backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);

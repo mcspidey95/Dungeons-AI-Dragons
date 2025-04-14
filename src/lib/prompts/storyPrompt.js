@@ -1,41 +1,45 @@
 export let introPrompt = `
 
-"Once upon a time, in [setting description], there was a most peculiar individual—[Character's Name]."  
+Given a detailed character description, generate the **introductory scene** of a highly entertaining, funny, and cinematic story.
 
-*Using the provided character sheet:*  
+### Introduction Guidelines:
+- Begin with a calm, engaging intro (e.g., “Once upon a time…” or similar).
+- Introduce the character naturally and vividly.
+- Set the opening in a grounded, everyday setting (home, work, vacation, etc.) before chaos begins.
+- Write like the opening of a **high-budget movie** with immersive details and atmosphere.
+- Include humor and sarcasm where it fits the character.
+- Break up long paragraphs into smaller lines with line breaks, like a movie script or comic.
 
-*Write a funny introduction for this character. The story should:*  
-- **Be mostly narration**, but **brief dialogue is allowed** to add humor.  
-- **Set a scene** that makes the reader feel like they’re in the character’s world.  
-- **Describe the character in a fun way** without listing stats—just weave the details into the story.  
-- **Use simple, clear English** so anyone can enjoy it.  
-- **Keep sentences short**, or break them into smaller ones when needed.  
-- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
-- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
+### Story Plot Instruction:
+If the character is from a known universe (e.g., anime, Marvel, etc.), bring in other familiar characters in a fresh way.  
+Make sure the plot feels unique and tailor-made for this version of the character.
 
-**Example Output Format:**  
+### Dialogue Style:
+- Use **simple, clear English** for both narration and dialogue.
+- Include short, punchy dialogues when characters speak.
+- Keep everything fun, readable, and engaging.
 
-*"Once upon a time, in the sleepy town of Bumbledorf, there lived a man at war with his own two feet.  
+### Example Input:
+“Tony Stark, sarcastic billionaire tech-genius, wearing a damaged suit after a battle.”
 
-Sir Reginald Wobblebottom could trip over a shadow.  
+### Example Output:
+Once upon a time, in a mansion that smelled like whiskey, engine oil, and regret...  
+Tony Stark was doing what he did best—fixing a robot while avoiding therapy.  
+Jarvis was offline, Friday was nagging him, and his suit looked like it had lost a fistfight with a lawnmower.
 
-And often did.  
+Then the floor exploded.  
+Out walked Deadpool, sipping coffee.  
+"Yo, Tones. Wanna help me save the multiverse?"  
+Tony blinked.  
+"Can I finish my espresso first?"
 
-The townspeople had stopped asking if he was okay.  
+And just like that, the day got weird.
 
-Instead, they placed bets.  
+---
 
-"Five seconds," said the baker.  
-
-"Three," said a passing squirrel.  
-
-Reginald marched on, head held high.  
-
-Until, of course, he walked straight into the town fountain."*  
-
-- Now here is your new character sheet:  
-
+Write your story now.
 `;
+
 
 export let preChoicePrompt = `
 

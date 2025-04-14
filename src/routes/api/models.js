@@ -3,8 +3,9 @@ let messages = [];
 export async function storyLLM(userPrompt) {
     // Process the first user input for storage
     if (messages.length === 0) {
-        let splitText = userPrompt.split("here is your new character sheet:");
-        let relevantContent = splitText[1].trim(); // Extract relevant part
+        let relevantContent = userPrompt;
+        //let splitText = userPrompt.split("here is your new character sheet:");
+        //let relevantContent = splitText[1].trim(); // Extract relevant part
 
         let storedContent = await diceLLM(relevantContent + `
             summarize the character sheet as simple as possible, without loosing detail, and using the least tokens possible`);

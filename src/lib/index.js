@@ -61,12 +61,12 @@ export let diceButtonText = [
 ];
 
 export let plotPrompt = {
-	'D': ``,
-	'P': ``,
+	'D': `Based on the character’s background, personality, or universe, create a **new, original storyline** that feels like an epic, cinematic adventure. `,
+	'P': `Based on the character’s background, personality, or universe, create a new, original storyline that centers on a tense plane hijack and unfolds like an epic, cinematic adventure.`,
 	'Z': ``,
 	'M': ``,
 	'J': ``,
-	'C': ``,
+	'C': `Based on the character’s background, personality, or universe, create a **new, original storyline** that feels like an epic, cinematic adventure. The story plot should be about `,
 }
 
 // db.js
