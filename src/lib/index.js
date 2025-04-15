@@ -63,9 +63,9 @@ export let diceButtonText = [
 export let plotPrompt = {
 	'D': `Based on the character’s background, personality, or universe, create a **new, original storyline** that feels like an epic, cinematic adventure. `,
 	'P': `Based on the character’s background, personality, or universe, create a new, original storyline that centers on a tense plane hijack and unfolds like an epic, cinematic adventure.`,
-	'Z': ``,
-	'M': ``,
-	'J': ``,
+	'Z': `Based on the character’s background, personality, or universe, create a **new, original storyline** set in a chaotic zombie apocalypse where survival, strange alliances, and unexpected choices drive the plot.`,
+	'M': `Based on the character’s background, personality, or universe, create a **new, original storyline** set during a bizarre murder spree, where mystery, mayhem, and twisted motives unfold around them.`,
+	'J': `Based on the character’s background, personality, or universe, create a **new, original storyline** set in a wild, unpredictable game-world where each turn brings strange creatures, chaotic challenges, and reality-bending surprises.`,
 	'C': `Based on the character’s background, personality, or universe, create a **new, original storyline** that feels like an epic, cinematic adventure. The story plot should be about `,
 }
 
