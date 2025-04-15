@@ -929,10 +929,10 @@
 
     	try {
 
-        	storyFull = await storyLLM(newIntroPrompt + characterContent);
+        	storyFull = await storyLLM(newIntroPrompt + userPrompt + characterContent);
 			storyNext = storyLLM(preChoicePrompt + storyFull);
-        	backgroundImage = await imgLLM(themePrompt + storyFull, 1229, 1843);
-			backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);
+        	backgroundImage = await imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
 
         	showLoadingCenter = false;
         	backgroundMusic.pause();
@@ -948,7 +948,7 @@
 					await typeStoryText();    //story continue
 
 					backgroundImage = await backgroundImage2;
-					backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);
+					backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
 				}
 
 				storyFull = await storyNext;                 //pre-choice     
@@ -966,7 +966,7 @@
 				backgroundImage = await backgroundImage2; 
 				if(i!=1) storyNext = storyLLM(continuePrompt + storyFull);
 				else storyNext = storyLLM(continueEndPrompt + storyFull);
-				backgroundImage2 = imgLLM(themePrompt + await storyNext, 1229, 1843);
+				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
 				storyFull = await storyFull;
 				await typeStoryText();        //post-choice
 			}
@@ -977,7 +977,7 @@
 			await typeStoryText();                                        //ending
 
 			backgroundImage = await backgroundImage2;
-			backgroundImage2 = imgLLM(themePrompt + storyNext, 1229, 1843);
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + storyNext, 1229, 1843);
 			storyFull = await storyNext;                 //pre-finale   
 
 			await typeStoryText();        //pre-finale

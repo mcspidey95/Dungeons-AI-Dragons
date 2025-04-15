@@ -7,7 +7,7 @@ let API_KEY = [GROQ_API_KEY, GROQ_API_KEY1, GROQ_API_KEY2, GROQ_API_KEY3, GROQ_A
 const llm = new ChatGroq({
     apiKey: API_KEY[Math.floor(Math.random() * API_KEY.length)],
     model: 'meta-llama/llama-4-maverick-17b-128e-instruct',
-    temperature: 1,
+    temperature: 0,
     maxTokens: undefined,
 });
 

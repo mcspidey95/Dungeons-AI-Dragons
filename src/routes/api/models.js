@@ -8,7 +8,8 @@ export async function storyLLM(userPrompt) {
         //let relevantContent = splitText[1].trim(); // Extract relevant part
 
         let storedContent = await diceLLM(relevantContent + `
-            summarize the character sheet as simple as possible, without loosing detail, and using the least tokens possible`);
+            summarize the character sheet as simple as possible, without loosing detail, and using the least tokens possible.
+            Then mention the what the story plot should be.`);
         messages.push({ role: 'user', content: storedContent }); // Store only relevant content
     }
 

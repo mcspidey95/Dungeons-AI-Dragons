@@ -6,8 +6,8 @@ let API_KEY = [GROQ_API_KEY, GROQ_API_KEY1, GROQ_API_KEY2, GROQ_API_KEY3, GROQ_A
 
 const llm = new ChatGroq({
     apiKey: API_KEY[Math.floor(Math.random() * API_KEY.length)],
-    model: 'gemma2-9b-it',
-    temperature: 1,
+    model: 'llama-3.3-70b-versatile',
+    temperature: 0,
     maxTokens: undefined,
 });
 
