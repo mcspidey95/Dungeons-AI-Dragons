@@ -943,10 +943,6 @@
 			for(let i = 0; i < settingsDuration; i++){
 				
 				if(i!=0){
-					storyFull = await storyNext; 
-					storyNext = storyLLM(preChoicePrompt + storyFull);            //story continue
-					await typeStoryText();    //story continue
-
 					backgroundImage = await backgroundImage2;
 					backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
 				}
@@ -964,8 +960,8 @@
 				console.log('dice roll finished')
 
 				backgroundImage = await backgroundImage2; 
-				if(i!=(settingsDuration-1)) storyNext = storyLLM(continuePrompt + storyFull);
-				else {
+				if(i==(settingsDuration-1))
+				{
 					isDurationAllowed = false;   
 					storyNext = storyLLM(continueEndPrompt + storyFull);
 				}
