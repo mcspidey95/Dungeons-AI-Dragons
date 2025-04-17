@@ -9,7 +9,7 @@
 	import { storyLLM, charLLM, imgLLM, diceLLM, audioLLM } from './api/models';
 	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
 	import { characterSheetPrompt, avatarGenerationPrompt, cardAvatarPrompt } from '$lib/prompts/characterPrompt';
-	import { introPrompt, preChoicePrompt, postChoicePrompt, continuePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
+	import { introPrompt, preChoicePrompt, postChoicePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
 
 	let timer;
 	let countdown;
@@ -112,7 +112,7 @@
 
 	let settings = false;
 	let settingsVolume = 1;
-	let settingsDuration = 2;
+	let settingsDuration = 3;
 	let durationValue = 15;
 	let storyValue = 'D';
 	let storyNameValue = 'Default';
@@ -281,7 +281,7 @@
 	}
 	
 	function toggleDuration(duration){
-		settingsDuration = duration === 15 ? 2 : duration === 30 ? 5 : 9;
+		settingsDuration = duration === 15 ? 3 : duration === 30 ? 7 : 11;
 		durationValue = duration;
 		togglePopup('duration');
 	}
@@ -931,69 +931,65 @@
 
         	storyFull = await storyLLM(newIntroPrompt + userPrompt + characterContent);
 			storyNext = storyLLM(preChoicePrompt + storyFull);
-        	backgroundImage = await imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);
-			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
+        	backgroundImage = await imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);  //generate intro BG
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843); //generate pre-choice BG
 
         	showLoadingCenter = false;
         	backgroundMusic.pause();
         	backgroundMusic.currentTime = 0;
 
-        	await typeStoryText();
+        	await typeStoryText(); //intro story
 
 			for(let i = 0; i < settingsDuration; i++){
-				
-				if(i!=0){
-					backgroundImage = await backgroundImage2;
-					backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
-				}
 
-				storyFull = await storyNext;                 //pre-choice     
-
+				storyFull = await storyNext;  //load pre-choice
+				backgroundImage = await backgroundImage2; //load pre-choice BG
+				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843);  //generate post-choice BG
 				await typeStoryText();        //pre-choice
 
-				await handlePopup();                 //choice
-
 				let luckyNumber = generateRandomNumber();
-				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');
+				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');  //generate post-choice
 				
-				await startDiceRoll(luckyNumber);
-				console.log('dice roll finished')
+				await handlePopup();          //choice-box
+				await startDiceRoll(luckyNumber);  //dice roll
 
-				backgroundImage = await backgroundImage2; 
 				if(i==(settingsDuration-1))
 				{
 					isDurationAllowed = false;   
-					storyNext = storyLLM(continueEndPrompt + storyFull);
+					storyNext = storyLLM(continueEndPrompt + storyFull); //generate continue-end
 				}
-				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
-				storyFull = await storyFull;
+				else{
+					storyNext = storyLLM(preChoicePrompt + storyFull);  //generate pre-choice
+				}
+					
+				storyFull = await storyFull;  //load post-choice
+				backgroundImage = await backgroundImage2; //load post-choice BG
+				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843);  //generate pre-choice BG
 				await typeStoryText();        //post-choice
 			}
 
-			storyFull = await storyNext;                                  //ending
-			storyNext = storyLLM(preFinalePrompt + storyFull);         
-			await typeStoryText();                                        //ending
+			storyFull = await storyNext;    //load continue-end
+			backgroundImage = await backgroundImage2; //load continue-end BG
+			storyNext = storyLLM(preFinalePrompt + storyFull);   //generate pre-finale
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843);  //generate pre-finale BG
+			await typeStoryText();     //continue-end
 
-			backgroundImage = await backgroundImage2;
-			backgroundImage2 = imgLLM(themePrompt + userPrompt + storyNext, 1229, 1843);
-			storyFull = await storyNext;                 //pre-finale   
-
+			storyFull = await storyNext;  //load pre-finale  
 			await typeStoryText();        //pre-finale
 
-			await handlePopup();                 //choice
-
 			let luckyNumber = generateRandomNumber();
-			storyFull = storyLLM(finalePrompt + userResponse+' {'+luckyNumber+'}');
+			storyFull = storyLLM(finalePrompt + userResponse+' {'+luckyNumber+'}');  //generate  finale
 
-			await startDiceRoll(luckyNumber);
+			await handlePopup();   //choice-box
+			await startDiceRoll(luckyNumber); //dice roll
 
-			backgroundImage = await backgroundImage2;   //finale
-			storyFull = await storyFull;         
-			       //finale
+			storyFull = await storyFull;    //load finale
+			backgroundImage = await backgroundImage2; //load finale BG
+
 			let summaryRaw = storyLLM(summaryPrompt);
 			let cardAvatar = imgLLM(cardAvatarPrompt + userPrompt, 1024, 1024, 0);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			await typeStoryText();                      //finale
+			await typeStoryText();  //finale
 			summaryRaw  = await summaryRaw;
 
 			let [summaryName, summaryContent] = summaryRaw.includes('!') ? summaryRaw.split('!') : ['UNKNOWN', summaryRaw]; // fallback if '!' not present

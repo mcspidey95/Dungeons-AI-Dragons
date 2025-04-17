@@ -160,40 +160,6 @@ Now write the next scene based on the user's chosen action and roll.
 `;
 
 
-export let continuePrompt = `  
-Continue the narrative based on the last story event.  
-
-- The next scene should flow naturally from what just happened, with **consequences unfolding.**  
-- If the last action **failed,** the player is in a worse situation—injuries, mental strain, or new dangers may arise.  
-- If the last action **succeeded,** build on the victory while introducing **new challenges or twists.**  
-- **Past events should have a lasting impact**—wounds, lost allies, dwindling resources, or emotional scars should carry forward.  
-- The response should be **cinematic, immersive, and intense.**  
-- End with a **dramatic moment** that propels the story forward—**but do NOT ask a question or list choices.**  
-- **Sentences should be short and impactful.** If a sentence is too long, break it up naturally.  
-
----
-
-### **Example Previous Event:**  
-The player failed to escape and **suffered a leg injury** while trying to shove Deepesh into the horde.  
-
-### **Example Output:**  
-
-Pain surges through your leg with every heartbeat, the twisted mess of bone and muscle making escape feel impossible.  
-
-The zombies **close in,** their moans merging into a haunting chorus of death.  
-
-Deepesh—what’s left of him—is already a torn-up pile of meat.  
-
-You barely have time to process the horror before a **deep, guttural snarl** rumbles through the air.  
-
-Emerging from behind the horde is a **mutated abomination,** its bloated, rotting body pulsating unnaturally.  
-
-Its dead, cloudy eyes **fixate on you.**  
-
-The thing **lunges.**  
-`;
-
-
 export let continueEndPrompt = `
 
 Continue the story **right after the last outcome** from the postChoice stage.  
@@ -382,33 +348,42 @@ This time… there was no coming back.
 `;
 
 
-export let summaryPrompt = `  
-Summarize the entire story in a **short, humorous, and exaggerated** way, highlighting the user's **key decisions and their consequences.**  
+export let summaryPrompt = `
 
-**Name formatting rules:**  
-- Start the summary with a nickname that follows these rules:  
-  - **One word**  
-  - **All caps**  
-  - **Ends with "!"**  
-  - **Under or exactly 7 letters**  
-- If the full name has multiple words, use the most **recognizable** one that's **under 7 letters** (e.g., "Tony Stark" → "STARK!")  
-- If the name is a single long word, shorten it to a **nickname** under 7 letters (e.g., "Annabelle" → "ANNA!", "Surajabinav" → "SURAJ!")  
-- If it's already 7 letters or less, use it as-is with "!" (e.g., "Deepesh" → "DEEPESH!")  
-- If you can fit the full word in, use it as-is with "!" (e.g., "Mia" → "MIA!")
-
-**Summary formatting rules:**  
-- The name (e.g., DEEPS!) should be at the **start of the first line**, followed immediately by the story on the same line.  
-- Use **line breaks** to separate ideas and make the summary punchy and readable.  
-- If the player failed, **roast them**. If they won, **hype them up**.  
-- Highlight the **key decisions** and their **consequences**. 18+ content allowed.
-- **No more than 7 lines**.
+Generate a **short, punchy story summary** of the character’s journey.
 
 ---
 
-### **Example Output:**  
-DEEPS!Ah, DEEPS. The legend. The myth. The absolute chaos magnet.  
-Fed their friend to a zombie horde, then immediately paid the price with a broken leg.  
-Still managed to crawl through fire, blood, and undead stupidity.  
-Fought monsters, lost people, and made exactly zero smart choices.  
-But hey—still breathing. Somehow.  
+**Nickname Rule:**
+- Create a **1-word name**, max **7 letters**, followed by an exclamation mark.
+- It can be a **first name, last name, popular nickname**, or **a catchy invented one** — as long as it helps **recognize the character instantly**.
+- Examples:
+  - Tony Stark → **STARK!**
+  - Annabelle → **ANNA!**
+  - Geralt of Rivia → **WITCHER!**
+  - Goku → **GOKU!**
+  - Megatron → **TRON!**
+
+---
+
+**Summary Guidelines:**
+- **Max 5 sentences.**
+- **Mock dumb decisions** with sass or sarcasm.
+- **Praise smart plays** with flair and energy.
+- Include **spice** if the story got spicy — 18+ is allowed.
+- Keep the tone **funny, snarky, and dramatic** like a movie wrap-up or roast.
+
+---
+
+**Example Input:**
+Character: “Batman”  
+Story: “He accidentally sides with Joker, loses Alfred, and gets arrested by the GCPD for property damage. But he also hooks up with Catwoman and burns down Arkham in the finale.”
+
+**Example Output:**
+BATMAN!
+Once a billionaire vigilante, now Gotham's most chaotic sugar daddy.  
+He saved no one, kissed a thief, blew up a prison, and lost his butler.  
+Worst part? He *voluntarily* helped Joker once.  
+Good intentions, dumb execution. Classic.
+
 `;
