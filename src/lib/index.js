@@ -3,6 +3,8 @@ export {default as Loading1} from './img/loading1.gif';
 export {default as back} from './img/back.png';
 export {default as back1} from './img/back1.png';
 export {default as diceLoading} from './img/dice.gif';
+export {default as placeholderBg} from './img/placeholder_bg.png';
+export {default as placeholderImg} from './img/placeholder_img.png';
 
 export {default as bgm} from './audio/bgm.mp3';
 export {default as bgm1} from './audio/bgm1.mp3';

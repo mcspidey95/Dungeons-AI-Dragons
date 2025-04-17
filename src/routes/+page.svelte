@@ -964,16 +964,18 @@
 				console.log('dice roll finished')
 
 				backgroundImage = await backgroundImage2; 
-				if(i!=1) storyNext = storyLLM(continuePrompt + storyFull);
-				else storyNext = storyLLM(continueEndPrompt + storyFull);
+				if(i!=(settingsDuration-1)) storyNext = storyLLM(continuePrompt + storyFull);
+				else {
+					isDurationAllowed = false;   
+					storyNext = storyLLM(continueEndPrompt + storyFull);
+				}
 				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);
 				storyFull = await storyFull;
 				await typeStoryText();        //post-choice
 			}
 
 			storyFull = await storyNext;                                  //ending
-			storyNext = storyLLM(preFinalePrompt + storyFull);    
-			isDurationAllowed = false;        
+			storyNext = storyLLM(preFinalePrompt + storyFull);         
 			await typeStoryText();                                        //ending
 
 			backgroundImage = await backgroundImage2;

@@ -1,3 +1,5 @@
+import { placeholderBg, placeholderImg } from "$lib";
+
 let messages = [];
 
 export async function storyLLM(userPrompt) {
@@ -105,18 +107,34 @@ export async function imgLLM(userPrompt, height, width, type = 1) {
             let data;
             
             //('Image Prompt:', imagePrompt);
-            if(type == 1) data = await stableDiffusion('pixel art, 64bit, masterpiece, best quality, ' + imagePrompt, height, width);
-            else if(type== 0) data = await stableDiffusion('pixel art, 32bit, masterpiece, best quality, ' + imagePrompt, height, width);
+            if(type == 1) data = await stableDiffusion('pixel art, 64bit, masterpiece, best quality, ' + imagePrompt, height, width, 1);
+            else if(type== 0) data = await stableDiffusion('pixel art, 32bit, masterpiece, best quality, ' + imagePrompt, height, width, 0);
             
             return data;
     
         } else {
-            console.error('Error in response:', response.statusText);
+            console.warn('feederModel responded with non-ok status. Returning placeholder image.');
         }
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
+async function convertImageToBase64(imagePath) {
+	const response = await fetch(imagePath);
+	const blob = await response.blob();
+
+	return await new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			const base64 = reader.result.split(',')[1]; // Strip the prefix
+			resolve(base64);
+		};
+		reader.onerror = reject;
+		reader.readAsDataURL(blob);
+	});
+}
+
 
 export async function audioLLM(input) {
 	try {
@@ -155,7 +173,7 @@ export async function audioLLM(input) {
 
 
 
-async function stableDiffusion(imagePrompt, height, width) {
+async function stableDiffusion(imagePrompt, height, width, type) {
     if (imagePrompt.trim() === '') return null;
     try {
         const response = await fetch('/api/imgModel', {
@@ -169,7 +187,8 @@ async function stableDiffusion(imagePrompt, height, width) {
             return data.image;
         } else {
             console.error('Error generating image');
-            return null;
+            if(type == 1) return await convertImageToBase64(placeholderBg);
+            else return await convertImageToBase64(placeholderImg);
         }
     } catch (error) {
         console.error('Error:', error);

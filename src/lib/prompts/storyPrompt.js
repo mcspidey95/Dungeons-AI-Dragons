@@ -43,38 +43,58 @@ Write your story now.
 
 export let preChoicePrompt = `
 
-*Continue the humorous story:*  
+Continue the ongoing story based on the previous events.  
+Build up to a new, entertaining scene that leads to a **decision point** for the character.  
 
-*The continuation should:*  
-- **Follow a movie-like plot**—with clear progression, rising stakes, and a sense of adventure.  
-- **Keep the same style**—mostly narration, but **brief dialogue is allowed** for humor.  
-- **Introduce a new scenario** that feels like the next "scene" in the story.  
-- **Force the character to make a choice**—one that could impact the story’s direction.  
-- **Use simple, clear English** so everyone can enjoy it.  
-- **Keep sentences short** or break long ones into smaller parts.  
-- **Make it entertaining**—include side characters, funny mishaps, or unexpected twists.  
-- **Ensure each sentence appears on a new line (with an empty line as a separator).**  
-- **End with a question** to let the user decide what happens next.  
+### Story Progression:
+- Continue naturally from the last scene.
+- Add action, tension, humor, mystery, or chaos — whatever fits the story.
+- Keep the pacing like a **high-budget film**, where the stakes slowly rise before the next big move.
+- Maintain the same funny, entertaining tone.
+- Include interactions with other characters if needed.
+- Make the world feel alive and reactive to the character's actions.
 
-**Example Output Format:**  
+### Decision Point Instructions:
+At the end of the scene, create a **dramatic, cinematic moment** where the main character has to make a **choice**.  
+This choice can be anything: a big fight, a clever escape, a weird conversation, or something chaotic and unexpected.  
+Make the choice setup feel immersive and important — like it’s going to impact the rest of the game.  
+Do **not** list the choices. Just set up the moment and end it with an implied “what will you do?”
 
-*"The sun was setting over Bumbledorf, casting golden light over the chaos about to unfold.  
+### Dialogue Style:
+- Use **simple English** with clear narration and short, expressive dialogue.
+- Break the story into **line-separated chunks** for readability and cinematic feel.
+- Add humor, sarcasm, and clever lines where it fits the characters.
 
-Sir Reginald Wobblebottom clutched a stolen pie, breathless.  
+### Example Input:
+"Tony Stark and Deadpool are escaping a collapsing multiverse portal while being chased by evil variants."
 
-Behind him, the Pie Festival crowd roared.  
+### Example Output:
+The portal behind them crackled like a blender filled with fireworks.
 
-To his left, the mayor’s wife stood, holding a very sharp umbrella.  
+Tony dove through first, landing in what looked like...a Taco Bell parking lot?
 
-To his right, a suspiciously fast goose was approaching, eyes locked on the pie.  
+Deadpool rolled out next, face-first into a trash bin.
 
-He had to think fast.  
+Tony groaned.  
+“Multiverse travel really lowers your standards.”
 
-Surrender the pie and face the mayor’s wrath?  
+Deadpool stood, holding a burrito like a sword.  
+“I vote we fight the evil variants... but with salsa.”
 
-Or flee into the unknown, with the goose in hot pursuit?  
+Suddenly, three dark silhouettes stepped out of the portal behind them — each one a twisted, corrupted version of themselves.
 
-What does he do?"*  
+One of them grinned.  
+“Give us the device... or watch your timeline burn.”
+
+Tony clenched his fists.  
+Deadpool licked his burrito.
+
+And now, they had to decide...  
+Run? Fight? Or something *completely* unhinged?
+
+---
+
+Write what happens next, leading into this game-changing moment.
 
 `;
 
