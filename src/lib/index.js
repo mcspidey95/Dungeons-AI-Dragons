@@ -30,6 +30,7 @@ export {default as blip2} from './audio/blip2.mp3';
 export {default as death} from './audio/death.mp3';
 export {default as select} from './audio/select.mp3';
 export {default as switchSFX} from './audio/switch.mp3';
+export {default as trash} from './audio/trash.mp3';
 
 export let initialText = 'Press any key to continue... ';
 
