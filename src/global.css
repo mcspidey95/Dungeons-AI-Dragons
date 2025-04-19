@@ -67,6 +67,7 @@ body {
 	width: 13vw; /* Base width scales with screen width */
 	height: 13vw; /* Square: height matches width */
 	z-index: 1000;
+	animation: fadeInPop 0.5s ease forwards;
 }
 
 .placeholder-image {
@@ -91,6 +92,7 @@ body {
 	border: 2px solid #ffffff;
 	border-radius: 10px;
 	box-shadow: 0 0 1vw rgba(255, 255, 255, 0.5); /* Adjusted to vw */
+	animation: fadeInPop 0.5s ease forwards;
 }
 
 .textarea-wrapper {
@@ -693,7 +695,7 @@ body {
 	right: 10px;
 	width: 80px;
 	height: 96vh;
-	background-color: #111; /* or your preferred dark shade */
+	background-color: rgb(10, 10, 10);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -741,7 +743,7 @@ body {
 .popup-box {
 	position: fixed;
 	right: 100px;
-	background-color: #222;
+	background: #181717;
 	color: #fff;
 	padding: 1em;
 	border-radius: 10px;
@@ -763,7 +765,7 @@ body {
 }
 
 .popup-box .option {
-	background: #333;
+	background:#272727;
 	font-size: 2rem;
 	padding: 0.5em;
 	text-align: center;

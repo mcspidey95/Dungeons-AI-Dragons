@@ -948,10 +948,10 @@
 				await typeStoryText();        //pre-choice
 
 				let luckyNumber = generateRandomNumber();
-				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');  //generate post-choice
-				
 				await handlePopup();          //choice-box
+				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');  //generate post-choice
 				await startDiceRoll(luckyNumber);  //dice roll
+				storyFull = await storyFull;  //load post-choice
 
 				if(i==(settingsDuration-1))
 				{
@@ -962,9 +962,8 @@
 					storyNext = storyLLM(preChoicePrompt + storyFull);  //generate pre-choice
 				}
 					
-				storyFull = await storyFull;  //load post-choice
 				backgroundImage = await backgroundImage2; //load post-choice BG
-				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843);  //generate pre-choice BG
+				backgroundImage2 = imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);  //generate pre-choice BG
 				await typeStoryText();        //post-choice
 			}
 
@@ -1188,7 +1187,7 @@
 	<!-- Settings Sidebar -->
 	<div class="settings-bar">
 		<!-- Volume (no popup) -->
-		<div class="settings-item" on:click={() => toggleVolume()}>
+		<div class="settings-item" on:click={() => toggleVolume()} on:mouseenter={() => SFX(1)} on:click={() => SFX(2)}>
 			{#if settingsVolume === 1}
 				<svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M533.6 32.5C598.5 85.2 640 165.8 640 256s-41.5 170.7-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64v384c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64v-64c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z"/></svg>
 			{:else if settingsVolume === 0.5}
@@ -1200,31 +1199,31 @@
 		</div>
 
 		<!-- Duration -->
-		<div class="settings-item {isDurationAllowed ? '' : 'disabled'}" on:click={() => togglePopup('duration')}>
+		<div class="settings-item {isDurationAllowed ? '' : 'disabled'}" on:click={() => togglePopup('duration')} on:mouseenter={() => SFX(0)}>
 			<div class="big-icon">{durationValue}</div>
 			<div class="settings-text">Minutes</div>
 		</div>
 
 		<!-- Storymode -->
-		<div class="settings-item {isStoryModeAllowed ? '' : 'disabled'}" on:click={() => togglePopup('storymode')}>
+		<div class="settings-item {isStoryModeAllowed ? '' : 'disabled'}" on:click={() => togglePopup('storymode')} on:mouseenter={() => SFX(0)}>
 			<div class="big-icon">{storyValue}</div>
 			<div class="settings-text">{storyNameValue}</div>
 		</div>
 
 		<!-- Gamemode -->
-		<div class="settings-item {isGameModeAllowed ? '' : 'disabled'}" on:click={() => togglePopup('gamemode')}>
+		<div class="settings-item {isGameModeAllowed ? '' : 'disabled'}" on:click={() => togglePopup('gamemode')} on:mouseenter={() => SFX(1)}>
 			<svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/></svg>
 			<div class="settings-text">1 Player</div>
 		</div>
 
 		<!-- Party Code -->
-		<div class="settings-item {isPartyCodeAllowed ? '' : 'disabled'}" on:click={copyPartyCode}>
+		<div class="settings-item {isPartyCodeAllowed ? '' : 'disabled'}" on:click={copyPartyCode} on:mouseenter={() => SFX(1)} on:click={() => SFX(2)}>
 			<svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M288 448H64V224h64v-64H64c-35.3 0-64 28.7-64 64v192c0 35.3 28.7 64 64 64h224c35.3 0 64-28.7 64-64v-64h-64v64zm-64-96h224c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H224c-35.3 0-64 28.7-64 64v224c0 35.3 28.7 64 64 64z"/></svg>
 			<div class="settings-text">Party Code</div>
 		</div>
 
 		<!-- Leave -->
-		<div class="settings-item" on:click={() => togglePopup('exit')}>
+		<div class="settings-item" on:click={() => togglePopup('exit')} on:mouseenter={() => SFX(0)} on:click={() => SFX(2)}>
 			<svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M320 32c0-9.9-4.5-19.2-12.3-25.2S289.8-1.4 280.2 1l-179.9 45C79 51.3 64 70.5 64 92.5V448H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64l192 0h32v-32V32zM256 256c0 17.7-10.7 32-24 32s-24-14.3-24-32 10.7-32 24-32 24 14.3 24 32zm96-128h96v352c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32s-14.3-32-32-32h-32V128c0-35.3-28.7-64-64-64h-96v64z"/></svg>
 			<div class="settings-text">Leave</div>
 		</div>
@@ -1236,9 +1235,9 @@
 	<div class="popup-box" style="top: 20vh;">
 		<div style="text-align:center; font-size: 0.7rem; margin-bottom: 10px; color: wheat;">Story Duration</div>
 		<div class="option-grid">
-			<div class="option {durationValue == 15 ? 'selected' : ''}" on:click={() => toggleDuration(15)}>15<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Mins</div></div>
-			<div class="option {durationValue == 30 ? 'selected' : ''}" on:click={() => toggleDuration(30)}>30<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Mins</div></div>
-			<div class="option {durationValue == 45 ? 'selected' : ''}" on:click={() => toggleDuration(45)}>45<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Mins</div></div>
+			<div class="option {durationValue == 15 ? 'selected' : ''}" on:click={() => toggleDuration(15)} on:click={() => SFX(2)}>15<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Mins</div></div>
+			<div class="option {durationValue == 30 ? 'selected' : ''}" on:click={() => toggleDuration(30)} on:click={() => SFX(2)}>30<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Mins</div></div>
+			<div class="option {durationValue == 45 ? 'selected' : ''}" on:click={() => toggleDuration(45)} on:click={() => SFX(2)}>45<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Mins</div></div>
 		</div>
 	</div>
 {/if}
@@ -1247,12 +1246,12 @@
 	<div class="popup-box" style="top: 35vh;">
 		<div style="text-align:center; font-size: 0.7rem; margin-bottom: 10px; color: wheat;">Story Theme</div>
 		<div class="option-grid">
-			<div class="option {storyValue === 'D' ? 'selected' : ''}" on:click={() => toggleStory('Default')}>D<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Default</div></div>
-			<div class="option {storyValue === 'P' ? 'selected' : ''}" on:click={() => toggleStory('Plane')}>P<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Plane Hijack</div></div>
-			<div class="option {storyValue === 'Z' ? 'selected' : ''}" on:click={() => toggleStory('Zombie')}>Z<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Zombie Apoc.</div></div>
-			<div class="option {storyValue === 'M' ? 'selected' : ''}" on:click={() => toggleStory('Murder')}>M<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Murder Spree</div></div>
-			<div class="option {storyValue === 'J' ? 'selected' : ''}" on:click={() => toggleStory('Jumanji')}>J<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Jumanji</div></div>
-			<div class="option {storyValue === 'C' ? 'selected' : ''}" on:click={() => toggleStory('Custom')}>C<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Custom</div></div>
+			<div class="option {storyValue === 'D' ? 'selected' : ''}" on:click={() => toggleStory('Default')} on:click={() => SFX(2)}>D<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Default</div></div>
+			<div class="option {storyValue === 'P' ? 'selected' : ''}" on:click={() => toggleStory('Plane')} on:click={() => SFX(2)}>P<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Plane Hijack</div></div>
+			<div class="option {storyValue === 'Z' ? 'selected' : ''}" on:click={() => toggleStory('Zombie')} on:click={() => SFX(2)}>Z<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Zombie Apoc.</div></div>
+			<div class="option {storyValue === 'M' ? 'selected' : ''}" on:click={() => toggleStory('Murder')} on:click={() => SFX(2)}>M<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Murder Spree</div></div>
+			<div class="option {storyValue === 'J' ? 'selected' : ''}" on:click={() => toggleStory('Jumanji')} on:click={() => SFX(2)}>J<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Jumanji</div></div>
+			<div class="option {storyValue === 'C' ? 'selected' : ''}" on:click={() => toggleStory('Custom')} on:click={() => SFX(2)}>C<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">Custom</div></div>
 		</div>
 	</div>
 {/if}
@@ -1273,8 +1272,8 @@
 	<div class="popup-box" style="top: 50vh;">
 		<div style="text-align:center; font-size: 0.7rem; margin-bottom: 10px; color: wheat;">Game Mode</div>
 		<div class="option-grid" style="grid-template-columns: repeat(2, 1fr);">
-			<div class="option">S<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">1 Player</div></div>
-			<div class="option">M<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">2-5 Players</div></div>
+			<div class="option" on:click={() => SFX(2)}>S<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">1 Player</div></div>
+			<div class="option" on:click={() => SFX(2)}>M<br/><div style="text-align:center; font-size: 0.6rem; margin-top: 4px;">2-5 Players</div></div>
 		</div>
 	</div>
 {/if}
