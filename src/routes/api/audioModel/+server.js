@@ -1,42 +1,14 @@
-import { json } from '@sveltejs/kit';
-import Groq from 'groq-sdk';
-import { GROQ_API_KEY, GROQ_API_KEY1, GROQ_API_KEY2, GROQ_API_KEY3, GROQ_API_KEY4 } from '$env/static/private';
+import { Client } from "@gradio/client";
 
-let API_KEYS = [GROQ_API_KEY, GROQ_API_KEY1, GROQ_API_KEY2, GROQ_API_KEY3, GROQ_API_KEY4];
-
-let groq = new Groq({
-	apiKey: API_KEYS[Math.floor(Math.random() * API_KEYS.length)]
+const response_0 = await fetch("https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav");
+const exampleAudio = await response_0.blob();
+                        
+const client = await Client.connect("https://audio.ifsvivek.in/");
+const result = await client.predict("/predict", { 
+        prompt_wav: exampleAudio,         
+        target_text: "Hello!!",         
+        target_len: -1,         
+        n_timesteps: 15, 
 });
 
-const model = 'playai-tts-arabic';
-const voice = 'Ahmad-PlayAI';
-const response_format = 'wav';
-
-export async function POST({ request }) {
-	const { input } = await request.json();
-
-	if (!input || typeof input !== 'string') {
-		return json({ error: 'Missing or invalid input' }, { status: 400 });
-	}
-
-	try {
-        const response = await groq.audio.speech.create({
-            model: model,
-            voice: voice,
-            input: input,
-            response_format: response_format
-          });
-
-		const buffer = Buffer.from(await response.arrayBuffer());
-
-		return new Response(buffer, {
-			headers: {
-				'Content-Type': 'audio/wav',
-				'Content-Disposition': 'inline; filename="speech.wav"'
-			}
-		});
-	} catch (err) {
-		console.error('Groq TTS error:', err);
-		return json({ error: 'Speech generation failed' }, { status: 500 });
-	}
-}
+console.log(result.data);
