@@ -986,9 +986,8 @@
 			await typeStoryText();        //pre-finale
 
 			let luckyNumber = generateRandomNumber();
-			storyFull = storyLLM(finalePrompt + userResponse+' {'+luckyNumber+'}');  //generate  finale
-
 			await handlePopup();   //choice-box
+			storyFull = storyLLM(finalePrompt + userResponse+' {'+luckyNumber+'}');  //generate  finale
 			await startDiceRoll(luckyNumber); //dice roll
 
 			storyFull = await storyFull;    //load finale

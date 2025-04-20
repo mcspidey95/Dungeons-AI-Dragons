@@ -215,6 +215,10 @@ This was it.
 No more gods to bribe. No more time to wait.
 
 Only the final blow remained.
+
+------
+
+Now, this is the current story, continue the story from here, Dont Repeat this part.
 make sure its around 15 lines.
 
 `;
