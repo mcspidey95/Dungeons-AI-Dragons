@@ -668,7 +668,7 @@
 	async function typeStoryText() {
 		typingIndex = 0;
 		isTyping = false; // Prevent input during animation
-
+		storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line);
 		let isRunning = true; // Control loop execution
 
 		async function updateStory() {
