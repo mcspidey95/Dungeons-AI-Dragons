@@ -38,6 +38,7 @@ And just like that, the day got weird.
 ---
 
 Write your story now.
+make sure its around 15 lines.
 `;
 
 
@@ -58,7 +59,7 @@ Build up to a new, entertaining scene that leads to a **decision point** for the
 At the end of the scene, create a **dramatic, cinematic moment** where the main character has to make a **choice**.  
 This choice can be anything: a big fight, a clever escape, a weird conversation, or something chaotic and unexpected.  
 Make the choice setup feel immersive and important — like it’s going to impact the rest of the game.  
-Do **not** list the choices. Just set up the moment and end it with an implied “what will you do?”
+Set up the moment and end it with an implied “what will you do?”
 
 ### Dialogue Style:
 - Use **simple English** with clear narration and short, expressive dialogue.
@@ -95,6 +96,7 @@ Run? Fight? Or something *completely* unhinged?
 ---
 
 Write what happens next, leading into this game-changing moment.
+make sure its around 15 lines.
 
 `;
 
@@ -157,6 +159,8 @@ So much for the great escape.
 ---
 
 Now write the next scene based on the user's chosen action and roll.
+and adjust the outcome to backfire(go really bad) or succeed(go really good) based on the roll.
+make sure its around 20 lines.
 `;
 
 
@@ -211,6 +215,7 @@ This was it.
 No more gods to bribe. No more time to wait.
 
 Only the final blow remained.
+make sure its around 15 lines.
 
 `;
 
@@ -267,6 +272,7 @@ Will Geralt charge in alone and face the Hunt head-on?
 Or trust Yennefer and use her forbidden spell — one that might kill them both?
 
 Here's the story up to this point:
+make sure its around 15 lines.
 
 `;
 
@@ -344,6 +350,8 @@ The Hunt had won.
 This time… there was no coming back.
 
 **The End.**
+
+The ending can be as long as you want, but it should be a **satisfying, emotional ending** that wraps up the story. and detailed.
 
 `;
 
