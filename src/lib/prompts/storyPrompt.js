@@ -17,6 +17,7 @@ Make sure the plot feels unique and tailor-made for this version of the characte
 ### Dialogue Style:
 - Use **simple, clear English** for both narration and dialogue.
 - Include short, punchy dialogues when characters speak.
+- Break the story into **line-separated chunks** for readability and cinematic feel.
 - Keep everything fun, readable, and engaging.
 
 ### Example Input:
@@ -129,7 +130,7 @@ The lower the number, the more chaotic, embarrassing, or disastrous the result.
 
 ### Dialogue Style:
 - Use **simple, expressive English**.
-- Break story into **short, spaced lines** for narration, dialogue, or dramatic pauses.
+- Break the story into **line-separated chunks** for readability and cinematic feel.
 - Add funny character reactions or bystander comments if appropriate.
 
 ---
@@ -184,7 +185,7 @@ This prompt acts as a **narrative bridge** — connecting the aftermath of the u
 
 - **Start from where the previous story ended.** Use logical continuity.
 - Narrate in **simple, easy-to-read English**.
-- Include **dialogue** where natural, and **line breaks** for each sentence or spoken line.
+- Break the story into **line-separated chunks** for readability and cinematic feel.
 - Do **not** present a new choice here — just lead the story forward with cinematic flair.
 
 ---
@@ -243,7 +244,7 @@ Build up the scene like a **climactic, dramatic movie moment** — this is the u
 
 ### Dialogue & Style:
 - Use **simple, expressive English**.
-- Break the narration and dialogue into **short, spaced lines** for cinematic pacing.
+- Break the story into **line-separated chunks** for readability and cinematic feel.
 - Build suspense or intensity as the choice approaches.
 - End with a **clear and exciting decision point**.
 
@@ -308,6 +309,8 @@ This is the **ending**, so it should feel like the last scene of a high-budget m
 - **Reflect the full consequences** of that final decision.
 - Use characters, settings, and logic already established in the story.
 - End it naturally and emotionally, no matter the tone.
+- The ending can be **long** but should feel like a **satisfying conclusion** to the character’s journey.
+- Wrap up any loose ends, tie up subplots, and give a sense of closure.
 - Finish with **“The End.”**
 
 ---
@@ -315,7 +318,7 @@ This is the **ending**, so it should feel like the last scene of a high-budget m
 **Dialogue & Format Rules:**
 
 - Use **simple, easy-to-read English**.
-- Split into **line breaks** between actions, thoughts, and dialogue.
+- Break the story into **line-separated chunks** for readability and cinematic feel.
 - Don’t make lines too long.
 - Keep the flow like a cinematic moment.
 
@@ -355,7 +358,7 @@ This time… there was no coming back.
 
 **The End.**
 
-The ending can be as long as you want, but it should be a **satisfying, emotional ending** that wraps up the story. and detailed.
+The ending can be as long as you want, but it should be a **satisfying, emotional ending** that wraps up the story. and as detailed as possible.
 
 `;
 

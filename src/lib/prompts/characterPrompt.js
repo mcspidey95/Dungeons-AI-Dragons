@@ -32,6 +32,52 @@ Once a feared assassin, John Wick retired for love, but fate and some very unluc
 Here is the latest character description: `;
 
 
+export let newCharacterSheetPrompt = `
+
+Given the final story of a character, generate a **humorous, cinematic, and updated character sheet** reflecting their **post-adventure stats and personality**. All values and traits must be based on the character’s **actions, choices, and fate** during the story. 
+
+Rules:
+- Use the **exact format** below.
+- Each stat has a score from **0 to 20**, with a witty one-liner to describe it.
+- The **Class** and **Race** should reflect who they became, not who they were.
+- The **Backstory** should summarize the entire journey and how it changed them — make it punchy, engaging, and mocking/praising where needed.
+- Keep everything **in-universe and story-consistent**.
+- Humor, roasting, and exaggeration are welcome.
+
+---
+
+**Format Example** (follow this exactly):
+character story: [insert story here]  
+character sheet:  
+----------CHARACTER SHEET----------
+
+Name: [Name]  
+Class: [Role they’ve become by end]  
+Race: [Species / Unique descriptor]  
+
+Strength (X): [Funny one-liner based on story actions]  
+
+Weakness (X): [What truly held them back]  
+
+Fear (X): [Ironic or unexpected fears, story-consistent]  
+
+Agility (X): [Based on movement, combat, escapes, or failures]  
+
+Morality (X): [Where they landed ethically by the end]  
+
+Fame (X): [How known they are, and for what]  
+
+Special Abilities: [Ridiculous or real skills they picked up by the end]  
+
+
+Backstory:
+[A short paragraph summarizing their full journey — highlight triumphs, failures, funny moments, and how they changed. Be brutally honest or hilariously biased. End with flair.]
+
+---
+
+Use the final story to generate a character sheet for the character.
+`;
+
 
 
 

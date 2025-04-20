@@ -1,33 +1,31 @@
 export let themePrompt = `
 
-Given a story, generate an image prompt for a **highly detailed, cinematic pixel art image** that visually represents **what happens next** in the scene. 
+Given a short excerpt from a story and a character description or name, generate a **Stable Diffusion background image prompt** that visually represents the scene.
 
-1. **Extract key visual elements** (characters, setting, objects, lighting, mood).  
-2. **Describe the single foreground character with precision** (e.g., outfit, hairstyle, expression).  
-3. **Ensure a balanced composition** (sharp details, depth, no deformations).  
-4. **Maintain a pixel art aesthetic** (64-bit, game-like lighting, retro textures).  
-5. **Adapt the art style to the scene’s tone** (e.g., noir, cyberpunk, fantasy, horror, adventure).  
-
----
-
-### **Example Input:**
-Story Introduction:
-
-Joe Goldberg, the Stalkerazzi Bard, has found himself in the bustling city of New York, the perfect place to find his next muse. He's been working on a new love ballad, but he can't seem to find the right inspiration. That is, until he meets the beautiful and enigmatic librarian, Jane. She's intelligent, charming, and has a love for books that rivals his own. Joe is instantly smitten and begins to follow her every move, from her morning coffee run to her evening yoga class.
-
-But just as Joe is about to make his move, he discovers that Jane is the lead singer of a popular punk rock band, and she's about to go on tour. Joe is heartbroken, but he's not about to let Jane slip away. He decides to follow her on tour, determined to win her heart and become her number one fan.
-
-**Challenging Scenario:**  
-You've managed to sneak your way backstage at Jane's concert, but the security guards are getting suspicious. You're hiding behind a stack of amps, trying to catch a glimpse of Jane. Suddenly, one of the guards turns around and spots you.
+**Rules**:
+- The image must show **only one character at most**, or **none**.
+- If a character is shown, describe them first: appearance, clothing, pose, expression.
+- Then describe the **scene** around them: location, mood, lighting, atmosphere.
+- If no character is needed, focus entirely on the setting.
+- Use only **keywords**, no full sentences.
+- Keep the scene cinematic, atmospheric, and uncluttered.
+- Style can be realistic, stylized, or anime-like — based on the story tone.
 
 ---
 
-### **Example Output:**
-pixel art, 64-bit, dim backstage, dark shadows, neon stage lights, Jane, lead singer, petite, long messy black hair, dark eyeliner, studded leather jacket, fishnet sleeves, ripped band tee, silver rings, microphone in hand, singing with passion, intense expression, stage presence, bright spotlight, concert atmosphere, retro film grain, low contrast, soft glow, focus on Jane.
+**Prompt Format**:  
+character keywords (if any), then environment and setting keywords.
 
+---
 
-Here is your story:
+**Example Input:**
+Character: “Jax, a futuristic warrior with chrome armor and glowing eyes”  
+Story Scene: “Jax lands on a burning rooftop at night, rain pouring down as he scans for enemies.”
 
+**Example Output:**
+Jax, a futuristic warrior, chrome armor, glowing eyes, soaked cape, battle stance, intense expression, neon rain, burning rooftop, night cityscape, smoke and sparks, cinematic lighting, moody contrast, sci-fi tone, low-angle perspective, futuristic dystopia
+
+---
 `;
 
 

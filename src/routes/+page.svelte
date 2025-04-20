@@ -8,7 +8,7 @@
 	import { openDB, getAllPrisoners, getTxtFile, plotPrompt } from '$lib';
 	import { storyLLM, charLLM, imgLLM, diceLLM, audioLLM } from './api/models';
 	import { themePrompt, dicePrompt } from '$lib/prompts/backgroundPrompt';
-	import { characterSheetPrompt, avatarGenerationPrompt, cardAvatarPrompt } from '$lib/prompts/characterPrompt';
+	import { characterSheetPrompt, avatarGenerationPrompt, cardAvatarPrompt, newCharacterSheetPrompt } from '$lib/prompts/characterPrompt';
 	import { introPrompt, preChoicePrompt, postChoicePrompt, continueEndPrompt, preFinalePrompt, finalePrompt, summaryPrompt } from '$lib/prompts/storyPrompt';
 
 	let timer;
@@ -69,6 +69,7 @@
 	let storyNext = '';
 	let userResponse = '';
 	let storyLines = [];
+	let storyAudio = [];
 	let activePopup = '';
 	let customPlot = '';
 
@@ -243,8 +244,7 @@
 		let prisonerCharacters = prisonerChars.map(p => ({
 			name: p.content || 'Unknown Prisoner',
 			pfp: p.avatar || '',
-			desc: (p.charPrompt + p.description) || 'No details available.',
-			prompt: p.charPrompt || '',
+			desc: p.charPrompt || 'No details available.',
 		}));
 
 
@@ -400,7 +400,8 @@
 		else if(numArray[characterIndex] >= 12){
 			avatarImage = defaultCharacters[numArray[characterIndex]].pfp;
 			isLoading = true;
-			characterContent = await charLLM(characterSheetPrompt + defaultCharacters[numArray[characterIndex]].desc);
+			characterContent = defaultCharacters[numArray[characterIndex]].desc;
+			console.log(characterContent);
 			formatCharacterSheet(characterContent);
 			isLoading = false;
 			typeCharacterSheetText(20);
@@ -638,8 +639,6 @@
 				return;
 			}
 
-			//typingSound.currentTime = 0;
-			//await typingSound.play();
         	story += content[index];
         	index++;
 
@@ -651,16 +650,12 @@
     	}
 	}
 
-	async function typeStoryText() {
-		typingIndex = 0;
+	async function generateVoice() {
+		storyAudio = [];
+		storyFull = await storyFull;
 		storyLines = storyFull.split('\n').map(line => line.trim()).filter(line => line);
-		isTyping = false; // Prevent input during animation
 
-		let storyAudio = [];
-
-		/*
-		// Step 1: Generate audio for all story lines
-		for (const line of storyLines) {
+		for (let line of storyLines) {
 			const result = await audioLLM(line);
 			if (result) {
 				storyAudio.push(result); // or store result.blob if needed
@@ -668,7 +663,11 @@
 				storyAudio.push(null); // placeholder to keep indexes in sync
 			}
 		}
-		*/
+	}
+
+	async function typeStoryText() {
+		typingIndex = 0;
+		isTyping = false; // Prevent input during animation
 
 		let isRunning = true; // Control loop execution
 
@@ -679,19 +678,25 @@
 			story = storyLines[typingIndex] || "";
 
 			/*
-			// Step 2: Play corresponding audio if available
-			const audioUrl = storyAudio[typingIndex];
+			let audioUrl = storyAudio[typingIndex];
+			let audioPromise = Promise.resolve();
+
 			if (audioUrl) {
 				const audio = new Audio(audioUrl);
-				await new Promise((resolve) => {
+				audioPromise = new Promise((resolve) => {
 					audio.onended = resolve;
 					audio.onerror = resolve;
 					audio.play();
 				});
 			}
+
+			await Promise.all([
+				audioPromise,
+				storyAnimation(35)
+			]);
 			*/
 
-			await storyAnimation(35); // Wait for animation to complete
+			await storyAnimation(35);
 
 			isTyping = false; // Re-enable input after animation
 		}
@@ -939,9 +944,10 @@
     	try {
 
         	storyFull = await storyLLM(newIntroPrompt + userPrompt + characterContent);
+			//generateVoice();
 			storyNext = storyLLM(preChoicePrompt + storyFull);
         	backgroundImage = await imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);  //generate intro BG
-			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843); //generate pre-choice BG
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843); //generate pre-choice BG
 
         	showLoadingCenter = false;
         	backgroundMusic.pause();
@@ -952,13 +958,15 @@
 			for(let i = 0; i < settingsDuration; i++){
 
 				storyFull = await storyNext;  //load pre-choice
+				//generateVoice();
 				backgroundImage = await backgroundImage2; //load pre-choice BG
-				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843);  //generate post-choice BG
+				backgroundImage2 = imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);  //generate post-choice BG
 				await typeStoryText();        //pre-choice
 
 				let luckyNumber = generateRandomNumber();
 				await handlePopup();          //choice-box
 				storyFull = storyLLM(postChoicePrompt + userResponse+' {'+luckyNumber+'}');  //generate post-choice
+				//generateVoice();
 				await startDiceRoll(luckyNumber);  //dice roll
 				storyFull = await storyFull;  //load post-choice
 
@@ -972,22 +980,27 @@
 				}
 					
 				backgroundImage = await backgroundImage2; //load post-choice BG
-				backgroundImage2 = imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);  //generate pre-choice BG
+				backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);  //generate pre-choice BG
 				await typeStoryText();        //post-choice
 			}
 
 			storyFull = await storyNext;    //load continue-end
+			//generateVoice();
 			backgroundImage = await backgroundImage2; //load continue-end BG
 			storyNext = storyLLM(preFinalePrompt + storyFull);   //generate pre-finale
-			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyFull, 1229, 1843);  //generate pre-finale BG
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + await storyNext, 1229, 1843);  //generate pre-finale BG
 			await typeStoryText();     //continue-end
 
 			storyFull = await storyNext;  //load pre-finale  
+			//generateVoice();
+			backgroundImage = await backgroundImage2; //load pre-finale BG
+			backgroundImage2 = imgLLM(themePrompt + userPrompt + storyFull, 1229, 1843);  //generate finale BG
 			await typeStoryText();        //pre-finale
 
 			let luckyNumber = generateRandomNumber();
 			await handlePopup();   //choice-box
 			storyFull = storyLLM(finalePrompt + userResponse+' {'+luckyNumber+'}');  //generate  finale
+			//generateVoice();
 			await startDiceRoll(luckyNumber); //dice roll
 
 			storyFull = await storyFull;    //load finale
@@ -995,9 +1008,11 @@
 
 			let summaryRaw = storyLLM(summaryPrompt);
 			let cardAvatar = imgLLM(cardAvatarPrompt + userPrompt, 1024, 1024, 0);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			let newCharSheet = storyLLM(newCharacterSheetPrompt);
 
 			await typeStoryText();  //finale
-			summaryRaw  = await summaryRaw;
+			summaryRaw = await summaryRaw;
+			newCharSheet = await newCharSheet;
 
 			let [summaryName, summaryContent] = summaryRaw.includes('!') ? summaryRaw.split('!') : ['UNKNOWN', summaryRaw]; // fallback if '!' not present
 			cardAvatar = await cardAvatar;
@@ -1010,7 +1025,7 @@
 				summary: summaryContent,
 				charType: charType,
 				avatar: avatarImage, 
-				charPrompt: userPrompt
+				charPrompt: newCharSheet,
 			}));
 
 			avatarImage = null;

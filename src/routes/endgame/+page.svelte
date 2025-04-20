@@ -216,7 +216,7 @@
 					description: firstCard.description,
 					cardAvatar: firstCard.cardAvatar,
 					avatar: firstCard.avatar,
-					charPrompt: firstCard.avatarPrompt
+					charPrompt: firstCard.charPrompt
 				});
 				return;
 			}
@@ -229,7 +229,7 @@
 			description: firstCard.description,
 			cardAvatar: firstCard.cardAvatar,
 			avatar: firstCard.avatar,
-			charPrompt: firstCard.avatarPrompt
+			charPrompt: firstCard.charPrompt
 		});
 
 		prisonerList = await getAllPrisoners(db);
