@@ -23,8 +23,8 @@ But unlike traditional RPGs, **the story can be anything** – fantasy, sci-fi, 
 - [x] **Character Creation**
 - [x] **Story Generation** 
 - [x] **Decision Process**
-- [ ] **Single Player Mode**  (In Progress)
-- [ ] **Multiplayer Mode**
+- [x] **Single Player Mode**
+- [ ] **Multiplayer Mode** (In-Progress)
 
 ## 🎮 How to Play
 1. **Go to the [Game Website](https://dad-thegame.vercel.app/)** – No downloads, just click & play!
